@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="opencv library - 3.0.0-rc1">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/../../OpenCV-android-sdk/sdk/java/bin/opencv library - 3.0.0-rc1.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
