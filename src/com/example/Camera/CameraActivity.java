@@ -16,6 +16,7 @@ import android.view.ViewGroup.LayoutParams;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.List;
 
 import org.opencv.android.*;
 
@@ -61,6 +62,12 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
     {
         super.onResume();
         camera = Camera.open();
+        Camera.Parameters params=camera.getParameters();
+        params.setFocusMode(Camera.Parameters.FOCUS_MODE_AUTO);
+        List<Camera.Size> sizes = params.getSupportedPictureSizes();
+        //params.setJpegQuality(100);
+        params.setPictureSize(sizes.get(0).width,  sizes.get(0).height);
+        camera.setParameters(params);
     }
 
     @Override
@@ -120,7 +127,6 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
             camera.setDisplayOrientation(90);
             lp.height = previewSurfaceHeight;
             lp.width = (int) (previewSurfaceHeight / aspect);
-            ;
         }
         else
         {
@@ -147,8 +153,8 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
             // либо делаем снимок непосредственно здесь
             // 	либо включаем обработчик автофокуса
 
-            //camera.takePicture(null, null, null, this);
-            camera.autoFocus(this);
+            camera.takePicture(null, null, null, this);
+            //camera.autoFocus(this);
         }
     }
 
@@ -185,7 +191,7 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
         if (paramBoolean)
         {
             // если удалось сфокусироваться, делаем снимок
-            paramCamera.takePicture(null, null, null, this);
+            //paramCamera.takePicture(null, null, null, this);
         }
     }
 
