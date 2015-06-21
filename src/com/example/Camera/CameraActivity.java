@@ -1,12 +1,9 @@
 package com.example.Camera;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.hardware.Camera;
 import android.media.FaceDetector;
 import android.os.Bundle;
@@ -20,16 +17,18 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
 
-import org.opencv.android.*;
 
 public class CameraActivity extends Activity implements SurfaceHolder.Callback, View.OnClickListener, Camera.PictureCallback, Camera.PreviewCallback, Camera.AutoFocusCallback
 {
+    /**
+     * ID параметра изображения
+     */
     public final static String PICTURE = "PICTURE";
 
     private Camera camera;
     private SurfaceHolder surfaceHolder;
     private SurfaceView preview;
-    private Button shotBtn, switchButton;
+    private Button shotBtn, switchButton, uploadButton;
     private Boolean frontCameraSelected = false;
 
     @Override
@@ -61,6 +60,11 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
         switchButton.setOnClickListener(this);
         switchButton.setText("Switch");
         switchButton.setX(200);
+
+        uploadButton = (Button) findViewById(R.id.UploadButton);
+        uploadButton.setOnClickListener(this);
+        uploadButton.setText("Upload");
+        uploadButton.setX(450);
     }
 
     @Override
@@ -170,7 +174,8 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
             intent.putExtra(PICTURE, paramArrayOfByte);
             startActivity(intent);
 
-
+            //TODO: или оптимизируй или переводи изображения в PreviewActivity
+            //setCameraHolder(surfaceHolder);
 
             //Этот код распознает лица
             //Пока пусть побудет здесь, потом перекачует в другое место
@@ -188,9 +193,20 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
         catch (Exception e)
         {
         }
+    }
 
-        // после того, как снимок сделан, показ превью отключается. необходимо включить его
-        paramCamera.startPreview();
+    @Override
+    public void onBackPressed()
+    {
+        System.exit(0);
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event)
+    {
+        onBackPressed();
+        camera.autoFocus(this);
+        return super.onTouchEvent(event);
     }
 
     @Override

@@ -2,4 +2,5 @@
 <resources>
     <string name="app_name">Vizor Camera</string>
     <string name="ButtonCameraSwitch">Switch</string>
+    <string name="UploadButton">Upload</string>
 </resources>
