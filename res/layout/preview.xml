@@ -3,8 +3,16 @@
              android:layout_width="fill_parent" android:layout_height="fill_parent"
              xmlns:android="http://schemas.android.com/apk/res/android">
             <SurfaceView android:id="@+id/BitmapView"
-                         android:layout_width="wrap_content" android:layout_height="wrap_content">
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content">
             </SurfaceView>
+
+            <ImageView
+                    android:id="@+id/imageView1"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent">
+            </ImageView>
+
             <Button android:text=""
                     android:id="@+id/OKButton"
                     android:layout_width="wrap_content"

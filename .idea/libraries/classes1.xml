@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="classes1">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/../../workspace/facebook-android-sdk-3.21.1/facebook/build/intermediates/bundles/debug/classes.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
