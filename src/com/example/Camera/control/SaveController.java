@@ -15,33 +15,41 @@ import java.io.FileOutputStream;
  */
 public class SaveController
 {
-        public static void savePicture(byte[] imageByteArray)
+    public static void savePicture(byte[] imageByteArray)
+    {
+        // сохраняем полученные jpg в папке /sdcard/CameraExample/
+        // имя файла - System.currentTimeMillis()
+        try
         {
-            // сохраняем полученные jpg в папке /sdcard/CameraExample/
-            // имя файла - System.currentTimeMillis()
-            try
+            File saveDir = new File(Params.FOLDER_PATH);
+
+            if (!saveDir.exists())
             {
-                File saveDir = new File(Params.FOLDER_PATH);
-
-                if (!saveDir.exists())
-                {
-                    saveDir.mkdirs();
-                }
-
-                Bitmap  bitmap = BitmapFactory.decodeByteArray(imageByteArray, 0, imageByteArray.length);
-                FileOutputStream os = new FileOutputStream(String.format(Params.FOLDER_PATH + "/%d.jpg", System.currentTimeMillis()));
-
-                ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
-                byte[] byteArray = stream.toByteArray();
-
-                os.write(byteArray);
-                os.close();
+                saveDir.mkdirs();
             }
 
-            catch (Exception e)
-            {
+            Bitmap  bitmap = BitmapFactory.decodeByteArray(imageByteArray, 0, imageByteArray.length);
+            FileOutputStream os = new FileOutputStream(String.format(Params.FOLDER_PATH + "/%d.jpg", System.currentTimeMillis()));
 
-            }
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+            byte[] byteArray = stream.toByteArray();
+
+            os.write(byteArray);
+            os.close();
         }
+
+        catch (Exception e)
+        {
+
+        }
+    }
+
+    public static byte[] convertBitmapToByteArray(Bitmap bitmap)
+    {
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+        byte[] byteArray = stream.toByteArray();
+        return byteArray;
+    }
 }

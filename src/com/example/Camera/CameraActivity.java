@@ -4,6 +4,9 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.hardware.Camera;
 import android.media.FaceDetector;
 import android.os.Bundle;
@@ -12,6 +15,7 @@ import android.view.*;
 import android.widget.Button;
 import android.view.ViewGroup.LayoutParams;
 import com.example.Camera.control.Params;
+import com.example.Camera.control.SaveController;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -165,7 +169,6 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
                 else
                 {
                     stopCamera();
-
                     _camera = Camera.open(Camera.CameraInfo.CAMERA_FACING_FRONT);
                 }
 
@@ -190,28 +193,35 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
     @Override
     public void onPictureTaken(byte[] paramArrayOfByte, Camera paramCamera)
     {
-        try
-        {
+        try {
+            Bitmap bitmap = BitmapFactory.decodeByteArray(paramArrayOfByte, 0, paramArrayOfByte.length);
+
+            Matrix matrix = new Matrix();
+
+            matrix.postRotate(90);
+            Bitmap resizedBitmap = Bitmap.createBitmap(bitmap, 0, 0,
+                    bitmap.getWidth(), bitmap.getHeight(), matrix, true);
+
+
             Intent intent = new Intent(this, PreviewActivity.class);
-            intent.putExtra(PICTURE, paramArrayOfByte);
+            intent.putExtra(PICTURE, SaveController.convertBitmapToByteArray(resizedBitmap)/*paramArrayOfByte*/);
             startActivity(intent);
-
-
+            //finish();
             //Этот код распознает лица
             //Пока пусть побудет здесь, потом перекачует в другое место
 
-           /* Bitmap  bitmap = BitmapFactory.decodeByteArray(paramArrayOfByte, 0, paramArrayOfByte.length);
+       /* Bitmap  bitmap = BitmapFactory.decodeByteArray(paramArrayOfByte, 0, paramArrayOfByte.length);
 
-            FaceDetector fd = new FaceDetector(bitmap.getWidth(), bitmap.getHeight(), 5);
-            FaceDetector.Face[] faces = new FaceDetector.Face[5];
-            int c = fd.findFaces(bitmap, faces);
-            for (int i=0;i<c;i++) {
-                Log.d("TAG", Float.toString(faces[i].eyesDistance()));
-            }*/
+        FaceDetector fd = new FaceDetector(bitmap.getWidth(), bitmap.getHeight(), 5);
+        FaceDetector.Face[] faces = new FaceDetector.Face[5];
+        int c = fd.findFaces(bitmap, faces);
+        for (int i=0;i<c;i++) {
+            Log.d("TAG", Float.toString(faces[i].eyesDistance()));
+        }*/
         }
-
         catch (Exception e)
         {
+
         }
     }
 
