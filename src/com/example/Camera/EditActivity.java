@@ -21,7 +21,7 @@ public class EditActivity extends Activity implements View.OnClickListener
     private Bitmap bitmap;
     private byte[] pictureByteArray;
     private ImageView image;
-    private Button saveButton;
+    private Button saveButton, faceDetectButton;
 
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -39,6 +39,9 @@ public class EditActivity extends Activity implements View.OnClickListener
 
         saveButton = (Button) findViewById(R.id.SaveButton);
         saveButton.setOnClickListener(this);
+
+        faceDetectButton = (Button) findViewById(R.id.FaceDetectButton);
+        faceDetectButton.setOnClickListener(this);
     }
 
     @Override

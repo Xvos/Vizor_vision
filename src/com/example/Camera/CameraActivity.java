@@ -193,31 +193,11 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
     @Override
     public void onPictureTaken(byte[] paramArrayOfByte, Camera paramCamera)
     {
-        try {
-            Bitmap bitmap = BitmapFactory.decodeByteArray(paramArrayOfByte, 0, paramArrayOfByte.length);
-
-            Matrix matrix = new Matrix();
-
-            matrix.postRotate(90);
-            Bitmap resizedBitmap = Bitmap.createBitmap(bitmap, 0, 0,
-                    bitmap.getWidth(), bitmap.getHeight(), matrix, true);
-
-
+        try
+        {
             Intent intent = new Intent(this, PreviewActivity.class);
-            intent.putExtra(PICTURE, SaveController.convertBitmapToByteArray(resizedBitmap)/*paramArrayOfByte*/);
+            intent.putExtra(PICTURE, paramArrayOfByte);
             startActivity(intent);
-            //finish();
-            //Этот код распознает лица
-            //Пока пусть побудет здесь, потом перекачует в другое место
-
-       /* Bitmap  bitmap = BitmapFactory.decodeByteArray(paramArrayOfByte, 0, paramArrayOfByte.length);
-
-        FaceDetector fd = new FaceDetector(bitmap.getWidth(), bitmap.getHeight(), 5);
-        FaceDetector.Face[] faces = new FaceDetector.Face[5];
-        int c = fd.findFaces(bitmap, faces);
-        for (int i=0;i<c;i++) {
-            Log.d("TAG", Float.toString(faces[i].eyesDistance()));
-        }*/
         }
         catch (Exception e)
         {
@@ -265,8 +245,11 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
     {
         try
         {
-            _camera.setPreviewDisplay(holder);
-            _camera.setPreviewCallback(this);
+            if(holder != null)
+            {
+                _camera.setPreviewDisplay(holder);
+                _camera.setPreviewCallback(this);
+            }
         }
         catch (IOException e)
         {
