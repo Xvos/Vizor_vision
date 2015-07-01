@@ -32,7 +32,7 @@ public class SaveController
             FileOutputStream os = new FileOutputStream(String.format(Params.FOLDER_PATH + "/%d.jpg", System.currentTimeMillis()));
 
             ByteArrayOutputStream stream = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
             byte[] byteArray = stream.toByteArray();
 
             os.write(byteArray);

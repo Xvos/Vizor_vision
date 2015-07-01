@@ -72,20 +72,16 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
         _switchButton = (Button) findViewById(R.id.ButtonCameraSwitch);
         _switchButton.setOnClickListener(this);
         _switchButton.setText("Switch");
-        _switchButton.setX(200);
-
         _uploadButton = (Button) findViewById(R.id.UploadButton);
         _uploadButton.setOnClickListener(this);
         _uploadButton.setText("Upload");
-        _uploadButton.setX(450);
 
         _flashLightButton= (Button) findViewById(R.id.FlashlightButton);
         _flashLightButton.setOnClickListener(this);
         _flashLightButton.setText(_flashButtonNames[_curFlashType]);
-        _flashLightButton.setX(650);
     }
 
-    @Override
+ /*   @Override
     protected void onResume()
     {
         super.onResume();
@@ -111,7 +107,7 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
             _camera.release();
             _camera = null;
         }
-    }
+    }*/
 
     @Override
     public void surfaceChanged(SurfaceHolder holder, int format, int width, int height)
@@ -121,6 +117,14 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
     @Override
     public void surfaceCreated(SurfaceHolder holder)
     {
+        _camera = Camera.open();
+        Camera.Parameters params = _camera.getParameters();
+        params.setFlashMode(_flashTypes[_curFlashType]);
+        params.setFocusMode(Camera.Parameters.FOCUS_MODE_AUTO);
+        List<Camera.Size> sizes = params.getSupportedPictureSizes();
+        params.setPictureSize(sizes.get(0).width,  sizes.get(0).height);
+
+        _camera.setParameters(params);
         setCameraHolder(holder);
     }
 

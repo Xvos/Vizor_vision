@@ -67,10 +67,6 @@ public class EditActivity extends Activity implements View.OnClickListener
             }
             break;
         }
-       /*if(v == saveButton)
-       {
-           SaveController.savePicture(pictureByteArray);
-       }*/
     }
 
     @Override

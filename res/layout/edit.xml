@@ -16,12 +16,13 @@
             android:gravity="bottom">
 
         <LinearLayout
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
             android:background="#A0A0A0"
             android:gravity="bottom"
-            android:orientation="horizontal" >
+            android:orientation="horizontal"
+            android:measureWithLargestChild="false">
 
             <Button
                     android:layout_width="fill_parent"
@@ -56,12 +57,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
     </Button>
-
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/imageView"
-        android:layout_gravity="right|bottom" />
 
 </FrameLayout>
 

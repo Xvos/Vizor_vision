@@ -66,7 +66,7 @@ public class UploadActivity extends Activity implements AdapterView.OnItemClickL
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id)
     {
-        ImageView item = (ImageView) parent.getItemAtPosition(position);
+        ImageView item = (ImageView)view;//(ImageView) parent.getItemAtPosition(position);
         Drawable itemDrawable= item.getDrawable();
         Bitmap bmp = ((BitmapDrawable)itemDrawable).getBitmap();
         //Create intent

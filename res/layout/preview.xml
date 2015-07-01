@@ -13,16 +13,18 @@
                     android:layout_height="fill_parent">
             </ImageView>
 
-            <Button android:text=""
-                    android:id="@+id/OKButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
-            </Button>
+    <Button android:text=""
+            android:id="@+id/OKButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal|bottom">
+    </Button>
 
-            <Button android:text=""
-                    android:id="@+id/CancelButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
-            </Button>
+    <Button
+        android:id="@+id/CancelButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+        android:layout_gravity="left|bottom">
+    </Button>
 
 </FrameLayout>
