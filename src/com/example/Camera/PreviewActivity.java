@@ -45,17 +45,17 @@ public class PreviewActivity extends Activity implements View.OnClickListener
         pictureByteArray = intent.getByteArrayExtra(CameraActivity.PICTURE);
         bitmap = BitmapFactory.decodeByteArray(intent.getByteArrayExtra(CameraActivity.PICTURE), 0, intent.getByteArrayExtra(CameraActivity.PICTURE).length);
 
-      /*  Matrix matrix = new Matrix();
+        Matrix matrix = new Matrix();
 
         matrix.postScale(1, 1);
-        matrix.postRotate(90);
+        matrix.postRotate(270);
 
-        Bitmap bitmapToSave = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);*/
+        Bitmap bitmapToSave = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
 
         bitmapView = (SurfaceView) findViewById(R.id.BitmapView);
 
         image = (ImageView) findViewById(R.id.imageView1);
-        image.setImageBitmap(bitmap);
+        image.setImageBitmap(bitmapToSave);
 
         okButton = (Button) findViewById(R.id.OKButton);
         okButton.setText("OK");
@@ -89,5 +89,10 @@ public class PreviewActivity extends Activity implements View.OnClickListener
         Intent intent = new Intent(this, CameraActivity.class);
         startActivity(intent);
         finish();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
     }
 }

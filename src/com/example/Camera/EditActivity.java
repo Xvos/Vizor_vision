@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.media.FaceDetector;
 import android.os.Bundle;
 import android.util.Log;
@@ -34,8 +35,16 @@ public class EditActivity extends Activity implements View.OnClickListener
         pictureByteArray = intent.getByteArrayExtra(CameraActivity.PICTURE);
         bitmap = BitmapFactory.decodeByteArray(pictureByteArray, 0, pictureByteArray.length);
 
+
+        Matrix matrix = new Matrix();
+
+        matrix.postScale(1, 1);
+        matrix.postRotate(270);
+
+        Bitmap bitmapToSave = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
+
         image = (ImageView) findViewById(R.id.editImage);
-        image.setImageBitmap(bitmap);
+        image.setImageBitmap(bitmapToSave);
 
         saveButton = (Button) findViewById(R.id.SaveButton);
         saveButton.setOnClickListener(this);
@@ -61,16 +70,13 @@ public class EditActivity extends Activity implements View.OnClickListener
                 FaceDetector fd = new FaceDetector(bitmap.getWidth(), bitmap.getHeight(), 5);
                 FaceDetector.Face[] faces = new FaceDetector.Face[5];
                 int c = fd.findFaces(bitmap, faces);
-                for (int i=0;i<c;i++) {
+                for (int i = 0; i < c; i++)
+                {
                     Log.d("TAG", Float.toString(faces[i].eyesDistance()));
                 }
             }
             break;
         }
-       /*if(v == saveButton)
-       {
-           SaveController.savePicture(pictureByteArray);
-       }*/
     }
 
     @Override
@@ -79,5 +85,10 @@ public class EditActivity extends Activity implements View.OnClickListener
         Intent intent = new Intent(this, CameraActivity.class);
         startActivity(intent);
         finish();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
     }
 }
