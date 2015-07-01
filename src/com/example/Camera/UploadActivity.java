@@ -82,4 +82,9 @@ public class UploadActivity extends Activity implements AdapterView.OnItemClickL
         startActivity(intent);
         finish();
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+    }
 }

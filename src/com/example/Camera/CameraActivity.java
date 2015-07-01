@@ -197,11 +197,12 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
     @Override
     public void onPictureTaken(byte[] paramArrayOfByte, Camera paramCamera)
     {
-        try
-        {
+        try {
             Intent intent = new Intent(this, PreviewActivity.class);
             intent.putExtra(PICTURE, paramArrayOfByte);
             startActivity(intent);
+            stopCamera();
+            finish();
         }
         catch (Exception e)
         {
@@ -218,7 +219,6 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
     @Override
     public boolean onTouchEvent(MotionEvent event)
     {
-        //onBackPressed();
         _camera.autoFocus(this);
         return super.onTouchEvent(event);
     }
