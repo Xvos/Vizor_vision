@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Test Camera</string>
+    <string name="app_name">Vizor Camera</string>
+    <string name="ButtonCameraSwitch">Switch</string>
+    <string name="UploadButton">Upload</string>
 </resources>
