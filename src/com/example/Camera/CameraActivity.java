@@ -4,6 +4,9 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.hardware.Camera;
 import android.media.FaceDetector;
 import android.os.Bundle;
@@ -11,10 +14,13 @@ import android.util.Log;
 import android.view.*;
 import android.widget.Button;
 import android.view.ViewGroup.LayoutParams;
+import com.example.Camera.control.Params;
+import com.example.Camera.control.SaveController;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.List;
 
 
@@ -25,11 +31,18 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
      */
     public final static String PICTURE = "PICTURE";
 
-    private Camera camera;
-    private SurfaceHolder surfaceHolder;
-    private SurfaceView preview;
-    private Button shotBtn, switchButton, uploadButton;
-    private Boolean frontCameraSelected = false;
+    private Camera _camera;
+    private SurfaceHolder _surfaceHolder;
+    private SurfaceView _preview;
+    private Button _shotBtn, _switchButton, _uploadButton, _flashLightButton;
+    private Boolean _frontCameraSelected = false;
+    private String[] _flashTypes = {
+    Camera.Parameters.FLASH_MODE_AUTO, Camera.Parameters.FLASH_MODE_OFF, Camera.Parameters.FLASH_MODE_ON};
+
+    //В дальнейшем перейдем на иконки, ну а пока будут теста
+    private String[] _flashButtonNames = {"Flash AUTO", "Flash OFF", "Flash ON"};
+
+    private int _curFlashType = 0;
 
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -37,7 +50,7 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
         super.onCreate(savedInstanceState);
 
         // если хотим, чтобы приложение постоянно имело портретную ориентацию
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        //setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 
         // и без заголовка
         requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -45,38 +58,41 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
         setContentView(R.layout.main);
 
         // наше SurfaceView имеет имя SurfaceView01
-        preview = (SurfaceView) findViewById(R.id.SurfaceView01);
+        _preview = (SurfaceView) findViewById(R.id.SurfaceView01);
 
-        surfaceHolder = preview.getHolder();
-        surfaceHolder.addCallback(this);
-        surfaceHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
+        _surfaceHolder = _preview.getHolder();
+        _surfaceHolder.addCallback(this);
+        _surfaceHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
 
         // Кнопка съемки
-        shotBtn = (Button) findViewById(R.id.Button01);
-        shotBtn.setText("Shot");
-        shotBtn.setOnClickListener(this);
+        _shotBtn = (Button) findViewById(R.id.Button01);
+        _shotBtn.setText("Shot");
+        _shotBtn.setOnClickListener(this);
 
-        switchButton = (Button) findViewById(R.id.ButtonCameraSwitch);
-        switchButton.setOnClickListener(this);
-        switchButton.setText("Switch");
-        switchButton.setX(200);
+        _switchButton = (Button) findViewById(R.id.ButtonCameraSwitch);
+        _switchButton.setOnClickListener(this);
+        _switchButton.setText("Switch");
+        _uploadButton = (Button) findViewById(R.id.UploadButton);
+        _uploadButton.setOnClickListener(this);
+        _uploadButton.setText("Upload");
 
-        uploadButton = (Button) findViewById(R.id.UploadButton);
-        uploadButton.setOnClickListener(this);
-        uploadButton.setText("Upload");
-        uploadButton.setX(450);
+        _flashLightButton= (Button) findViewById(R.id.FlashlightButton);
+        _flashLightButton.setOnClickListener(this);
+        _flashLightButton.setText(_flashButtonNames[_curFlashType]);
     }
 
-    @Override
+ /*   @Override
     protected void onResume()
     {
         super.onResume();
-        camera = Camera.open();
-        Camera.Parameters params=camera.getParameters();
+        _camera = Camera.open();
+        Camera.Parameters params = _camera.getParameters();
+        params.setFlashMode(_flashTypes[_curFlashType]);
         params.setFocusMode(Camera.Parameters.FOCUS_MODE_AUTO);
         List<Camera.Size> sizes = params.getSupportedPictureSizes();
         params.setPictureSize(sizes.get(0).width,  sizes.get(0).height);
-        camera.setParameters(params);
+
+        _camera.setParameters(params);
     }
 
     @Override
@@ -84,14 +100,14 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
     {
         super.onPause();
 
-        if (camera != null)
+        if (_camera != null)
         {
-            camera.setPreviewCallback(null);
-            camera.stopPreview();
-            camera.release();
-            camera = null;
+            _camera.setPreviewCallback(null);
+            _camera.stopPreview();
+            _camera.release();
+            _camera = null;
         }
-    }
+    }*/
 
     @Override
     public void surfaceChanged(SurfaceHolder holder, int format, int width, int height)
@@ -101,6 +117,14 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
     @Override
     public void surfaceCreated(SurfaceHolder holder)
     {
+        _camera = Camera.open();
+        Camera.Parameters params = _camera.getParameters();
+        params.setFlashMode(_flashTypes[_curFlashType]);
+        params.setFocusMode(Camera.Parameters.FOCUS_MODE_AUTO);
+        List<Camera.Size> sizes = params.getSupportedPictureSizes();
+        params.setPictureSize(sizes.get(0).width,  sizes.get(0).height);
+
+        _camera.setParameters(params);
         setCameraHolder(holder);
     }
 
@@ -112,86 +136,77 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
     @Override
     public void onClick(View v)
     {
-        if (v == shotBtn)
+        if (v == _shotBtn)
         {
             // либо делаем снимок непосредственно здесь
             // 	либо включаем обработчик автофокуса
 
-            camera.takePicture(null, null, null, this);
-            //camera.autoFocus(this);
+            _camera.autoFocus(this);
+            _camera.takePicture(null, null, null, this);
         }
-        else if(v == switchButton)
+        else if(v == _flashLightButton)
+        {
+            Camera.Parameters params = _camera.getParameters();
+
+            if(_curFlashType < _flashTypes.length - 1)
+            {
+                _curFlashType++;
+            }
+            else
+            {
+                _curFlashType = 0;
+            }
+
+            params.setFlashMode(_flashTypes[_curFlashType]);
+            _camera.setParameters(params);
+            _flashLightButton.setText(_flashButtonNames[_curFlashType]);
+        }
+        else if(v == _switchButton)
         {
             if (Camera.getNumberOfCameras() >= 2)
             {
-                if(frontCameraSelected)
+                if(_frontCameraSelected)
                 {
                     stopCamera();
-                    camera = Camera.open(Camera.CameraInfo.CAMERA_FACING_BACK);
+                    _camera = Camera.open(Camera.CameraInfo.CAMERA_FACING_BACK);
                 }
                 else
                 {
                     stopCamera();
-
-                    camera = Camera.open(Camera.CameraInfo.CAMERA_FACING_FRONT);
+                    _camera = Camera.open(Camera.CameraInfo.CAMERA_FACING_FRONT);
                 }
 
-                Camera.Parameters params=camera.getParameters();
+                Camera.Parameters params = _camera.getParameters();
                 params.setFocusMode(Camera.Parameters.FOCUS_MODE_AUTO);
                 List<Camera.Size> sizes = params.getSupportedPictureSizes();
-                //params.setJpegQuality(100);
                 params.setPictureSize(sizes.get(0).width,  sizes.get(0).height);
-                camera.setParameters(params);
+                _camera.setParameters(params);
 
-                frontCameraSelected = !frontCameraSelected;
-                setCameraHolder(surfaceHolder);
+                _frontCameraSelected = !_frontCameraSelected;
+                setCameraHolder(_surfaceHolder);
             }
 
+        }
+        else if(v == _uploadButton)
+        {
+            Intent intent = new Intent(this, UploadActivity.class);
+            startActivity(intent);
         }
     }
 
     @Override
     public void onPictureTaken(byte[] paramArrayOfByte, Camera paramCamera)
     {
-        // сохраняем полученные jpg в папке /sdcard/CameraExample/
-        // имя файла - System.currentTimeMillis()
-
-        try
-        {
-            File saveDir = new File("/sdcard/CameraExample/");
-
-            if (!saveDir.exists())
-            {
-                saveDir.mkdirs();
-            }
-
-            FileOutputStream os = new FileOutputStream(String.format("/sdcard/CameraExample/%d.jpg", System.currentTimeMillis()));
-            os.write(paramArrayOfByte);
-            os.close();
-
-            //Bitmap  bitmap = BitmapFactory.decodeByteArray(paramArrayOfByte, 0, paramArrayOfByte.length);
+        try {
             Intent intent = new Intent(this, PreviewActivity.class);
             intent.putExtra(PICTURE, paramArrayOfByte);
             startActivity(intent);
-
-            //TODO: или оптимизируй или переводи изображения в PreviewActivity
-            //setCameraHolder(surfaceHolder);
-
-            //Этот код распознает лица
-            //Пока пусть побудет здесь, потом перекачует в другое место
-
-           /* Bitmap  bitmap = BitmapFactory.decodeByteArray(paramArrayOfByte, 0, paramArrayOfByte.length);
-
-            FaceDetector fd = new FaceDetector(bitmap.getWidth(), bitmap.getHeight(), 5);
-            FaceDetector.Face[] faces = new FaceDetector.Face[5];
-            int c = fd.findFaces(bitmap, faces);
-            for (int i=0;i<c;i++) {
-                Log.d("TAG", Float.toString(faces[i].eyesDistance()));
-            }*/
+            stopCamera();
+            finish();
         }
-
         catch (Exception e)
         {
+
         }
     }
 
@@ -204,8 +219,7 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
     @Override
     public boolean onTouchEvent(MotionEvent event)
     {
-        onBackPressed();
-        camera.autoFocus(this);
+        _camera.autoFocus(this);
         return super.onTouchEvent(event);
     }
 
@@ -235,47 +249,50 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
     {
         try
         {
-            camera.setPreviewDisplay(holder);
-            camera.setPreviewCallback(this);
+            if(holder != null)
+            {
+                _camera.setPreviewDisplay(holder);
+                _camera.setPreviewCallback(this);
+            }
         }
         catch (IOException e)
         {
             e.printStackTrace();
         }
 
-        Camera.Size previewSize = camera.getParameters().getPreviewSize();
+        Camera.Size previewSize = _camera.getParameters().getPreviewSize();
         float aspect = (float) previewSize.width / previewSize.height;
 
-        int previewSurfaceWidth = preview.getWidth();
-        int previewSurfaceHeight = preview.getHeight();
+        int previewSurfaceWidth = _preview.getWidth();
+        int previewSurfaceHeight =_preview.getHeight();
 
-        LayoutParams lp = preview.getLayoutParams();
+        LayoutParams lp = _preview.getLayoutParams();
 
         // здесь корректируем размер отображаемого preview, чтобы не было искажений
         if (this.getResources().getConfiguration().orientation != Configuration.ORIENTATION_LANDSCAPE)
         {
             // портретный вид
-            camera.setDisplayOrientation(90);
+            _camera.setDisplayOrientation(90);
             lp.height = previewSurfaceHeight;
             lp.width = (int) (previewSurfaceHeight / aspect);
         }
         else
         {
             // ландшафтный
-            camera.setDisplayOrientation(0);
+            _camera.setDisplayOrientation(0);
             lp.width = previewSurfaceWidth;
             lp.height = (int) (previewSurfaceWidth / aspect);
         }
 
-        preview.setLayoutParams(lp);
-        camera.startPreview();
+        _preview.setLayoutParams(lp);
+        _camera.startPreview();
     }
 
     private void stopCamera()
     {
-        camera.setPreviewCallback(null);
-        camera.stopPreview();
-        camera.release();
-        camera = null;
+        _camera.setPreviewCallback(null);
+        _camera.stopPreview();
+        _camera.release();
+        _camera = null;
     }
 }

@@ -3,7 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/Camera.iml" filepath="$PROJECT_DIR$/Camera.iml" />
-      <module fileurl="file://$PROJECT_DIR$/../../OpenCV-android-sdk/sdk/java/sdk.iml" filepath="$PROJECT_DIR$/../../OpenCV-android-sdk/sdk/java/sdk.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../../OpenCV-android-sdk/sdk/sdk.iml" filepath="$PROJECT_DIR$/../../OpenCV-android-sdk/sdk/sdk.iml" />
     </modules>
   </component>
 </project>

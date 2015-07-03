@@ -5,12 +5,17 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Matrix;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.ImageView;
+import com.example.Camera.control.Params;
+
+import java.io.ByteArrayOutputStream;
 import java.io.FileOutputStream;
 
 import java.io.File;
@@ -25,6 +30,9 @@ public class PreviewActivity extends Activity implements View.OnClickListener
     private Bitmap bitmap;
     private byte[] pictureByteArray;
     private SurfaceView bitmapView;
+    private ImageView image;
+
+    private Bitmap bitmapToSave;
 
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -35,13 +43,19 @@ public class PreviewActivity extends Activity implements View.OnClickListener
 
         Intent intent = getIntent();
         pictureByteArray = intent.getByteArrayExtra(CameraActivity.PICTURE);
-        bitmap = BitmapFactory.decodeByteArray( intent.getByteArrayExtra(CameraActivity.PICTURE), 0,  intent.getByteArrayExtra(CameraActivity.PICTURE).length);
+        bitmap = BitmapFactory.decodeByteArray(intent.getByteArrayExtra(CameraActivity.PICTURE), 0, intent.getByteArrayExtra(CameraActivity.PICTURE).length);
+
+        Matrix matrix = new Matrix();
+
+        matrix.postScale(1, 1);
+        matrix.postRotate(270);
+
+        Bitmap bitmapToSave = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
 
         bitmapView = (SurfaceView) findViewById(R.id.BitmapView);
 
-        Canvas c = new Canvas();
-        c.drawBitmap(bitmap, 0, 0, null);
-        bitmapView.draw(c);
+        image = (ImageView) findViewById(R.id.imageView1);
+        image.setImageBitmap(bitmapToSave);
 
         okButton = (Button) findViewById(R.id.OKButton);
         okButton.setText("OK");
@@ -51,7 +65,6 @@ public class PreviewActivity extends Activity implements View.OnClickListener
         cancelButton.setOnClickListener(this);
         cancelButton.setText("X");
         cancelButton.setX(200);
-
     }
 
     @Override
@@ -64,25 +77,22 @@ public class PreviewActivity extends Activity implements View.OnClickListener
         }
         else if(v == okButton)
         {
-            try
-            {
-                File saveDir = new File("/sdcard/CameraExample/");
-
-                if (!saveDir.exists())
-                {
-                    saveDir.mkdirs();
-                }
-
-                FileOutputStream os = new FileOutputStream(String.format("/sdcard/CameraExample/%d.jpg", System.currentTimeMillis()));
-                os.write(pictureByteArray);
-                os.close();
-
-            }
-
-            catch (Exception e)
-            {
-
-            }
+            Intent intent = new Intent(this, EditActivity.class);
+            intent.putExtra(CameraActivity.PICTURE, pictureByteArray);
+            startActivity(intent);
         }
+    }
+
+    @Override
+    public void onBackPressed()
+    {
+        Intent intent = new Intent(this, CameraActivity.class);
+        startActivity(intent);
+        finish();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
     }
 }
