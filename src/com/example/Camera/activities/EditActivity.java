@@ -1,4 +1,4 @@
-package com.example.Camera;
+package com.example.Camera.activities;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -12,6 +12,8 @@ import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
+
+import com.example.Camera.R;
 import com.example.Camera.control.SaveController;
 
 /**

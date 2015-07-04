@@ -1,24 +1,18 @@
-package com.example.Camera;
+package com.example.Camera.activities;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
-import com.example.Camera.control.Params;
 
-import java.io.ByteArrayOutputStream;
-import java.io.FileOutputStream;
-
-import java.io.File;
+import com.example.Camera.R;
 
 
 /**
