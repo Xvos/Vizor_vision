@@ -189,6 +189,7 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
     public void onPictureTaken(byte[] paramArrayOfByte, Camera paramCamera)
     {
         try {
+
             Intent intent = new Intent(this, PreviewActivity.class);
             intent.putExtra(PICTURE, paramArrayOfByte);
             startActivity(intent);

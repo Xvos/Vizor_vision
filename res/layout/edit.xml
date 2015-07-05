@@ -27,6 +27,7 @@
             <Button
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
+                    android:id="@+id/AddText"
                     android:text="Text" />
 
             <Button
@@ -48,6 +49,7 @@
             <Button
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
+                    android:id="@+id/CropButton"
                     android:text="Crop" />
         </LinearLayout>
     </HorizontalScrollView>
