@@ -1,26 +1,17 @@
-package com.example.Camera;
+package com.example.Camera.activities;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Matrix;
 import android.hardware.Camera;
-import android.media.FaceDetector;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.*;
 import android.widget.Button;
 import android.view.ViewGroup.LayoutParams;
-import com.example.Camera.control.Params;
-import com.example.Camera.control.SaveController;
 
-import java.io.File;
-import java.io.FileOutputStream;
+import com.example.Camera.R;
+
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.List;
 
 

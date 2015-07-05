@@ -1,9 +1,8 @@
-package com.example.Camera;
+package com.example.Camera.activities;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -11,6 +10,8 @@ import android.os.Environment;
 import android.view.View;
 import android.view.Window;
 import android.widget.*;
+
+import com.example.Camera.R;
 import com.example.Camera.control.GalleryAdapter;
 import com.example.Camera.control.Params;
 
