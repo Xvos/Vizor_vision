@@ -1,10 +1,7 @@
 package com.example.Camera.control;
 
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import com.example.Camera.CameraActivity;
-import com.example.Camera.EditActivity;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;

@@ -1,30 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout android:id="@+id/PreviewLayout"
+<FrameLayout android:id="@+id/SocialLayout"
              android:layout_width="fill_parent" android:layout_height="fill_parent"
              xmlns:android="http://schemas.android.com/apk/res/android">
-            <SurfaceView android:id="@+id/BitmapView"
-                         android:layout_width="wrap_content"
-                         android:layout_height="wrap_content">
-            </SurfaceView>
-
-            <ImageView
-                    android:id="@+id/imageView1"
-                    android:layout_width="fill_parent"
-                    android:layout_height="fill_parent">
-            </ImageView>
-
-    <Button android:text=""
-            android:id="@+id/OKButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal|bottom">
-    </Button>
 
     <Button
-        android:id="@+id/CancelButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-        android:layout_gravity="left|bottom">
-    </Button>
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="POST"
+        android:id="@+id/button"
+        android:layout_gravity="center_horizontal|bottom" />
 
+    <CheckBox
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Social1"
+        android:id="@+id/socialButton1"
+        android:layout_gravity="left|top"
+        android:singleLine="false"
+        android:checked="false" />
+
+    <CheckBox
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Social2"
+        android:id="@+id/socialButton2"
+        android:layout_gravity="left"
+        android:layout_marginTop="40dp" />
+
+    <CheckBox
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Social3"
+        android:id="@+id/socialButton3"
+        android:layout_gravity="left|top"
+        android:layout_marginTop="80dp" />
 </FrameLayout>
