@@ -5,6 +5,7 @@
       <GradleProjectSettings>
         <option name="distributionType" value="WRAPPED" />
         <option name="externalProjectPath" value="$PROJECT_DIR$/../../OpenCV-android-sdk/sdk" />
+        <option name="gradleJvm" value="JDK" />
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$/../../OpenCV-android-sdk/sdk" />
@@ -14,4 +15,3 @@
     </option>
   </component>
 </project>
-
