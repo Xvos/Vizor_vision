@@ -3,19 +3,25 @@ package com.example.Camera.activities;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Configuration;
+
 import android.hardware.Camera;
 import android.os.Bundle;
+
+import android.util.Log;
 import android.view.*;
 import android.widget.Button;
 import android.view.ViewGroup.LayoutParams;
+import android.widget.Toast;
 
 import com.example.Camera.R;
+import com.example.Camera.control.SaveController;
 
 import java.io.IOException;
 import java.util.List;
 
 
-public class CameraActivity extends Activity implements SurfaceHolder.Callback, View.OnClickListener, Camera.PictureCallback, Camera.PreviewCallback, Camera.AutoFocusCallback
+public class CameraActivity extends Activity implements SurfaceHolder.Callback, View.OnClickListener,
+        Camera.PictureCallback, Camera.PreviewCallback, Camera.AutoFocusCallback
 {
     /**
      * ID параметра изображения
@@ -101,13 +107,18 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
     }*/
 
     @Override
-    public void surfaceChanged(SurfaceHolder holder, int format, int width, int height)
-    {
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
     }
 
     @Override
     public void surfaceCreated(SurfaceHolder holder)
     {
+        if(_camera != null)
+        {
+            stopCamera();
+        }
+
         _camera = Camera.open();
         Camera.Parameters params = _camera.getParameters();
         params.setFlashMode(_flashTypes[_curFlashType]);
@@ -116,12 +127,44 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
         params.setPictureSize(sizes.get(0).width,  sizes.get(0).height);
 
         _camera.setParameters(params);
+        setCameraRotation();
         setCameraHolder(holder);
+    }
+
+    @Override
+    public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
+
+    }
+
+    private void setCameraRotation()
+    {
+        Camera.Parameters params = _camera.getParameters();
+        Camera.CameraInfo info = new Camera.CameraInfo();
+        if(_frontCameraSelected == true) {
+            Camera.getCameraInfo(Camera.CameraInfo.CAMERA_FACING_FRONT, info);
+        }
+        else {
+            Camera.getCameraInfo(Camera.CameraInfo.CAMERA_FACING_BACK, info);
+        }
+        int rotation = this.getWindowManager().getDefaultDisplay().getRotation();
+        int degrees = 0;
+        switch (rotation) {
+            case Surface.ROTATION_0: degrees = 0; break; //Natural orientation
+            case Surface.ROTATION_90: degrees = 90; break; //Landscape left
+            case Surface.ROTATION_180: degrees = 180; break;//Upside down
+            case Surface.ROTATION_270: degrees = 270; break;//Landscape right
+        }
+        int rotate = (info.orientation - degrees + 360) % 360;
+
+        params.setRotation(rotate);
+
+        _camera.setParameters(params);
     }
 
     @Override
     public void surfaceDestroyed(SurfaceHolder holder)
     {
+        stopCamera();
     }
 
     @Override
@@ -172,8 +215,8 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
                 List<Camera.Size> sizes = params.getSupportedPictureSizes();
                 params.setPictureSize(sizes.get(0).width,  sizes.get(0).height);
                 _camera.setParameters(params);
-
                 _frontCameraSelected = !_frontCameraSelected;
+                setCameraRotation();
                 setCameraHolder(_surfaceHolder);
             }
 
@@ -189,11 +232,13 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
     public void onPictureTaken(byte[] paramArrayOfByte, Camera paramCamera)
     {
         try {
-
             Intent intent = new Intent(this, PreviewActivity.class);
             intent.putExtra(PICTURE, paramArrayOfByte);
             startActivity(intent);
             stopCamera();
+
+
+            //SaveController.postOnTelegram(this, paramArrayOfByte, "Test");
             finish();
         }
         catch (Exception e)
@@ -261,6 +306,8 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
         LayoutParams lp = _preview.getLayoutParams();
 
         // здесь корректируем размер отображаемого preview, чтобы не было искажений
+
+
         if (this.getResources().getConfiguration().orientation != Configuration.ORIENTATION_LANDSCAPE)
         {
             // портретный вид
@@ -282,9 +329,12 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
 
     private void stopCamera()
     {
-        _camera.setPreviewCallback(null);
-        _camera.stopPreview();
-        _camera.release();
-        _camera = null;
+        if(_camera != null)
+        {
+            _camera.setPreviewCallback(null);
+            _camera.stopPreview();
+            _camera.release();
+            _camera = null;
+        }
     }
 }

@@ -16,9 +16,12 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 
 import com.example.Camera.R;
@@ -28,12 +31,15 @@ import com.example.Camera.editor.filter.CropFilter;
 /**
  * Created by user on 28.06.2015.
  */
-public class EditActivity extends Activity implements View.OnClickListener
+public class EditActivity extends Activity implements View.OnClickListener, Animation.AnimationListener
 {
     private Bitmap bitmap, originalBitmap;
     private byte[] pictureByteArray;
     private ImageView image;
-    private Button saveButton, faceDetectButton, textButton;
+    private Button saveButton, faceDetectButton, textButton, filtersButton;
+    private Animation moveUpAnim, moveDownAnim;
+    private HorizontalScrollView buttonScroll;
+    private EditText text;
 
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -45,7 +51,6 @@ public class EditActivity extends Activity implements View.OnClickListener
         Intent intent = getIntent();
         pictureByteArray = intent.getByteArrayExtra(CameraActivity.PICTURE);
         bitmap = BitmapFactory.decodeByteArray(pictureByteArray, 0, pictureByteArray.length);
-
 
         Bitmap bitmapToSave = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), null, true);
 
@@ -62,6 +67,12 @@ public class EditActivity extends Activity implements View.OnClickListener
 
         textButton = (Button) findViewById(R.id.AddText);
         textButton.setOnClickListener(this);
+
+        filtersButton = (Button) findViewById(R.id.FiltersButton);
+        filtersButton.setOnClickListener(this);
+
+        moveUpAnim = AnimationUtils.loadAnimation(this, R.anim.anim);
+        moveUpAnim.setAnimationListener(this);
     }
 
     @Override
@@ -98,7 +109,7 @@ public class EditActivity extends Activity implements View.OnClickListener
             break;
             case  R.id.AddText:
             {
-                EditText text = new EditText(getApplicationContext());
+                text = new EditText(getApplicationContext());
                 FrameLayout layout = (FrameLayout)findViewById(R.id.GalleryLayout);
                 layout.addView(text);
 
@@ -106,24 +117,14 @@ public class EditActivity extends Activity implements View.OnClickListener
                 text.setTextColor(Color.WHITE);
                 text.setText("#Vizor");
                 text.setGravity(Gravity.CENTER);
+                text.setHeight(30);
 
-              /*  Canvas canvas = new Canvas(bitmap);
-                // new antialised Paint
-                Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
-                // text color - #3D3D3D
-                paint.setColor(Color.rgb(61, 61, 61));
-                // text size in pixels
-                paint.setTextSize((int) (14 * scale));
-                // text shadow
-                paint.setShadowLayer(1f, 0f, 1f, Color.WHITE);
-
-                // draw text to the Canvas center
-                Rect bounds = new Rect();
-                paint.getTextBounds(gText, 0, gText.length(), bounds);
-                int x = (bitmap.getWidth() - bounds.width())/2;
-                int y = (bitmap.getHeight() + bounds.height())/2;
-
-                canvas.drawText(gText, x, y, paint);*/
+            }
+            break;
+            case R.id.FiltersButton:
+            {
+                buttonScroll = (HorizontalScrollView) findViewById(R.id.funcScroll);
+                buttonScroll.startAnimation(moveUpAnim);
             }
             break;
         }
@@ -146,5 +147,20 @@ public class EditActivity extends Activity implements View.OnClickListener
     {
         SaveController.savePicture(pictureByteArray);
 
+    }
+
+    @Override
+    public void onAnimationEnd(Animation animation){}
+
+    @Override
+    public void onAnimationRepeat(Animation animation){}
+
+    @Override
+    public void onAnimationStart(Animation animation)
+    {
+        // This is the key...
+        //set the coordinates for the bounds (left, top, right, bottom) based on the offset value (50px) in a resource XML
+        //LL.layout(0, -(int)this.getResources().getDimension(R.dimen.quickplay_offset),
+        //        LL.getWidth(), LL.getHeight() + (int)this.getResources().getDimension(R.dimen.quickplay_offset));
     }
 }
