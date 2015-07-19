@@ -7,6 +7,7 @@ import android.content.res.Configuration;
 import android.hardware.Camera;
 import android.os.Bundle;
 
+import android.transition.Scene;
 import android.util.Log;
 import android.view.*;
 import android.widget.Button;
@@ -123,6 +124,7 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
         Camera.Parameters params = _camera.getParameters();
         params.setFlashMode(_flashTypes[_curFlashType]);
         params.setFocusMode(Camera.Parameters.FOCUS_MODE_AUTO);
+        //params.setSceneMode(Camera.Parameters.SCENE_MODE_PARTY);
         List<Camera.Size> sizes = params.getSupportedPictureSizes();
         params.setPictureSize(sizes.get(0).width,  sizes.get(0).height);
 
@@ -176,7 +178,7 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
             // 	либо включаем обработчик автофокуса
 
             _camera.autoFocus(this);
-            _camera.takePicture(null, null, null, this);
+            //_camera.takePicture(null, null, null, this);
         }
         else if(v == _flashLightButton)
         {
@@ -256,7 +258,7 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
     @Override
     public boolean onTouchEvent(MotionEvent event)
     {
-        _camera.autoFocus(this);
+        //_camera.autoFocus(this);
         return super.onTouchEvent(event);
     }
 
@@ -266,7 +268,7 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
         if (paramBoolean)
         {
             // если удалось сфокусироваться, делаем снимок
-            //paramCamera.takePicture(null, null, null, this);
+            paramCamera.takePicture(null, null, null, this);
         }
     }
 
