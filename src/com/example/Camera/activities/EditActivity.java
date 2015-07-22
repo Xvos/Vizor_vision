@@ -27,6 +27,8 @@ import com.example.Camera.control.SaveController;
 import com.example.Camera.editor.filter.SimpleGrayscaleFilter;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by user on 28.06.2015.
@@ -41,7 +43,12 @@ public class EditActivity extends Activity implements View.OnClickListener, View
     private ImageView image;
     private Button saveButton, faceDetectButton, textButton, filtersButton, cropButton,
             grayScaleButton, clearFilerButton, imagesButton;
-    private Button image1Button;
+    private Button image1Button, image2Button, image3Button, image4Button, image5Button, image6Button,
+            image7Button, image8Button, image9Button, image10Button, image11Button, image12Button,
+            image13Button, image14Button, image15Button, image16Button, image17Button, image18Button,
+            image19Button, image20Button, image21Button, image22Button, image23Button, image24Button,
+            image25Button, image26Button, image27Button, image28Button, image29Button, image30Button,
+            image31Button, image32Button, image33Button, image34Button, image35Button, image36Button, image37Button;
     private HorizontalScrollView buttonScroll, filterList, imageList;
     private EditText text;
     private Boolean _isFiltersSelected = false;
@@ -49,6 +56,9 @@ public class EditActivity extends Activity implements View.OnClickListener, View
     private ArrayList<Button> buttons = new ArrayList<Button>();
     private ArrayList<ImageView> images = new ArrayList<ImageView>();
     private Boolean dragging = false;
+
+    private Map<Integer, Integer> imageMap;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -96,7 +106,45 @@ public class EditActivity extends Activity implements View.OnClickListener, View
         text.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
 
         //Image Buttons
+        //TODO : Такая инициализация переменных напоминает говно. ПЕРЕДЕЛАТЬ!!
+
         image1Button = (Button) findViewById(R.id.image1Button);
+        image2Button = (Button) findViewById(R.id.image2Button);
+        image3Button = (Button) findViewById(R.id.image3Button);
+        image4Button = (Button) findViewById(R.id.image4Button);
+        image5Button = (Button) findViewById(R.id.image5Button);
+        image6Button = (Button) findViewById(R.id.image6Button);
+        image7Button = (Button) findViewById(R.id.image7Button);
+        image8Button = (Button) findViewById(R.id.image8Button);
+        image9Button = (Button) findViewById(R.id.image9Button);
+        image10Button = (Button) findViewById(R.id.image10Button);
+        image11Button = (Button) findViewById(R.id.image11Button);
+        image12Button = (Button) findViewById(R.id.image12Button);
+        image13Button = (Button) findViewById(R.id.image13Button);
+        image14Button = (Button) findViewById(R.id.image14Button);
+        image15Button = (Button) findViewById(R.id.image15Button);
+        image16Button = (Button) findViewById(R.id.image16Button);
+        image17Button = (Button) findViewById(R.id.image17Button);
+        image18Button = (Button) findViewById(R.id.image18Button);
+        image19Button = (Button) findViewById(R.id.image19Button);
+        image20Button = (Button) findViewById(R.id.image20Button);
+        image21Button = (Button) findViewById(R.id.image21Button);
+        image22Button = (Button) findViewById(R.id.image22Button);
+        image23Button = (Button) findViewById(R.id.image23Button);
+        image24Button = (Button) findViewById(R.id.image24Button);
+        image25Button = (Button) findViewById(R.id.image25Button);
+        image26Button = (Button) findViewById(R.id.image26Button);
+        image27Button = (Button) findViewById(R.id.image27Button);
+        image28Button = (Button) findViewById(R.id.image28Button);
+        image29Button = (Button) findViewById(R.id.image29Button);
+        image30Button = (Button) findViewById(R.id.image30Button);
+        image31Button = (Button) findViewById(R.id.image31Button);
+        image32Button = (Button) findViewById(R.id.image32Button);
+        image33Button = (Button) findViewById(R.id.image33Button);
+        image34Button = (Button) findViewById(R.id.image34Button);
+        image35Button = (Button) findViewById(R.id.image35Button);
+        image36Button = (Button) findViewById(R.id.image36Button);
+        image37Button = (Button) findViewById(R.id.image37Button);
 
         //Setting button listeners
         saveButton.setOnClickListener(this);
@@ -108,7 +156,85 @@ public class EditActivity extends Activity implements View.OnClickListener, View
         imagesButton.setOnClickListener(this);
         clearFilerButton.setOnClickListener(this);
 
+        //Images
+        //TODO : Такая инициализация лисенеров тоже напоминает говно. ПЕРЕДЕЛАТЬ!!
         image1Button.setOnClickListener(this);
+        image2Button.setOnClickListener(this);
+        image3Button.setOnClickListener(this);
+        image4Button.setOnClickListener(this);
+        image5Button.setOnClickListener(this);
+        image6Button.setOnClickListener(this);
+        image7Button.setOnClickListener(this);
+        image8Button.setOnClickListener(this);
+        image9Button.setOnClickListener(this);
+        image10Button.setOnClickListener(this);
+        image11Button.setOnClickListener(this);
+        image12Button.setOnClickListener(this);
+        image13Button.setOnClickListener(this);
+        image14Button.setOnClickListener(this);
+        image15Button.setOnClickListener(this);
+        image16Button.setOnClickListener(this);
+        image17Button.setOnClickListener(this);
+        image18Button.setOnClickListener(this);
+        image19Button.setOnClickListener(this);
+        image20Button.setOnClickListener(this);
+        image21Button.setOnClickListener(this);
+        image22Button.setOnClickListener(this);
+        image23Button.setOnClickListener(this);
+        image24Button.setOnClickListener(this);
+        image25Button.setOnClickListener(this);
+        image26Button.setOnClickListener(this);
+        image27Button.setOnClickListener(this);
+        image28Button.setOnClickListener(this);
+        image29Button.setOnClickListener(this);
+        image30Button.setOnClickListener(this);
+        image31Button.setOnClickListener(this);
+        image32Button.setOnClickListener(this);
+        image33Button.setOnClickListener(this);
+        image34Button.setOnClickListener(this);
+        image35Button.setOnClickListener(this);
+        image36Button.setOnClickListener(this);
+        image37Button.setOnClickListener(this);
+
+        //Map
+        imageMap = new HashMap<Integer, Integer>();
+        imageMap.put(R.id.image1Button, R.drawable.bandit);
+        imageMap.put(R.id.image2Button, R.drawable.bear);
+        imageMap.put(R.id.image3Button, R.drawable.beard);
+        imageMap.put(R.id.image4Button, R.drawable.black_princess);
+        imageMap.put(R.id.image5Button, R.drawable.blond_princess);
+        imageMap.put(R.id.image6Button, R.drawable.chiken);
+        imageMap.put(R.id.image7Button, R.drawable.cowboy);
+        imageMap.put(R.id.image8Button, R.drawable.foot_1);
+        imageMap.put(R.id.image9Button, R.drawable.foot_2);
+        imageMap.put(R.id.image10Button, R.drawable.foot_3);
+        imageMap.put(R.id.image11Button, R.drawable.foot_4);
+        imageMap.put(R.id.image12Button, R.drawable.glasses);
+        imageMap.put(R.id.image13Button, R.drawable.gnom);
+        imageMap.put(R.id.image14Button, R.drawable.gold_like);
+        imageMap.put(R.id.image15Button, R.drawable.logo_black);
+        imageMap.put(R.id.image16Button, R.drawable.logo_white);
+        imageMap.put(R.id.image17Button, R.drawable.logo_zf);
+        imageMap.put(R.id.image18Button, R.drawable.mask_b);
+        imageMap.put(R.id.image19Button, R.drawable.mask_w);
+        imageMap.put(R.id.image20Button, R.drawable.logo_klone);
+        imageMap.put(R.id.image21Button, R.drawable.logo_loyalty);
+        imageMap.put(R.id.image22Button, R.drawable.mustache);
+        imageMap.put(R.id.image23Button, R.drawable.mustache_1);
+        imageMap.put(R.id.image24Button, R.drawable.mustache_2);
+        imageMap.put(R.id.image25Button, R.drawable.paty_bear);
+        imageMap.put(R.id.image26Button, R.drawable.pavlin);
+        imageMap.put(R.id.image27Button, R.drawable.pers);
+        imageMap.put(R.id.image28Button, R.drawable.red_princess);
+        imageMap.put(R.id.image29Button, R.drawable.sheep);
+        imageMap.put(R.id.image30Button, R.drawable.sheriff);
+        imageMap.put(R.id.image31Button, R.drawable.vova_1);
+        imageMap.put(R.id.image32Button, R.drawable.vova_2);
+        imageMap.put(R.id.image33Button, R.drawable.vova_3);
+        imageMap.put(R.id.image34Button, R.drawable.zombie);
+        imageMap.put(R.id.image35Button, R.drawable.zombie_1);
+        imageMap.put(R.id.image36Button, R.drawable.zombie_2);
+        imageMap.put(R.id.image37Button, R.drawable.zombie_girl);
     }
 
     @Override
@@ -290,14 +416,50 @@ public class EditActivity extends Activity implements View.OnClickListener, View
             // Images
             ///////////////////////////
             case  R.id.image1Button:
+            case  R.id.image2Button:
+            case  R.id.image3Button:
+            case  R.id.image4Button:
+            case  R.id.image5Button:
+            case  R.id.image6Button:
+            case  R.id.image7Button:
+            case  R.id.image8Button:
+            case  R.id.image9Button:
+            case  R.id.image10Button:
+            case  R.id.image11Button:
+            case  R.id.image12Button:
+            case  R.id.image13Button:
+            case  R.id.image14Button:
+            case  R.id.image15Button:
+            case  R.id.image16Button:
+            case  R.id.image17Button:
+            case  R.id.image18Button:
+            case  R.id.image19Button:
+            case  R.id.image20Button:
+            case  R.id.image21Button:
+            case  R.id.image22Button:
+            case  R.id.image23Button:
+            case  R.id.image24Button:
+            case  R.id.image25Button:
+            case  R.id.image26Button:
+            case  R.id.image27Button:
+            case  R.id.image28Button:
+            case  R.id.image29Button:
+            case  R.id.image30Button:
+            case  R.id.image31Button:
+            case  R.id.image32Button:
+            case  R.id.image33Button:
+            case  R.id.image34Button:
+            case  R.id.image35Button:
+            case  R.id.image36Button:
+            case  R.id.image37Button:
             {
                ImageView newImage = new ImageView(this);
-               newImage.setImageResource(R.drawable.vizor_small);
+               newImage.setImageResource(imageMap.get(v.getId()));
                newImage.setLayoutParams(new FrameLayout.LayoutParams(
                        FrameLayout.LayoutParams.WRAP_CONTENT,
                        FrameLayout.LayoutParams.WRAP_CONTENT));
                FrameLayout layout = (FrameLayout)findViewById(R.id.GalleryLayout);
-                newImage.setOnTouchListener(this);
+               newImage.setOnTouchListener(this);
                images.add(newImage);
                layout.addView(newImage);
             }
@@ -360,10 +522,10 @@ public class EditActivity extends Activity implements View.OnClickListener, View
                     }
 
                     layoutParams.leftMargin = x_cord;
-                    layoutParams.topMargin = y_cord;
+                    layoutParams.topMargin = y_cord + 100;
 
                     v.setLayoutParams(layoutParams);
-                    if(y_cord > windowheight - v.getHeight()/2)
+                    if(y_cord > windowheight * 0.9)
                     {
                         FrameLayout layout = (FrameLayout)findViewById(R.id.GalleryLayout);
 

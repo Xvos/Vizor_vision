@@ -10,6 +10,13 @@
             android:layout_height="fill_parent">
     </ImageView>
 
+    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/imageLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+    </FrameLayout>
+
     <HorizontalScrollView
             android:id="@+id/funcScroll"
             android:layout_width="fill_parent"
@@ -154,14 +161,260 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/image1Button"
-                android:text="Image1"
+                android:text="Bandit"
                 android:layout_marginBottom="0dp" />
 
             <Button
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/image2Button"
-                android:text="Image2"
+                android:text="Bear"
+                android:layout_marginBottom="0dp" />
+
+            <Button
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/image3Button"
+                android:text="Beard"
+                android:layout_marginBottom="0dp" />
+
+            <Button
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/image4Button"
+                android:text="Black Princess"
+                android:layout_marginBottom="0dp" />
+
+            <Button
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/image5Button"
+                android:text="Blond Princess"
+                android:layout_marginBottom="0dp" />
+
+            <Button
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/image6Button"
+                android:text="Chicken"
+                android:layout_marginBottom="0dp" />
+
+            <Button
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/image7Button"
+                android:text="Cowboy"
+                android:layout_marginBottom="0dp" />
+
+            <Button
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/image8Button"
+                android:text="Vince 1"
+                android:layout_marginBottom="0dp" />
+
+            <Button
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/image9Button"
+                android:text="Vince 2"
+                android:layout_marginBottom="0dp" />
+
+            <Button
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/image10Button"
+                android:text="Vince 3"
+                android:layout_marginBottom="0dp" />
+
+            <Button
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/image11Button"
+                android:text="Vince 4"
+                android:layout_marginBottom="0dp" />
+
+            <Button
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/image12Button"
+                android:text="Glasses"
+                android:layout_marginBottom="0dp" />
+
+            <Button
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/image13Button"
+                android:text="Gnome"
+                android:layout_marginBottom="0dp" />
+
+            <Button
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/image14Button"
+                android:text="Gold Like"
+                android:layout_marginBottom="0dp" />
+
+            <Button
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/image15Button"
+                android:text="Logo Black"
+                android:layout_marginBottom="0dp" />
+
+            <Button
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/image16Button"
+                android:text="Logo White"
+                android:layout_marginBottom="0dp" />
+
+            <Button
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/image17Button"
+                android:text="Logo ZF"
+                android:layout_marginBottom="0dp" />
+
+            <Button
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/image20Button"
+                android:text="Logo Klone"
+                android:layout_marginBottom="0dp" />
+
+            <Button
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/image21Button"
+                android:text="Logo Knights"
+                android:layout_marginBottom="0dp" />
+
+            <Button
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/image18Button"
+                android:text="Mask Black"
+                android:layout_marginBottom="0dp" />
+
+            <Button
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/image19Button"
+                android:text="Mask White"
+                android:layout_marginBottom="0dp" />
+
+            <Button
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/image22Button"
+                android:text="Mustache 1"
+                android:layout_marginBottom="0dp" />
+
+            <Button
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/image23Button"
+                android:text="Mustache 2"
+                android:layout_marginBottom="0dp" />
+
+            <Button
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/image24Button"
+                android:text="Mustache 3"
+                android:layout_marginBottom="0dp" />
+
+            <Button
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/image25Button"
+                android:text="Party Bear"
+                android:layout_marginBottom="0dp" />
+
+            <Button
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/image26Button"
+                android:text="Pavlin"
+                android:layout_marginBottom="0dp" />
+
+            <Button
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/image27Button"
+                android:text="Pers"
+                android:layout_marginBottom="0dp" />
+
+            <Button
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/image28Button"
+                android:text="Red Princess"
+                android:layout_marginBottom="0dp" />
+
+            <Button
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/image29Button"
+                android:text="Sheep"
+                android:layout_marginBottom="0dp" />
+
+            <Button
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/image30Button"
+                android:text="Sheriff"
+                android:layout_marginBottom="0dp" />
+
+            <Button
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/image31Button"
+                android:text="Vova 1"
+                android:layout_marginBottom="0dp"
+                android:gravity="clip_vertical" />
+
+            <Button
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/image32Button"
+                android:text="Vova 2"
+                android:layout_marginBottom="0dp" />
+
+            <Button
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/image33Button"
+                android:text="Vova 3"
+                android:layout_marginBottom="0dp" />
+
+            <Button
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/image34Button"
+                android:text="Zombie 1"
+                android:layout_marginBottom="0dp" />
+
+            <Button
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/image35Button"
+                android:text="Zombie 2"
+                android:layout_marginBottom="0dp" />
+
+            <Button
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/image36Button"
+                android:text="Zombie 3"
+                android:layout_marginBottom="0dp" />
+
+            <Button
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/image37Button"
+                android:text="Zombie Girl"
                 android:layout_marginBottom="0dp" />
 
         </LinearLayout>

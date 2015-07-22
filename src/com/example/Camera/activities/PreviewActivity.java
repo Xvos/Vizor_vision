@@ -45,13 +45,11 @@ public class PreviewActivity extends Activity implements View.OnClickListener
         image.setImageBitmap(bitmap);
 
         okButton = (Button) findViewById(R.id.OKButton);
-        okButton.setText("OK");
         okButton.setOnClickListener(this);
+        //okButton.setBackgroundResource(R.drawable.ok_button);
 
         cancelButton = (Button) findViewById(R.id.CancelButton);
         cancelButton.setOnClickListener(this);
-        cancelButton.setText("X");
-        cancelButton.setX(200);
     }
 
     @Override
