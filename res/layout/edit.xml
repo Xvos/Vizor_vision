@@ -173,5 +173,15 @@
             android:layout_height="wrap_content">
     </Button>
 
+    <EditText
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/editText"
+        android:layout_gravity="center_horizontal"
+        android:editable="true"
+        android:background="#00000000"
+        android:text=" dfgn ,dm  sgm d,fm g "
+        android:gravity="center_horizontal" />
+
 </FrameLayout>
 

@@ -124,7 +124,7 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
         Camera.Parameters params = _camera.getParameters();
         params.setFlashMode(_flashTypes[_curFlashType]);
         params.setFocusMode(Camera.Parameters.FOCUS_MODE_AUTO);
-        //params.setSceneMode(Camera.Parameters.SCENE_MODE_PARTY);
+        params.setSceneMode(Camera.Parameters.SCENE_MODE_PARTY);
         List<Camera.Size> sizes = params.getSupportedPictureSizes();
         params.setPictureSize(sizes.get(0).width,  sizes.get(0).height);
 
@@ -177,7 +177,14 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
             // либо делаем снимок непосредственно здесь
             // 	либо включаем обработчик автофокуса
 
-            _camera.autoFocus(this);
+            if(_frontCameraSelected)
+            {
+                _camera.takePicture(null, null, null, this);
+            }
+            else
+            {
+                _camera.autoFocus(this);
+            }
             //_camera.takePicture(null, null, null, this);
         }
         else if(v == _flashLightButton)

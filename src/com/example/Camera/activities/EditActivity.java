@@ -9,21 +9,21 @@ import android.graphics.Color;
 import android.graphics.PointF;
 import android.media.FaceDetector;
 import android.os.Bundle;
-import android.text.InputType;
 import android.util.Log;
-import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.example.Camera.R;
 import com.example.Camera.control.SaveController;
-import com.example.Camera.editor.Editor;
 import com.example.Camera.editor.filter.SimpleGrayscaleFilter;
 
 import java.util.ArrayList;
@@ -31,7 +31,7 @@ import java.util.ArrayList;
 /**
  * Created by user on 28.06.2015.
  */
-public class EditActivity extends Activity implements View.OnClickListener, View.OnTouchListener
+public class EditActivity extends Activity implements View.OnClickListener, View.OnTouchListener, TextView.OnEditorActionListener
 {
     int windowwidth;
     int windowheight;
@@ -85,6 +85,15 @@ public class EditActivity extends Activity implements View.OnClickListener, View
         grayScaleButton  = (Button) findViewById(R.id.grayScaleButton);
         clearFilerButton = (Button) findViewById(R.id.noFilterButton);
         imagesButton = (Button) findViewById(R.id.imagesButton);
+
+        //Edit Text
+        text = (EditText) findViewById(R.id.editText);
+        FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) text.getLayoutParams();
+        layoutParams.topMargin = windowheight * 4/5;
+        text.setLayoutParams(layoutParams);
+        text.setVisibility(View.INVISIBLE);
+        text.setTextColor(Color.WHITE);
+        text.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
 
         //Image Buttons
         image1Button = (Button) findViewById(R.id.image1Button);
@@ -165,15 +174,9 @@ public class EditActivity extends Activity implements View.OnClickListener, View
             break;
             case  R.id.AddText:
             {
-                text = new EditText(getApplicationContext());
-                FrameLayout layout = (FrameLayout)findViewById(R.id.GalleryLayout);
-                layout.addView(text);
-
-                text.setInputType(InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
-                text.setTextColor(Color.WHITE);
-                text.setText("#Vizor");
-                text.setGravity(Gravity.CENTER);
-                text.setHeight(30);
+                text.setVisibility(View.VISIBLE);
+                text.setText("#Vizor8");
+                text.setOnEditorActionListener(this);
 
             }
             break;
@@ -346,17 +349,27 @@ public class EditActivity extends Activity implements View.OnClickListener, View
                     int x_cord = (int) event.getRawX();
                     int y_cord = (int) event.getRawY();
 
-                    if (x_cord > windowwidth) {
-                        x_cord = windowwidth;
-                    }
-                    if (y_cord > windowheight) {
-                        y_cord = windowheight;
+                    if (x_cord > windowwidth - v.getWidth())
+                    {
+                        x_cord = windowwidth - v.getWidth();
                     }
 
-                    layoutParams.leftMargin = x_cord - 25;
-                    layoutParams.topMargin = y_cord - 75;
+                    if (y_cord > windowheight - v.getHeight())
+                    {
+                        y_cord = windowheight - v.getHeight();
+                    }
+
+                    layoutParams.leftMargin = x_cord;
+                    layoutParams.topMargin = y_cord;
 
                     v.setLayoutParams(layoutParams);
+                    if(y_cord > windowheight - v.getHeight()/2)
+                    {
+                        FrameLayout layout = (FrameLayout)findViewById(R.id.GalleryLayout);
+
+                        layout.removeView(v);
+                        v = null;
+                    }
                     break;
                 default:
                     break;
@@ -368,5 +381,29 @@ public class EditActivity extends Activity implements View.OnClickListener, View
 
         //return false;
     }
+
+
+
+    /////////////////////////////////
+    // Text Stuff
+    /////////////////////////////////
+
+    @Override
+    public boolean onEditorAction(TextView v, int actionId, KeyEvent event)
+    {
+        if (actionId == EditorInfo.IME_ACTION_SEARCH ||
+                actionId == EditorInfo.IME_ACTION_DONE ||
+                event.getAction() == KeyEvent.ACTION_DOWN &&
+                        event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
+            if (!event.isShiftPressed())
+            {
+                // the user is done typing.
+                   text.setSelected(false);
+                return true;
+            }
+        }
+        return false; // pass on to other listeners.
+    }
+
 
 }
