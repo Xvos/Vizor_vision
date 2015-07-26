@@ -242,7 +242,8 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
     {
         try {
             Intent intent = new Intent(this, PreviewActivity.class);
-            intent.putExtra(PICTURE, paramArrayOfByte);
+            //intent.putExtra(PICTURE, paramArrayOfByte);
+            SaveController.originalPicture = paramArrayOfByte;
             startActivity(intent);
             stopCamera();
 

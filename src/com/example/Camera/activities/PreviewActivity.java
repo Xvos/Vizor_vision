@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 
 import com.example.Camera.R;
+import com.example.Camera.control.SaveController;
 
 
 /**
@@ -36,8 +37,8 @@ public class PreviewActivity extends Activity implements View.OnClickListener
         setContentView(R.layout.preview);
 
         Intent intent = getIntent();
-        pictureByteArray = intent.getByteArrayExtra(CameraActivity.PICTURE);
-        bitmap = BitmapFactory.decodeByteArray(intent.getByteArrayExtra(CameraActivity.PICTURE), 0, intent.getByteArrayExtra(CameraActivity.PICTURE).length);
+        pictureByteArray = SaveController.originalPicture;//intent.getByteArrayExtra(CameraActivity.PICTURE);
+        bitmap = BitmapFactory.decodeByteArray(pictureByteArray, 0, pictureByteArray.length);
 
         bitmapView = (SurfaceView) findViewById(R.id.BitmapView);
 
@@ -46,7 +47,7 @@ public class PreviewActivity extends Activity implements View.OnClickListener
 
         okButton = (Button) findViewById(R.id.OKButton);
         okButton.setOnClickListener(this);
-        //okButton.setBackgroundResource(R.drawable.ok_button);
+        okButton.setBackgroundResource(R.drawable.ok_button);
 
         cancelButton = (Button) findViewById(R.id.CancelButton);
         cancelButton.setOnClickListener(this);
@@ -63,7 +64,7 @@ public class PreviewActivity extends Activity implements View.OnClickListener
         else if(v == okButton)
         {
             Intent intent = new Intent(this, EditActivity.class);
-            intent.putExtra(CameraActivity.PICTURE, pictureByteArray);
+            //intent.putExtra(CameraActivity.PICTURE, pictureByteArray);
             startActivity(intent);
         }
     }

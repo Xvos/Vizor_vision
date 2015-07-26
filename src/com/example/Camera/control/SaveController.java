@@ -16,6 +16,8 @@ import java.io.FileOutputStream;
  */
 public class SaveController
 {
+    public static byte[] originalPicture;
+
     public static void savePicture(byte[] imageByteArray)
     {
         // сохраняем полученные jpg в папке /sdcard/CameraExample/

@@ -71,7 +71,7 @@ public class EditActivity extends Activity implements View.OnClickListener, View
         windowheight = getWindowManager().getDefaultDisplay().getHeight();
 
         Intent intent = getIntent();
-        pictureByteArray = intent.getByteArrayExtra(CameraActivity.PICTURE);
+        pictureByteArray =  SaveController.originalPicture;//intent.getByteArrayExtra(CameraActivity.PICTURE);
         bitmap = BitmapFactory.decodeByteArray(pictureByteArray, 0, pictureByteArray.length);
 
         Bitmap bitmapToSave = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), null, true);
