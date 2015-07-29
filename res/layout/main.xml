@@ -30,7 +30,8 @@
             android:id="@+id/ButtonCameraSwitch"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-        android:layout_gravity="right|bottom">
+        android:layout_gravity="right|bottom"
+        android:background="@drawable/ok">
     </Button>
 
 </FrameLayout>
