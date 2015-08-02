@@ -2,7 +2,9 @@
 <FrameLayout android:id="@+id/GalleryLayout"
              android:layout_width="match_parent"
              android:layout_height="match_parent"
-             xmlns:android="http://schemas.android.com/apk/res/android">
+             xmlns:android="http://schemas.android.com/apk/res/android"
+    android:focusableInTouchMode="false"
+    android:focusable="false">
 
     <ImageView
             android:id="@+id/editImage"
@@ -434,7 +436,9 @@
         android:editable="true"
         android:background="#00000000"
         android:text=" dfgn ,dm  sgm d,fm g "
-        android:gravity="center_horizontal" />
+        android:gravity="center_horizontal"
+        android:focusableInTouchMode="false"
+        android:focusable="false" />
 
 </FrameLayout>
 

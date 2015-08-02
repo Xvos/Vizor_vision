@@ -5,13 +5,17 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.PointF;
 import android.media.FaceDetector;
 import android.os.Bundle;
+import android.util.FloatMath;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
+import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.view.Window;
 import android.view.inputmethod.EditorInfo;
@@ -26,6 +30,7 @@ import com.example.Camera.R;
 import com.example.Camera.control.SaveController;
 import com.example.Camera.editor.filter.SimpleGrayscaleFilter;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -35,8 +40,12 @@ import java.util.Map;
  */
 public class EditActivity extends Activity implements View.OnClickListener, View.OnTouchListener, TextView.OnEditorActionListener
 {
-    int windowwidth;
-    int windowheight;
+
+    static final int NONE = 0;
+    static final int ZOOM = 1;
+
+    private int windowwidth;
+    private int windowheight;
 
     private Bitmap bitmap, originalBitmap;
     private byte[] pictureByteArray;
@@ -55,7 +64,11 @@ public class EditActivity extends Activity implements View.OnClickListener, View
     private Boolean _isImagesSelected = false;
     private ArrayList<Button> buttons = new ArrayList<Button>();
     private ArrayList<ImageView> images = new ArrayList<ImageView>();
-    private Boolean dragging = false;
+    private ScaleGestureDetector mScaleDetector;
+    private int dragX, dragY;
+
+    int mode = NONE;
+    float oldDist = 1f;
 
     private Map<Integer, Integer> imageMap;
 
@@ -71,7 +84,7 @@ public class EditActivity extends Activity implements View.OnClickListener, View
         windowheight = getWindowManager().getDefaultDisplay().getHeight();
 
         Intent intent = getIntent();
-        pictureByteArray =  SaveController.originalPicture;//intent.getByteArrayExtra(CameraActivity.PICTURE);
+        pictureByteArray =  SaveController.originalPicture;
         bitmap = BitmapFactory.decodeByteArray(pictureByteArray, 0, pictureByteArray.length);
 
         Bitmap bitmapToSave = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), null, true);
@@ -235,6 +248,21 @@ public class EditActivity extends Activity implements View.OnClickListener, View
         imageMap.put(R.id.image35Button, R.drawable.zombie_1);
         imageMap.put(R.id.image36Button, R.drawable.zombie_2);
         imageMap.put(R.id.image37Button, R.drawable.zombie_girl);
+
+        mScaleDetector = new ScaleGestureDetector(getBaseContext(), new ScaleGestureDetector.OnScaleGestureListener() {
+            @Override
+            public void onScaleEnd(ScaleGestureDetector detector) {
+            }
+            @Override
+            public boolean onScaleBegin(ScaleGestureDetector detector) {
+                return true;
+            }
+            @Override
+            public boolean onScale(ScaleGestureDetector detector) {
+                Log.d("TAG", "zoom ongoing, scale: " + detector.getScaleFactor());
+                return false;
+            }
+        });
     }
 
     @Override
@@ -293,9 +321,14 @@ public class EditActivity extends Activity implements View.OnClickListener, View
             {
                 //CropFilter
                 //buttonScroll.startAnimation(controlMoveDownAnim);
-                ObjectAnimator objectAnimator= ObjectAnimator.ofFloat(buttonScroll, "translationY", buttonScroll.getY(), buttonScroll.getY() - 150);
-                objectAnimator.setDuration(500);
-                objectAnimator.start();
+                //ObjectAnimator objectAnimator= ObjectAnimator.ofFloat(buttonScroll, "translationY", buttonScroll.getY(), buttonScroll.getY() - 150);
+                //objectAnimator.setDuration(500);
+                //objectAnimator.start();
+
+                text.setLayoutParams(new FrameLayout.LayoutParams(bitmap.getWidth(), bitmap.getHeight()));
+                text.getLayoutParams().width = bitmap.getWidth();
+                text.setTextSize(text.getTextSize() + 5);
+
             }
             break;
             case  R.id.AddText:
@@ -398,6 +431,7 @@ public class EditActivity extends Activity implements View.OnClickListener, View
             {
                 Bitmap bmp = originalBitmap.copy(originalBitmap.getConfig(), true);
                 image.setImageBitmap(bmp);
+                bitmap = bmp;
             }
             break;
 
@@ -409,6 +443,7 @@ public class EditActivity extends Activity implements View.OnClickListener, View
                 bmp  = originalBitmap.copy(originalBitmap.getConfig(), true);
                 grayscaleFilter.process(originalBitmap, bmp);
                 image.setImageBitmap(bmp);
+                bitmap = bmp;
             }
             break;
 
@@ -462,6 +497,14 @@ public class EditActivity extends Activity implements View.OnClickListener, View
                newImage.setOnTouchListener(this);
                images.add(newImage);
                layout.addView(newImage);
+
+               /*FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) newImage.getLayoutParams();
+               layoutParams.leftMargin =  (windowwidth - newImage.getWidth()) / 2;
+               layoutParams.topMargin =  (windowheight - newImage.getHeight())/2;
+
+               newImage.setLayoutParams(layoutParams);*/
+
+
             }
             break;
         }
@@ -487,7 +530,24 @@ public class EditActivity extends Activity implements View.OnClickListener, View
 
     private void parseBitmapAndSave()
     {
-        SaveController.savePicture(pictureByteArray);
+        Bitmap drawableBitmap = bitmap.copy(Bitmap.Config.ARGB_8888, true);
+        Canvas canvas = new Canvas(drawableBitmap);
+        text.setDrawingCacheEnabled(true);
+        int i = text.getWidth();
+        FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(bitmap.getWidth(), bitmap.getHeight());
+        layoutParams.gravity = Gravity.CENTER_HORIZONTAL;
+        text.setLayoutParams(new FrameLayout.LayoutParams(bitmap.getWidth(), bitmap.getHeight()));
+        text.getLayoutParams().width = bitmap.getWidth();
+        text.setTextSize(text.getTextSize() + 5);
+        i = text.getWidth();
+        Bitmap b = text.getDrawingCache();
+        canvas.drawBitmap(b, 0, drawableBitmap.getHeight() *  4/5, null);
+
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        drawableBitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+        byte[] byteArray = stream.toByteArray();
+
+        SaveController.savePicture(byteArray);
     }
 
    /////////////////////////////////
@@ -498,50 +558,119 @@ public class EditActivity extends Activity implements View.OnClickListener, View
     public boolean onTouch(View v, MotionEvent event)
     {
         boolean eventConsumed = true;
-        int x = (int)event.getX();
-        int y = (int)event.getY();
-        FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) v.getLayoutParams();
+         FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) v.getLayoutParams();
 
 
-        if(images.contains(v)) {
-            switch (event.getAction()) {
-                case MotionEvent.ACTION_DOWN:
+        if(images.contains(v))
+        {
+            switch (event.getAction() & MotionEvent.ACTION_MASK)
+            {
+                case MotionEvent.ACTION_POINTER_DOWN:
+                    oldDist = spacing(event);
+                    Log.d("TAG", "oldDist=" + oldDist);
+                    if (oldDist > 10f) {
+                        mode = ZOOM;
+                        Log.d("TAG", "mode=ZOOM" );
+                    }
                     break;
+                case MotionEvent.ACTION_POINTER_UP:
+                    mode = NONE;
+                    break;
+                case MotionEvent.ACTION_DOWN:
+                {
+                    dragX = (int)event.getRawX() - layoutParams.leftMargin;
+                    dragY = (int)event.getRawY() - layoutParams.topMargin;
+                }
+                    break;
+                case MotionEvent.ACTION_UP:
+                {
+
+                }
+                break;
                 case MotionEvent.ACTION_MOVE:
-                    int x_cord = (int) event.getRawX();
-                    int y_cord = (int) event.getRawY();
-
-                    if (x_cord > windowwidth - v.getWidth())
+                    if (mode == ZOOM)
                     {
-                        x_cord = windowwidth - v.getWidth();
+                        float newDist = spacing(event);
+                        // If you want to tweak font scaling, this is the place to go.
+                        if (newDist > 10f)
+                        {
+                            float scale = newDist / oldDist;
+
+                            if (scale > 1)
+                            {
+                                scale = 1.05f;
+                            }
+                            else if (scale < 1)
+                            {
+                                scale = 0.95f;
+                            }
+
+                            float currentScale = v.getScaleX();
+                            if ((currentScale < 2 && currentScale > 0.25)
+                                    ||(currentScale >= 2 && scale < 1)
+                                    || (currentScale <= 0.25 && scale > 1))
+                            {
+                                v.setScaleX(scale * v.getScaleX());
+                                v.setScaleY(scale * v.getScaleY());//.setTextSize(TypedValue.COMPLEX_UNIT_PX, currentSize);
+                            }
+                        }
                     }
-
-                    if (y_cord > windowheight - v.getHeight())
+                    else
                     {
-                        y_cord = windowheight - v.getHeight();
-                    }
+                        int x = (int)event.getX();
+                        int y = (int)event.getY();
+                        int x_cord = (int) event.getRawX() - dragX;
+                        int y_cord = (int) event.getRawY() - dragY;
 
-                    layoutParams.leftMargin = x_cord;
-                    layoutParams.topMargin = y_cord + 100;
 
-                    v.setLayoutParams(layoutParams);
-                    if(y_cord > windowheight * 0.9)
-                    {
-                        FrameLayout layout = (FrameLayout)findViewById(R.id.GalleryLayout);
 
-                        layout.removeView(v);
-                        v = null;
+                        if (x_cord > windowwidth - v.getWidth()) {
+                            x_cord = windowwidth - v.getWidth();
+                        }
+
+                        if (x_cord < 0) {
+                            x_cord = 0;
+                        }
+
+                        if (y_cord > windowheight - v.getHeight()) {
+                            y_cord = windowheight - v.getHeight();
+                        }
+
+                        if (y_cord < 0) {
+                            y_cord = 0;
+                        }
+
+                        layoutParams.leftMargin = x_cord;
+                        if (event.getRawY() > windowheight * 0.8)
+                        {
+                            layoutParams.topMargin = y_cord + 200;
+                        }
+                        else
+                        {
+                            layoutParams.topMargin = y_cord;
+                        }
+
+                        v.setLayoutParams(layoutParams);
+                        if (y_cord > windowheight * 0.85) {
+                            FrameLayout layout = (FrameLayout) findViewById(R.id.GalleryLayout);
+
+                            layout.removeView(v);
+                            v = null;
+                        }
                     }
                     break;
                 default:
                     break;
             }
         }
-        //return true;
 
         return eventConsumed;
+    }
 
-        //return false;
+    private float spacing(MotionEvent event) {
+        float x = event.getX(0) - event.getX(1);
+        float y = event.getY(0) - event.getY(1);
+        return FloatMath.sqrt(x * x + y * y);
     }
 
 

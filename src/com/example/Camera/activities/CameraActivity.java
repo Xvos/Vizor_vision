@@ -7,12 +7,10 @@ import android.content.res.Configuration;
 import android.hardware.Camera;
 import android.os.Bundle;
 
-import android.transition.Scene;
-import android.util.Log;
 import android.view.*;
 import android.widget.Button;
 import android.view.ViewGroup.LayoutParams;
-import android.widget.Toast;
+
 
 import com.example.Camera.R;
 import com.example.Camera.control.SaveController;
@@ -124,7 +122,7 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
         Camera.Parameters params = _camera.getParameters();
         params.setFlashMode(_flashTypes[_curFlashType]);
         params.setFocusMode(Camera.Parameters.FOCUS_MODE_AUTO);
-        params.setSceneMode(Camera.Parameters.SCENE_MODE_PARTY);
+        //params.setSceneMode(Camera.Parameters.SCENE_MODE_AUTO);
         List<Camera.Size> sizes = params.getSupportedPictureSizes();
         params.setPictureSize(sizes.get(0).width,  sizes.get(0).height);
 
