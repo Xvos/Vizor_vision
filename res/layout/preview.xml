@@ -22,7 +22,7 @@
     </Button>
 
     <Button
-        android:id="@+id/CloseButton"
+        android:id="@+id/CancelButton"
             android:layout_width="80dp"
             android:layout_height="80dp"
         android:layout_gravity="left|bottom"

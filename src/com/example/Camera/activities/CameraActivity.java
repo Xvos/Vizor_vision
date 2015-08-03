@@ -36,7 +36,7 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
     Camera.Parameters.FLASH_MODE_AUTO, Camera.Parameters.FLASH_MODE_OFF, Camera.Parameters.FLASH_MODE_ON};
 
     //В дальнейшем перейдем на иконки, ну а пока будут теста
-    private String[] _flashButtonNames = {"Flash AUTO", "Flash OFF", "Flash ON"};
+    private int[] _flashButtonRes = {R.drawable.flash_auto_button, R.drawable.flash_dis_button, R.drawable.flash_button};
 
     private int _curFlashType = 0;
 
@@ -61,20 +61,22 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
         _surfaceHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
 
         // Кнопка съемки
-        _shotBtn = (Button) findViewById(R.id.Button01);
-        _shotBtn.setText("Shot");
-        _shotBtn.setOnClickListener(this);
+        _shotBtn = (Button) findViewById(R.id.PhotoButton);
+         _shotBtn.setOnClickListener(this);
+        _shotBtn.setBackgroundResource(R.drawable.photo_button);
+
 
         _switchButton = (Button) findViewById(R.id.ButtonCameraSwitch);
         _switchButton.setOnClickListener(this);
-        _switchButton.setText("Switch");
+        _switchButton.setBackgroundResource(R.drawable.camera_change_button);
+
         _uploadButton = (Button) findViewById(R.id.UploadButton);
         _uploadButton.setOnClickListener(this);
-        _uploadButton.setText("Upload");
+        _uploadButton.setBackgroundResource(R.drawable.open_button);
 
         _flashLightButton= (Button) findViewById(R.id.FlashlightButton);
         _flashLightButton.setOnClickListener(this);
-        _flashLightButton.setText(_flashButtonNames[_curFlashType]);
+        _flashLightButton.setBackgroundResource(_flashButtonRes[_curFlashType]);
     }
 
  /*   @Override
@@ -122,7 +124,7 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
         Camera.Parameters params = _camera.getParameters();
         params.setFlashMode(_flashTypes[_curFlashType]);
         params.setFocusMode(Camera.Parameters.FOCUS_MODE_AUTO);
-        //params.setSceneMode(Camera.Parameters.SCENE_MODE_AUTO);
+        params.setSceneMode(Camera.Parameters.SCENE_MODE_AUTO);
         List<Camera.Size> sizes = params.getSupportedPictureSizes();
         params.setPictureSize(sizes.get(0).width,  sizes.get(0).height);
 
@@ -200,7 +202,7 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
 
             params.setFlashMode(_flashTypes[_curFlashType]);
             _camera.setParameters(params);
-            _flashLightButton.setText(_flashButtonNames[_curFlashType]);
+            _flashLightButton.setBackgroundResource(_flashButtonRes[_curFlashType]);
         }
         else if(v == _switchButton)
         {

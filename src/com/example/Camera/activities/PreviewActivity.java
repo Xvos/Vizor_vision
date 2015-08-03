@@ -49,7 +49,7 @@ public class PreviewActivity extends Activity implements View.OnClickListener
         okButton.setOnClickListener(this);
         okButton.setBackgroundResource(R.drawable.ok_button);
 
-        cancelButton = (Button) findViewById(R.id.CloseButton);
+        cancelButton = (Button) findViewById(R.id.CancelButton);
         cancelButton.setBackgroundResource(R.drawable.close_button);
         cancelButton.setOnClickListener(this);
     }

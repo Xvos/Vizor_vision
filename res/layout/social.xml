@@ -3,19 +3,31 @@
              android:layout_width="fill_parent" android:layout_height="fill_parent"
              xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <SurfaceView
+        android:layout_width="match_parent"
+        android:layout_height="571dp"
+        android:id="@+id/PostBackground"
+        android:layout_gravity="left|top" />
+
+    <ImageView
+        android:layout_width="239dp"
+        android:layout_height="239dp"
+        android:id="@+id/PostImageView"
+        android:layout_gravity="center_horizontal|top" />
+
     <Button
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="POST"
-        android:id="@+id/button"
-        android:layout_gravity="center_horizontal|bottom" />
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:id="@+id/PostButton"
+        android:layout_gravity="center_horizontal|bottom"
+        android:background="@drawable/post" />
 
     <CheckBox
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="Social1"
         android:id="@+id/socialButton1"
-        android:layout_gravity="left|top"
+        android:layout_gravity="left|center_vertical"
         android:singleLine="false"
         android:checked="false" />
 
@@ -24,7 +36,7 @@
         android:layout_height="wrap_content"
         android:text="Social2"
         android:id="@+id/socialButton2"
-        android:layout_gravity="left"
+        android:layout_gravity="left|center_vertical"
         android:layout_marginTop="40dp" />
 
     <CheckBox
@@ -32,6 +44,8 @@
         android:layout_height="wrap_content"
         android:text="Social3"
         android:id="@+id/socialButton3"
-        android:layout_gravity="left|top"
+        android:layout_gravity="left|center_vertical"
         android:layout_marginTop="80dp" />
+
+
 </FrameLayout>

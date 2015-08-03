@@ -437,8 +437,8 @@
         android:background="#00000000"
         android:text=" dfgn ,dm  sgm d,fm g "
         android:gravity="center_horizontal"
-        android:focusableInTouchMode="false"
-        android:focusable="false" />
+        android:focusable="true"
+        android:enabled="true" />
 
 </FrameLayout>
 

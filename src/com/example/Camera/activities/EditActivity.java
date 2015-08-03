@@ -7,6 +7,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.PointF;
 import android.media.FaceDetector;
 import android.os.Bundle;
@@ -325,8 +326,8 @@ public class EditActivity extends Activity implements View.OnClickListener, View
                 //objectAnimator.setDuration(500);
                 //objectAnimator.start();
 
-                text.setLayoutParams(new FrameLayout.LayoutParams(bitmap.getWidth(), bitmap.getHeight()));
-                text.getLayoutParams().width = bitmap.getWidth();
+                //text.setLayoutParams(new FrameLayout.LayoutParams(bitmap.getWidth(), bitmap.getHeight()));
+                //text.getLayoutParams().width = bitmap.getWidth();
                 text.setTextSize(text.getTextSize() + 5);
 
             }
@@ -336,7 +337,6 @@ public class EditActivity extends Activity implements View.OnClickListener, View
                 text.setVisibility(View.VISIBLE);
                 text.setText("#Vizor8");
                 text.setOnEditorActionListener(this);
-
             }
             break;
             case R.id.FiltersButton:
@@ -532,17 +532,17 @@ public class EditActivity extends Activity implements View.OnClickListener, View
     {
         Bitmap drawableBitmap = bitmap.copy(Bitmap.Config.ARGB_8888, true);
         Canvas canvas = new Canvas(drawableBitmap);
-        text.setDrawingCacheEnabled(true);
-        int i = text.getWidth();
-        FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(bitmap.getWidth(), bitmap.getHeight());
-        layoutParams.gravity = Gravity.CENTER_HORIZONTAL;
-        text.setLayoutParams(new FrameLayout.LayoutParams(bitmap.getWidth(), bitmap.getHeight()));
-        text.getLayoutParams().width = bitmap.getWidth();
-        text.setTextSize(text.getTextSize() + 5);
-        i = text.getWidth();
-        Bitmap b = text.getDrawingCache();
-        canvas.drawBitmap(b, 0, drawableBitmap.getHeight() *  4/5, null);
+        //text.setTextSize(text.getTextSize() + 5);
+        //text.setDrawingCacheEnabled(true);
+        //Bitmap b = text.getDrawingCache();
+        //canvas.drawBitmap(b, Float.valueOf((drawableBitmap.getWidth() - text.getWidth()) / 2), drawableBitmap.getHeight() *  4/5, null);
 
+        Paint paint = new Paint();
+        paint.setColor(Color.WHITE);
+        paint.setTextAlign(Paint.Align.CENTER);
+        paint.setTextSize(text.getTextSize() + 25);
+        canvas.drawText(text.getText(), 0, text.getText().length(),
+                Float.valueOf((drawableBitmap.getWidth()) / 2), drawableBitmap.getHeight() * 4 / 5, paint);
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         drawableBitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
         byte[] byteArray = stream.toByteArray();
