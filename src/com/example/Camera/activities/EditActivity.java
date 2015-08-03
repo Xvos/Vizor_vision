@@ -7,6 +7,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.PointF;
 import android.media.FaceDetector;
@@ -281,7 +282,7 @@ public class EditActivity extends Activity implements View.OnClickListener, View
             break;
             case R.id.FaceDetectButton:
             {
-                int i = 0;
+               /* int i = 0;
                 Bitmap bitmap = BitmapFactory.decodeByteArray(pictureByteArray, 0, pictureByteArray.length);
                 FrameLayout layout = (FrameLayout)findViewById(R.id.GalleryLayout);
 
@@ -314,21 +315,13 @@ public class EditActivity extends Activity implements View.OnClickListener, View
                     b.setAlpha((float) 0.6);
 
                     layout.addView(b);
-                }
+                }*/
 
             }
             break;
             case R.id.CropButton:
             {
                 //CropFilter
-                //buttonScroll.startAnimation(controlMoveDownAnim);
-                //ObjectAnimator objectAnimator= ObjectAnimator.ofFloat(buttonScroll, "translationY", buttonScroll.getY(), buttonScroll.getY() - 150);
-                //objectAnimator.setDuration(500);
-                //objectAnimator.start();
-
-                //text.setLayoutParams(new FrameLayout.LayoutParams(bitmap.getWidth(), bitmap.getHeight()));
-                //text.getLayoutParams().width = bitmap.getWidth();
-                text.setTextSize(text.getTextSize() + 5);
 
             }
             break;
@@ -532,17 +525,41 @@ public class EditActivity extends Activity implements View.OnClickListener, View
     {
         Bitmap drawableBitmap = bitmap.copy(Bitmap.Config.ARGB_8888, true);
         Canvas canvas = new Canvas(drawableBitmap);
-        //text.setTextSize(text.getTextSize() + 5);
-        //text.setDrawingCacheEnabled(true);
-        //Bitmap b = text.getDrawingCache();
-        //canvas.drawBitmap(b, Float.valueOf((drawableBitmap.getWidth() - text.getWidth()) / 2), drawableBitmap.getHeight() *  4/5, null);
 
-        Paint paint = new Paint();
-        paint.setColor(Color.WHITE);
-        paint.setTextAlign(Paint.Align.CENTER);
-        paint.setTextSize(text.getTextSize() + 25);
-        canvas.drawText(text.getText(), 0, text.getText().length(),
-                Float.valueOf((drawableBitmap.getWidth()) / 2), drawableBitmap.getHeight() * 4 / 5, paint);
+        int bitmapW = bitmap.getWidth();
+        int bitmapH = bitmap.getHeight();
+        int imageW = image.getWidth();
+        int imageH = image.getHeight();
+        float scaleFactorX = Float.valueOf(bitmapW) / imageW;
+        float scaleFactorY = Float.valueOf(bitmapH) / imageH;
+        FrameLayout.LayoutParams layoutParams;
+        ImageView curImage;
+
+        for(int i = 0; i < images.size(); i++)
+        {
+            curImage = images.get(i);
+            layoutParams = (FrameLayout.LayoutParams) curImage.getLayoutParams();
+            curImage.buildDrawingCache();
+            Bitmap curBitmap = curImage.getDrawingCache();
+
+             // "RECREATE" THE NEW BITMAP
+            Bitmap resizedBitmap = Bitmap.createScaledBitmap(
+                    curBitmap, (int)(curBitmap.getWidth() * scaleFactorX), (int)(curBitmap.getHeight() * scaleFactorY), false);
+
+            canvas.drawBitmap(resizedBitmap, layoutParams.leftMargin * scaleFactorX, layoutParams.topMargin * scaleFactorY, null);
+        }
+
+
+        //Adding Text
+        if(text.getVisibility() == View.VISIBLE)
+        {
+            Paint paint = new Paint();
+            paint.setColor(Color.WHITE);
+            paint.setTextAlign(Paint.Align.CENTER);
+            paint.setTextSize(text.getTextSize() + 25);
+            canvas.drawText(text.getText(), 0, text.getText().length(),
+                    Float.valueOf((drawableBitmap.getWidth()) / 2), drawableBitmap.getHeight() * 4 / 5, paint);
+        }
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         drawableBitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
         byte[] byteArray = stream.toByteArray();
@@ -558,7 +575,7 @@ public class EditActivity extends Activity implements View.OnClickListener, View
     public boolean onTouch(View v, MotionEvent event)
     {
         boolean eventConsumed = true;
-         FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) v.getLayoutParams();
+        FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) v.getLayoutParams();
 
 
         if(images.contains(v))
