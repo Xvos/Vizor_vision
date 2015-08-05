@@ -275,7 +275,9 @@ public class EditActivity extends Activity implements View.OnClickListener, View
             case R.id.SaveButton:
             {
                 parseBitmapAndSave();
+                String message = String.valueOf(text.getText());
                 Intent intent = new Intent(this, SocialActivity.class);
+                intent.putExtra("TEXT", message);
                 startActivity(intent);
                 finish();
             }
@@ -490,14 +492,6 @@ public class EditActivity extends Activity implements View.OnClickListener, View
                newImage.setOnTouchListener(this);
                images.add(newImage);
                layout.addView(newImage);
-
-               /*FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) newImage.getLayoutParams();
-               layoutParams.leftMargin =  (windowwidth - newImage.getWidth()) / 2;
-               layoutParams.topMargin =  (windowheight - newImage.getHeight())/2;
-
-               newImage.setLayoutParams(layoutParams);*/
-
-
             }
             break;
         }
@@ -544,9 +538,11 @@ public class EditActivity extends Activity implements View.OnClickListener, View
 
              // "RECREATE" THE NEW BITMAP
             Bitmap resizedBitmap = Bitmap.createScaledBitmap(
-                    curBitmap, (int)(curBitmap.getWidth() * scaleFactorX), (int)(curBitmap.getHeight() * scaleFactorY), false);
+                    curBitmap, (int)(curBitmap.getWidth() * scaleFactorX * curImage.getScaleX()),
+                    (int)(curBitmap.getHeight() * scaleFactorY *  curImage.getScaleY()), false);
 
-            canvas.drawBitmap(resizedBitmap, layoutParams.leftMargin * scaleFactorX, layoutParams.topMargin * scaleFactorY, null);
+            canvas.drawBitmap(resizedBitmap, layoutParams.leftMargin * scaleFactorX + (int)(curBitmap.getWidth() * (1 - curImage.getScaleX())),
+                    layoutParams.topMargin * scaleFactorY + (int)(curBitmap.getWidth() * (1 - curImage.getScaleX())), null);
         }
 
 
@@ -638,29 +634,31 @@ public class EditActivity extends Activity implements View.OnClickListener, View
                         int y = (int)event.getY();
                         int x_cord = (int) event.getRawX() - dragX;
                         int y_cord = (int) event.getRawY() - dragY;
+                        float imageScaleX = v.getScaleX();
+                        //float imageScaleY = v.getScaleY();
 
 
-
-                        if (x_cord > windowwidth - v.getWidth()) {
-                            x_cord = windowwidth - v.getWidth();
+                        if (x_cord > windowwidth - v.getWidth() * imageScaleX)
+                        {
+                            x_cord = (int)(windowwidth - v.getWidth() * imageScaleX);
                         }
 
-                        if (x_cord < 0) {
+                        /*if (x_cord < 0) {
                             x_cord = 0;
-                        }
+                        }*/
 
                         if (y_cord > windowheight - v.getHeight()) {
                             y_cord = windowheight - v.getHeight();
                         }
 
-                        if (y_cord < 0) {
+                       /* if (y_cord < 0) {
                             y_cord = 0;
-                        }
+                        }*/
 
                         layoutParams.leftMargin = x_cord;
                         if (event.getRawY() > windowheight * 0.8)
                         {
-                            layoutParams.topMargin = y_cord + 200;
+                            layoutParams.topMargin = y_cord + 400;
                         }
                         else
                         {

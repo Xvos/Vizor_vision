@@ -1,51 +1,124 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout android:id="@+id/SocialLayout"
              android:layout_width="fill_parent" android:layout_height="fill_parent"
-             xmlns:android="http://schemas.android.com/apk/res/android">
-
-    <SurfaceView
-        android:layout_width="match_parent"
-        android:layout_height="571dp"
-        android:id="@+id/PostBackground"
-        android:layout_gravity="left|top" />
+             xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@drawable/post_bg">
 
     <ImageView
-        android:layout_width="239dp"
-        android:layout_height="239dp"
+        android:layout_width="244dp"
+        android:layout_height="244dp"
         android:id="@+id/PostImageView"
         android:layout_gravity="center_horizontal|top" />
 
+    <CheckBox
+        android:layout_width="69dp"
+        android:layout_height="91dp"
+        android:id="@+id/socialButton2"
+        android:layout_gravity="left|bottom"
+        android:layout_marginBottom="73dp"
+        android:background="@drawable/chekbox" />
+
+    <CheckBox
+        android:layout_width="69dp"
+        android:layout_height="91dp"
+        android:id="@+id/socialButton1"
+        android:layout_gravity="left|bottom"
+        android:singleLine="false"
+        android:checked="false"
+        android:layout_marginBottom="116dp"
+        android:background="@drawable/chekbox" />
+
+    <CheckBox
+        android:layout_width="69dp"
+        android:layout_height="91dp"
+        android:id="@+id/socialButton3"
+        android:layout_gravity="center_horizontal|bottom"
+        android:layout_marginBottom="116dp"
+        android:background="@drawable/chekbox" />
+
+    <CheckBox
+        android:layout_width="69dp"
+        android:layout_height="91dp"
+        android:id="@+id/socialButton4"
+        android:layout_gravity="center_horizontal|bottom"
+        android:layout_marginBottom="73dp"
+        android:background="@drawable/chekbox" />
+
     <Button
-        android:layout_width="120dp"
-        android:layout_height="120dp"
+        android:layout_width="95dp"
+        android:layout_height="95dp"
         android:id="@+id/PostButton"
         android:layout_gravity="center_horizontal|bottom"
-        android:background="@drawable/post" />
+        android:background="@drawable/post"
+        android:layout_marginBottom="15dp" />
 
-    <CheckBox
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="Social1"
-        android:id="@+id/socialButton1"
-        android:layout_gravity="left|center_vertical"
-        android:singleLine="false"
-        android:checked="false" />
+    <EditText
+        android:layout_width="290dp"
+        android:layout_height="55dp"
+        android:id="@+id/PostText"
+        android:layout_gravity="center"
+        android:background="@drawable/text_bg_cencer"
+        android:layout_marginTop="10dp" />
 
-    <CheckBox
-        android:layout_width="fill_parent"
+    <TextView
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Social2"
-        android:id="@+id/socialButton2"
-        android:layout_gravity="left|center_vertical"
-        android:layout_marginTop="40dp" />
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="VKONTAKTE"
+        android:id="@+id/textView4"
+        android:layout_gravity="center_horizontal|bottom"
+        android:textColor="#000000"
+        android:textStyle="bold"
+        android:layout_marginRight="65dp"
+        android:layout_marginBottom="140dp" />
 
-    <CheckBox
-        android:layout_width="fill_parent"
+    <TextView
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Social3"
-        android:id="@+id/socialButton3"
-        android:layout_gravity="left|center_vertical"
-        android:layout_marginTop="80dp" />
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="FACEBOOK"
+        android:id="@+id/textView"
+        android:layout_gravity="center_horizontal|bottom"
+        android:textColor="#000000"
+        android:textStyle="bold"
+        android:layout_marginRight="70dp"
+        android:layout_marginBottom="184dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="FACEBOOK"
+        android:id="@+id/textView2"
+        android:layout_gravity="center_horizontal|bottom"
+        android:textColor="#000000"
+        android:textStyle="bold"
+        android:layout_marginRight="70dp"
+        android:layout_marginBottom="184dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="TELEGRAM"
+        android:id="@+id/textView3"
+        android:layout_gravity="right|bottom"
+        android:textColor="#000000"
+        android:textStyle="bold"
+        android:layout_marginRight="60dp"
+        android:layout_marginBottom="184dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="INSTAGRAM"
+        android:id="@+id/textView5"
+        android:layout_gravity="right|bottom"
+        android:textColor="#000000"
+        android:textStyle="bold"
+        android:layout_marginRight="48dp"
+        android:layout_marginBottom="140dp" />
 
 
 </FrameLayout>

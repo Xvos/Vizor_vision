@@ -18,6 +18,9 @@ public class SaveController
 {
     public static byte[] originalPicture;
 
+    public static byte[] lastSavedPicture;
+
+
     public static void savePicture(byte[] imageByteArray)
     {
         // сохраняем полученные jpg в папке /sdcard/CameraExample/
@@ -40,6 +43,8 @@ public class SaveController
 
             os.write(byteArray);
             os.close();
+
+            lastSavedPicture = byteArray;
         }
 
         catch (Exception e)
