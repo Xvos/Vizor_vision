@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.Window;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -24,6 +25,7 @@ public class SocialActivity extends Activity implements View.OnClickListener{
     private ImageView image;
     private EditText editText;
     private CheckBox checkBoxFaceBook, checkBoxVK, checkBoxInstagram, checkBoxTelegram;
+    private Button postButton;
 
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -60,6 +62,9 @@ public class SocialActivity extends Activity implements View.OnClickListener{
         checkBoxTelegram.setOnClickListener(this);
         checkBoxInstagram.setOnClickListener(this);
 
+        postButton = (Button) findViewById(R.id.PostButton);
+        postButton.setBackgroundResource(R.drawable.post_button);
+
     }
 
     @Override
@@ -75,6 +80,12 @@ public class SocialActivity extends Activity implements View.OnClickListener{
                 break;
             case R.id.socialButton3:
                 Log.d("TAG", "SocialNet 3");
+                break;
+            case R.id.socialButton4:
+                Log.d("TAG", "SocialNet 4");
+                break;
+            case R.id.PostButton:
+                //Post stuff here
                 break;
         }
     }
