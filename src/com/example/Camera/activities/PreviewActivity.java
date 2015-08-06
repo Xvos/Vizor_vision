@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 
 import com.example.Camera.R;
+import com.example.Camera.control.SaveController;
 
 
 /**
@@ -36,29 +37,21 @@ public class PreviewActivity extends Activity implements View.OnClickListener
         setContentView(R.layout.preview);
 
         Intent intent = getIntent();
-        pictureByteArray = intent.getByteArrayExtra(CameraActivity.PICTURE);
-        bitmap = BitmapFactory.decodeByteArray(intent.getByteArrayExtra(CameraActivity.PICTURE), 0, intent.getByteArrayExtra(CameraActivity.PICTURE).length);
-
-        Matrix matrix = new Matrix();
-
-        matrix.postScale(1, 1);
-        matrix.postRotate(270);
-
-        Bitmap bitmapToSave = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
+        pictureByteArray = SaveController.originalPicture;//intent.getByteArrayExtra(CameraActivity.PICTURE);
+        bitmap = BitmapFactory.decodeByteArray(pictureByteArray, 0, pictureByteArray.length);
 
         bitmapView = (SurfaceView) findViewById(R.id.BitmapView);
 
         image = (ImageView) findViewById(R.id.imageView1);
-        image.setImageBitmap(bitmapToSave);
+        image.setImageBitmap(bitmap);
 
         okButton = (Button) findViewById(R.id.OKButton);
-        okButton.setText("OK");
         okButton.setOnClickListener(this);
+        okButton.setBackgroundResource(R.drawable.ok_button);
 
         cancelButton = (Button) findViewById(R.id.CancelButton);
+        cancelButton.setBackgroundResource(R.drawable.close_button);
         cancelButton.setOnClickListener(this);
-        cancelButton.setText("X");
-        cancelButton.setX(200);
     }
 
     @Override
@@ -72,8 +65,7 @@ public class PreviewActivity extends Activity implements View.OnClickListener
         else if(v == okButton)
         {
             Intent intent = new Intent(this, EditActivity.class);
-            intent.putExtra(CameraActivity.PICTURE, pictureByteArray);
-            startActivity(intent);
+             startActivity(intent);
         }
     }
 

@@ -3,19 +3,24 @@ package com.example.Camera.activities;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Configuration;
+
 import android.hardware.Camera;
 import android.os.Bundle;
+
 import android.view.*;
 import android.widget.Button;
 import android.view.ViewGroup.LayoutParams;
 
+
 import com.example.Camera.R;
+import com.example.Camera.control.SaveController;
 
 import java.io.IOException;
 import java.util.List;
 
 
-public class CameraActivity extends Activity implements SurfaceHolder.Callback, View.OnClickListener, Camera.PictureCallback, Camera.PreviewCallback, Camera.AutoFocusCallback
+public class CameraActivity extends Activity implements SurfaceHolder.Callback, View.OnClickListener,
+        Camera.PictureCallback, Camera.PreviewCallback, Camera.AutoFocusCallback
 {
     /**
      * ID параметра изображения
@@ -31,7 +36,7 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
     Camera.Parameters.FLASH_MODE_AUTO, Camera.Parameters.FLASH_MODE_OFF, Camera.Parameters.FLASH_MODE_ON};
 
     //В дальнейшем перейдем на иконки, ну а пока будут теста
-    private String[] _flashButtonNames = {"Flash AUTO", "Flash OFF", "Flash ON"};
+    private int[] _flashButtonRes = {R.drawable.flash_auto_button, R.drawable.flash_dis_button, R.drawable.flash_button};
 
     private int _curFlashType = 0;
 
@@ -56,20 +61,22 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
         _surfaceHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
 
         // Кнопка съемки
-        _shotBtn = (Button) findViewById(R.id.Button01);
-        _shotBtn.setText("Shot");
-        _shotBtn.setOnClickListener(this);
+        _shotBtn = (Button) findViewById(R.id.PhotoButton);
+         _shotBtn.setOnClickListener(this);
+        _shotBtn.setBackgroundResource(R.drawable.photo_button);
+
 
         _switchButton = (Button) findViewById(R.id.ButtonCameraSwitch);
         _switchButton.setOnClickListener(this);
-        _switchButton.setText("Switch");
+        _switchButton.setBackgroundResource(R.drawable.camera_change_button);
+
         _uploadButton = (Button) findViewById(R.id.UploadButton);
         _uploadButton.setOnClickListener(this);
-        _uploadButton.setText("Upload");
+        _uploadButton.setBackgroundResource(R.drawable.open_button);
 
         _flashLightButton= (Button) findViewById(R.id.FlashlightButton);
         _flashLightButton.setOnClickListener(this);
-        _flashLightButton.setText(_flashButtonNames[_curFlashType]);
+        _flashLightButton.setBackgroundResource(_flashButtonRes[_curFlashType]);
     }
 
  /*   @Override
@@ -101,27 +108,65 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
     }*/
 
     @Override
-    public void surfaceChanged(SurfaceHolder holder, int format, int width, int height)
-    {
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
     }
 
     @Override
     public void surfaceCreated(SurfaceHolder holder)
     {
+        if(_camera != null)
+        {
+            stopCamera();
+        }
+
         _camera = Camera.open();
         Camera.Parameters params = _camera.getParameters();
         params.setFlashMode(_flashTypes[_curFlashType]);
         params.setFocusMode(Camera.Parameters.FOCUS_MODE_AUTO);
+        params.setSceneMode(Camera.Parameters.SCENE_MODE_AUTO);
         List<Camera.Size> sizes = params.getSupportedPictureSizes();
         params.setPictureSize(sizes.get(0).width,  sizes.get(0).height);
 
         _camera.setParameters(params);
+        setCameraRotation();
         setCameraHolder(holder);
+    }
+
+    @Override
+    public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
+
+    }
+
+    private void setCameraRotation()
+    {
+        Camera.Parameters params = _camera.getParameters();
+        Camera.CameraInfo info = new Camera.CameraInfo();
+        if(_frontCameraSelected == true) {
+            Camera.getCameraInfo(Camera.CameraInfo.CAMERA_FACING_FRONT, info);
+        }
+        else {
+            Camera.getCameraInfo(Camera.CameraInfo.CAMERA_FACING_BACK, info);
+        }
+        int rotation = this.getWindowManager().getDefaultDisplay().getRotation();
+        int degrees = 0;
+        switch (rotation) {
+            case Surface.ROTATION_0: degrees = 0; break; //Natural orientation
+            case Surface.ROTATION_90: degrees = 90; break; //Landscape left
+            case Surface.ROTATION_180: degrees = 180; break;//Upside down
+            case Surface.ROTATION_270: degrees = 270; break;//Landscape right
+        }
+        int rotate = (info.orientation - degrees + 360) % 360;
+
+        params.setRotation(rotate);
+
+        _camera.setParameters(params);
     }
 
     @Override
     public void surfaceDestroyed(SurfaceHolder holder)
     {
+        stopCamera();
     }
 
     @Override
@@ -132,8 +177,15 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
             // либо делаем снимок непосредственно здесь
             // 	либо включаем обработчик автофокуса
 
-            _camera.autoFocus(this);
-            _camera.takePicture(null, null, null, this);
+            if(_frontCameraSelected)
+            {
+                _camera.takePicture(null, null, null, this);
+            }
+            else
+            {
+                _camera.autoFocus(this);
+            }
+            //_camera.takePicture(null, null, null, this);
         }
         else if(v == _flashLightButton)
         {
@@ -150,7 +202,7 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
 
             params.setFlashMode(_flashTypes[_curFlashType]);
             _camera.setParameters(params);
-            _flashLightButton.setText(_flashButtonNames[_curFlashType]);
+            _flashLightButton.setBackgroundResource(_flashButtonRes[_curFlashType]);
         }
         else if(v == _switchButton)
         {
@@ -172,8 +224,8 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
                 List<Camera.Size> sizes = params.getSupportedPictureSizes();
                 params.setPictureSize(sizes.get(0).width,  sizes.get(0).height);
                 _camera.setParameters(params);
-
                 _frontCameraSelected = !_frontCameraSelected;
+                setCameraRotation();
                 setCameraHolder(_surfaceHolder);
             }
 
@@ -190,9 +242,13 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
     {
         try {
             Intent intent = new Intent(this, PreviewActivity.class);
-            intent.putExtra(PICTURE, paramArrayOfByte);
+            //intent.putExtra(PICTURE, paramArrayOfByte);
+            SaveController.originalPicture = paramArrayOfByte;
             startActivity(intent);
             stopCamera();
+
+
+            //SaveController.postOnTelegram(this, paramArrayOfByte, "Test");
             finish();
         }
         catch (Exception e)
@@ -210,7 +266,7 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
     @Override
     public boolean onTouchEvent(MotionEvent event)
     {
-        _camera.autoFocus(this);
+        //_camera.autoFocus(this);
         return super.onTouchEvent(event);
     }
 
@@ -220,7 +276,7 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
         if (paramBoolean)
         {
             // если удалось сфокусироваться, делаем снимок
-            //paramCamera.takePicture(null, null, null, this);
+            paramCamera.takePicture(null, null, null, this);
         }
     }
 
@@ -260,6 +316,8 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
         LayoutParams lp = _preview.getLayoutParams();
 
         // здесь корректируем размер отображаемого preview, чтобы не было искажений
+
+
         if (this.getResources().getConfiguration().orientation != Configuration.ORIENTATION_LANDSCAPE)
         {
             // портретный вид
@@ -281,9 +339,12 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
 
     private void stopCamera()
     {
-        _camera.setPreviewCallback(null);
-        _camera.stopPreview();
-        _camera.release();
-        _camera = null;
+        if(_camera != null)
+        {
+            _camera.setPreviewCallback(null);
+            _camera.stopPreview();
+            _camera.release();
+            _camera = null;
+        }
     }
 }

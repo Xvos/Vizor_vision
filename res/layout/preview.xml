@@ -15,16 +15,19 @@
 
     <Button android:text=""
             android:id="@+id/OKButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal|bottom">
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+        android:layout_gravity="center_horizontal|bottom"
+        android:background="@drawable/ok">
     </Button>
 
     <Button
         android:id="@+id/CancelButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-        android:layout_gravity="left|bottom">
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+        android:layout_gravity="left|bottom"
+        android:background="@drawable/close"
+        android:focusable="false">
     </Button>
 
 </FrameLayout>

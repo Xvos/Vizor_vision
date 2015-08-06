@@ -6,31 +6,39 @@
                  android:layout_width="wrap_content" android:layout_height="wrap_content">
     </SurfaceView>
 
-    <Button android:text="@+id/Button01"
-            android:id="@+id/Button01"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal|bottom">
+    <Button
+        android:id="@+id/PhotoButton"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+        android:layout_gravity="center_horizontal|bottom"
+        android:background="@drawable/photo">
     </Button>
 
-    <Button android:text="@+id/UploadButton"
-            android:id="@+id/UploadButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-        android:layout_gravity="left|bottom">
+    <Button
+        android:id="@+id/UploadButton"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+        android:layout_gravity="left|bottom"
+        android:background="@drawable/open"
+        android:layout_marginLeft="50dp">
     </Button>
 
     <Button android:id="@+id/FlashlightButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-        android:layout_gravity="right|top">
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+        android:layout_gravity="right|top"
+        android:background="@drawable/flash"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="10dp">
     </Button>
 
-    <Button android:text="@+id/ButtonCameraSwitch"
-            android:id="@+id/ButtonCameraSwitch"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-        android:layout_gravity="right|bottom">
+    <Button
+        android:id="@+id/ButtonCameraSwitch"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+        android:layout_gravity="right|bottom"
+        android:background="@drawable/camera_change"
+        android:layout_marginRight="50dp">
     </Button>
 
 </FrameLayout>
