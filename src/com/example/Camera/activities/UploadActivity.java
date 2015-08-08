@@ -20,6 +20,7 @@ import android.widget.*;
 import com.example.Camera.R;
 import com.example.Camera.control.GalleryAdapter;
 import com.example.Camera.control.Params;
+import com.example.Camera.control.SaveController;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -52,12 +53,10 @@ public class UploadActivity extends Activity implements AdapterView.OnItemClickL
 
         gridView = (GridView) findViewById(R.id.gridView);
 
-
-
         // Set up an array of the Thumbnail Image ID column we want
         String[] projection = {MediaStore.Images.Thumbnails._ID};
         // Create the cursor pointing to the SDCard
-        cursor = managedQuery( MediaStore.Images.Thumbnails.EXTERNAL_CONTENT_URI,
+        cursor = managedQuery( MediaStore.Images.Thumbnails.INTERNAL_CONTENT_URI,
                 projection, // Which columns to return
                 null,       // Return all rows
                 null,
@@ -68,7 +67,7 @@ public class UploadActivity extends Activity implements AdapterView.OnItemClickL
         adapter = new GalleryAdapter(this);
         gridView.setAdapter(new ImageAdapter(this));
 
-      /*  String ExternalStorageDirectoryPath = Environment
+       /*String ExternalStorageDirectoryPath = Environment
                 .getExternalStorageDirectory()
                 .getAbsolutePath();
 
@@ -101,11 +100,6 @@ public class UploadActivity extends Activity implements AdapterView.OnItemClickL
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id)
     {
-       /* ImageView item = (ImageView)view;//(ImageView) parent.getItemAtPosition(position);
-        Drawable itemDrawable= item.getDrawable();
-        Bitmap bmp = ((BitmapDrawable)itemDrawable).getBitmap();
-        ;*/
-
         // Get the data location of the image
         String[] projection = {MediaStore.Images.Media.DATA};
         cursor = managedQuery( MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
@@ -124,7 +118,7 @@ public class UploadActivity extends Activity implements AdapterView.OnItemClickL
 
         //Create intent
         Intent intent = new Intent(this, PreviewActivity.class);
-        intent.putExtra("PICTURE", convertBitmapToByteArray(bmp));
+        SaveController.originalPicture = convertBitmapToByteArray(bmp);
         startActivity(intent);
         finish();
     }
@@ -176,12 +170,13 @@ public class UploadActivity extends Activity implements AdapterView.OnItemClickL
                 // Get the current value for the requested column
                 int imageID = cursor.getInt(columnIndex);
                 Uri uri = Uri.withAppendedPath(
-                        MediaStore.Images.Thumbnails.EXTERNAL_CONTENT_URI, "" + imageID);
+                        MediaStore.Images.Thumbnails.INTERNAL_CONTENT_URI, "" + imageID);
                 // Set the content of the image based on the provided URI
                 picturesView.setImageURI(uri);
-                picturesView.setScaleType(ImageView.ScaleType.FIT_CENTER);
+                picturesView.setScaleType(ImageView.ScaleType.FIT_XY);
                 picturesView.setPadding(8, 8, 8, 8);
-                //picturesView.setLayoutParams(new GridView.LayoutParams(100, 100));
+                picturesView.setLayoutParams(new GridView.LayoutParams(getWindowManager().getDefaultDisplay().getWidth() / 3,
+                        getWindowManager().getDefaultDisplay().getWidth() / 3));
             }
             else {
                 picturesView = (ImageView)convertView;

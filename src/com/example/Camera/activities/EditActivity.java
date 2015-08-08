@@ -26,6 +26,7 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
+import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.example.Camera.R;
@@ -40,8 +41,8 @@ import java.util.Map;
 /**
  * Created by user on 28.06.2015.
  */
-public class EditActivity extends Activity implements View.OnClickListener, View.OnTouchListener, TextView.OnEditorActionListener
-{
+public class EditActivity extends Activity implements View.OnClickListener, View.OnTouchListener, TextView.OnEditorActionListener,
+        SeekBar.OnSeekBarChangeListener {
 
     static final int NONE = 0;
     static final int ZOOM = 1;
@@ -68,6 +69,8 @@ public class EditActivity extends Activity implements View.OnClickListener, View
     private ArrayList<ImageView> images = new ArrayList<ImageView>();
     private ScaleGestureDetector mScaleDetector;
     private int dragX, dragY;
+    private SeekBar bar;
+    private ArrayList<Bitmap> imageContents = new ArrayList<Bitmap>();
 
     int mode = NONE;
     float oldDist = 1f;
@@ -76,8 +79,7 @@ public class EditActivity extends Activity implements View.OnClickListener, View
 
 
     @Override
-    public void onCreate(Bundle savedInstanceState)
-    {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.edit);
@@ -86,12 +88,12 @@ public class EditActivity extends Activity implements View.OnClickListener, View
         windowheight = getWindowManager().getDefaultDisplay().getHeight();
 
         Intent intent = getIntent();
-        pictureByteArray =  SaveController.originalPicture;
+        pictureByteArray = SaveController.originalPicture;
         bitmap = BitmapFactory.decodeByteArray(pictureByteArray, 0, pictureByteArray.length);
 
         Bitmap bitmapToSave = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), null, true);
 
-        originalBitmap  = bitmapToSave.copy(bitmapToSave.getConfig(), true);
+        originalBitmap = bitmapToSave.copy(bitmapToSave.getConfig(), true);
 
         image = (ImageView) findViewById(R.id.editImage);
         image.setImageBitmap(bitmapToSave);
@@ -107,18 +109,21 @@ public class EditActivity extends Activity implements View.OnClickListener, View
         textButton = (Button) findViewById(R.id.AddText);
         cropButton = (Button) findViewById(R.id.CropButton);
         filtersButton = (Button) findViewById(R.id.FiltersButton);
-        grayScaleButton  = (Button) findViewById(R.id.grayScaleButton);
+        grayScaleButton = (Button) findViewById(R.id.grayScaleButton);
         clearFilerButton = (Button) findViewById(R.id.noFilterButton);
         imagesButton = (Button) findViewById(R.id.imagesButton);
 
         //Edit Text
         text = (EditText) findViewById(R.id.editText);
         FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) text.getLayoutParams();
-        layoutParams.topMargin = windowheight * 4/5;
+        layoutParams.topMargin = windowheight * 4 / 5;
         text.setLayoutParams(layoutParams);
         text.setVisibility(View.INVISIBLE);
         text.setTextColor(Color.WHITE);
         text.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+
+        bar = (SeekBar) findViewById(R.id.seekBar);
+        bar.setOnSeekBarChangeListener(this);
 
         //Image Buttons
         //TODO : Такая инициализация переменных напоминает говно. ПЕРЕДЕЛАТЬ!!
@@ -255,10 +260,12 @@ public class EditActivity extends Activity implements View.OnClickListener, View
             @Override
             public void onScaleEnd(ScaleGestureDetector detector) {
             }
+
             @Override
             public boolean onScaleBegin(ScaleGestureDetector detector) {
                 return true;
             }
+
             @Override
             public boolean onScale(ScaleGestureDetector detector) {
                 Log.d("TAG", "zoom ongoing, scale: " + detector.getScaleFactor());
@@ -267,13 +274,11 @@ public class EditActivity extends Activity implements View.OnClickListener, View
         });
     }
 
+
     @Override
-    public void onClick(View v)
-    {
-        switch (v.getId())
-        {
-            case R.id.SaveButton:
-            {
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.SaveButton: {
                 parseBitmapAndSave();
                 String message = String.valueOf(text.getText());
                 Intent intent = new Intent(this, SocialActivity.class);
@@ -282,8 +287,7 @@ public class EditActivity extends Activity implements View.OnClickListener, View
                 finish();
             }
             break;
-            case R.id.FaceDetectButton:
-            {
+            case R.id.FaceDetectButton: {
                /* int i = 0;
                 Bitmap bitmap = BitmapFactory.decodeByteArray(pictureByteArray, 0, pictureByteArray.length);
                 FrameLayout layout = (FrameLayout)findViewById(R.id.GalleryLayout);
@@ -321,44 +325,36 @@ public class EditActivity extends Activity implements View.OnClickListener, View
 
             }
             break;
-            case R.id.CropButton:
-            {
+            case R.id.CropButton: {
                 //CropFilter
 
             }
             break;
-            case  R.id.AddText:
-            {
+            case R.id.AddText: {
                 text.setVisibility(View.VISIBLE);
                 text.setText("#Vizor8");
                 text.setOnEditorActionListener(this);
             }
             break;
-            case R.id.FiltersButton:
-            {
+            case R.id.FiltersButton: {
                 Float buttonScrollYTo, filterScrollYTo, imageScrollYTo;
-                if(_isImagesSelected)
-                {
+                if (_isImagesSelected) {
                     imageScrollYTo = imageList.getY() + filterList.getHeight() * 2;
-                    ObjectAnimator imageScrollAnimator= ObjectAnimator.ofFloat(imageList, "translationY",
+                    ObjectAnimator imageScrollAnimator = ObjectAnimator.ofFloat(imageList, "translationY",
                             imageList.getY(), imageScrollYTo);
                     imageScrollAnimator.setDuration(500);
                     imageScrollAnimator.start();
                 }
 
-                if(_isFiltersSelected)
-                {
+                if (_isFiltersSelected) {
                     buttonScrollYTo = buttonScroll.getY() + filterList.getHeight();
                     filterScrollYTo = buttonScroll.getY() + filterList.getHeight();
-                }
-                else
-                {
+                } else {
                     buttonScrollYTo = buttonScroll.getY() - filterList.getHeight();
                     filterScrollYTo = buttonScroll.getY() - filterList.getHeight();
                 }
 
-                if(!_isImagesSelected)
-                {
+                if (!_isImagesSelected) {
                     ObjectAnimator buttonScrollAnimator = ObjectAnimator.ofFloat(buttonScroll, "translationY",
                             buttonScroll.getY(), buttonScrollYTo);
                     buttonScrollAnimator.setDuration(500);
@@ -375,33 +371,27 @@ public class EditActivity extends Activity implements View.OnClickListener, View
 
             }
             break;
-            case R.id.imagesButton:
-            {
+            case R.id.imagesButton: {
                 Float buttonScrollYTo, filterScrollYTo, imageScrollYTo;
 
-                if(_isFiltersSelected)
-                {
+                if (_isFiltersSelected) {
                     filterScrollYTo = buttonScroll.getY() + filterList.getHeight();
-                    ObjectAnimator filterListAnimator= ObjectAnimator.ofFloat(filterList, "translationY",
+                    ObjectAnimator filterListAnimator = ObjectAnimator.ofFloat(filterList, "translationY",
                             buttonScroll.getY(), filterScrollYTo);
                     filterListAnimator.setDuration(500);
                     filterListAnimator.start();
                 }
 
-                if(_isImagesSelected)
-                {
+                if (_isImagesSelected) {
                     buttonScrollYTo = buttonScroll.getY() + filterList.getHeight();
                     imageScrollYTo = buttonScroll.getY() + filterList.getHeight() * 2;
-                }
-                else
-                {
+                } else {
                     buttonScrollYTo = buttonScroll.getY() - filterList.getHeight();
                     imageScrollYTo = buttonScroll.getY() - filterList.getHeight() * 2;
                 }
 
 
-                if(!_isFiltersSelected)
-                {
+                if (!_isFiltersSelected) {
                     ObjectAnimator buttonScrollAnimator = ObjectAnimator.ofFloat(buttonScroll, "translationY",
                             buttonScroll.getY(), buttonScrollYTo);
                     buttonScrollAnimator.setDuration(500);
@@ -422,20 +412,18 @@ public class EditActivity extends Activity implements View.OnClickListener, View
             ////////////////////////////
             // Filters
             ///////////////////////////
-            case  R.id.noFilterButton:
-            {
+            case R.id.noFilterButton: {
                 Bitmap bmp = originalBitmap.copy(originalBitmap.getConfig(), true);
                 image.setImageBitmap(bmp);
                 bitmap = bmp;
             }
             break;
 
-            case  R.id.grayScaleButton:
-            {
+            case R.id.grayScaleButton: {
                 SimpleGrayscaleFilter grayscaleFilter = new SimpleGrayscaleFilter();
                 Bitmap bmp;
 
-                bmp  = originalBitmap.copy(originalBitmap.getConfig(), true);
+                bmp = originalBitmap.copy(originalBitmap.getConfig(), true);
                 grayscaleFilter.process(originalBitmap, bmp);
                 image.setImageBitmap(bmp);
                 bitmap = bmp;
@@ -445,53 +433,52 @@ public class EditActivity extends Activity implements View.OnClickListener, View
             ////////////////////////////
             // Images
             ///////////////////////////
-            case  R.id.image1Button:
-            case  R.id.image2Button:
-            case  R.id.image3Button:
-            case  R.id.image4Button:
-            case  R.id.image5Button:
-            case  R.id.image6Button:
-            case  R.id.image7Button:
-            case  R.id.image8Button:
-            case  R.id.image9Button:
-            case  R.id.image10Button:
-            case  R.id.image11Button:
-            case  R.id.image12Button:
-            case  R.id.image13Button:
-            case  R.id.image14Button:
-            case  R.id.image15Button:
-            case  R.id.image16Button:
-            case  R.id.image17Button:
-            case  R.id.image18Button:
-            case  R.id.image19Button:
-            case  R.id.image20Button:
-            case  R.id.image21Button:
-            case  R.id.image22Button:
-            case  R.id.image23Button:
-            case  R.id.image24Button:
-            case  R.id.image25Button:
-            case  R.id.image26Button:
-            case  R.id.image27Button:
-            case  R.id.image28Button:
-            case  R.id.image29Button:
-            case  R.id.image30Button:
-            case  R.id.image31Button:
-            case  R.id.image32Button:
-            case  R.id.image33Button:
-            case  R.id.image34Button:
-            case  R.id.image35Button:
-            case  R.id.image36Button:
-            case  R.id.image37Button:
-            {
-               ImageView newImage = new ImageView(this);
-               newImage.setImageResource(imageMap.get(v.getId()));
-               newImage.setLayoutParams(new FrameLayout.LayoutParams(
-                       FrameLayout.LayoutParams.WRAP_CONTENT,
-                       FrameLayout.LayoutParams.WRAP_CONTENT));
-               FrameLayout layout = (FrameLayout)findViewById(R.id.GalleryLayout);
-               newImage.setOnTouchListener(this);
-               images.add(newImage);
-               layout.addView(newImage);
+            case R.id.image1Button:
+            case R.id.image2Button:
+            case R.id.image3Button:
+            case R.id.image4Button:
+            case R.id.image5Button:
+            case R.id.image6Button:
+            case R.id.image7Button:
+            case R.id.image8Button:
+            case R.id.image9Button:
+            case R.id.image10Button:
+            case R.id.image11Button:
+            case R.id.image12Button:
+            case R.id.image13Button:
+            case R.id.image14Button:
+            case R.id.image15Button:
+            case R.id.image16Button:
+            case R.id.image17Button:
+            case R.id.image18Button:
+            case R.id.image19Button:
+            case R.id.image20Button:
+            case R.id.image21Button:
+            case R.id.image22Button:
+            case R.id.image23Button:
+            case R.id.image24Button:
+            case R.id.image25Button:
+            case R.id.image26Button:
+            case R.id.image27Button:
+            case R.id.image28Button:
+            case R.id.image29Button:
+            case R.id.image30Button:
+            case R.id.image31Button:
+            case R.id.image32Button:
+            case R.id.image33Button:
+            case R.id.image34Button:
+            case R.id.image35Button:
+            case R.id.image36Button:
+            case R.id.image37Button: {
+                ImageView newImage = new ImageView(this);
+                newImage.setImageResource(imageMap.get(v.getId()));
+                newImage.setLayoutParams(new FrameLayout.LayoutParams(
+                        FrameLayout.LayoutParams.WRAP_CONTENT,
+                        FrameLayout.LayoutParams.WRAP_CONTENT));
+                FrameLayout layout = (FrameLayout) findViewById(R.id.GalleryLayout);
+                newImage.setOnTouchListener(this);
+                images.add(newImage);
+                layout.addView(newImage);
             }
             break;
         }
@@ -503,20 +490,17 @@ public class EditActivity extends Activity implements View.OnClickListener, View
     /////////////////////////////////
 
     @Override
-    public void onBackPressed()
-    {
+    public void onBackPressed() {
         Intent intent = new Intent(this, CameraActivity.class);
         startActivity(intent);
         finish();
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data)
-    {
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
     }
 
-    private void parseBitmapAndSave()
-    {
+    private void parseBitmapAndSave() {
         Bitmap drawableBitmap = bitmap.copy(Bitmap.Config.ARGB_8888, true);
         Canvas canvas = new Canvas(drawableBitmap);
 
@@ -529,26 +513,24 @@ public class EditActivity extends Activity implements View.OnClickListener, View
         FrameLayout.LayoutParams layoutParams;
         ImageView curImage;
 
-        for(int i = 0; i < images.size(); i++)
-        {
+        for (int i = 0; i < images.size(); i++) {
             curImage = images.get(i);
             layoutParams = (FrameLayout.LayoutParams) curImage.getLayoutParams();
             curImage.buildDrawingCache();
             Bitmap curBitmap = curImage.getDrawingCache();
 
-             // "RECREATE" THE NEW BITMAP
+            // "RECREATE" THE NEW BITMAP
             Bitmap resizedBitmap = Bitmap.createScaledBitmap(
-                    curBitmap, (int)(curBitmap.getWidth() * scaleFactorX * curImage.getScaleX()),
-                    (int)(curBitmap.getHeight() * scaleFactorY *  curImage.getScaleY()), false);
+                    curBitmap, (int) (curBitmap.getWidth() * scaleFactorX * curImage.getScaleX()),
+                    (int) (curBitmap.getHeight() * scaleFactorY * curImage.getScaleY()), false);
 
-            canvas.drawBitmap(resizedBitmap, layoutParams.leftMargin * scaleFactorX + (int)(curBitmap.getWidth() * (1 - curImage.getScaleX())),
-                    layoutParams.topMargin * scaleFactorY + (int)(curBitmap.getWidth() * (1 - curImage.getScaleX())), null);
+            canvas.drawBitmap(resizedBitmap, layoutParams.leftMargin * scaleFactorX + (int) (curBitmap.getWidth() * (1 - curImage.getScaleX())),
+                    layoutParams.topMargin * scaleFactorY + (int) (curBitmap.getWidth() * (1 - curImage.getScaleX())), null);
         }
 
 
         //Adding Text
-        if(text.getVisibility() == View.VISIBLE)
-        {
+        if (text.getVisibility() == View.VISIBLE) {
             Paint paint = new Paint();
             paint.setColor(Color.WHITE);
             paint.setTextAlign(Paint.Align.CENTER);
@@ -563,84 +545,70 @@ public class EditActivity extends Activity implements View.OnClickListener, View
         SaveController.savePicture(byteArray);
     }
 
-   /////////////////////////////////
+    /////////////////////////////////
     // Touch Stuff
     /////////////////////////////////
 
     @Override
-    public boolean onTouch(View v, MotionEvent event)
-    {
+    public boolean onTouch(View v, MotionEvent event) {
         boolean eventConsumed = true;
         FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) v.getLayoutParams();
 
 
-        if(images.contains(v))
-        {
-            switch (event.getAction() & MotionEvent.ACTION_MASK)
-            {
+        if (images.contains(v)) {
+            switch (event.getAction() & MotionEvent.ACTION_MASK) {
                 case MotionEvent.ACTION_POINTER_DOWN:
                     oldDist = spacing(event);
                     Log.d("TAG", "oldDist=" + oldDist);
                     if (oldDist > 10f) {
                         mode = ZOOM;
-                        Log.d("TAG", "mode=ZOOM" );
+                        Log.d("TAG", "mode=ZOOM");
                     }
                     break;
                 case MotionEvent.ACTION_POINTER_UP:
                     mode = NONE;
                     break;
-                case MotionEvent.ACTION_DOWN:
-                {
-                    dragX = (int)event.getRawX() - layoutParams.leftMargin;
-                    dragY = (int)event.getRawY() - layoutParams.topMargin;
+                case MotionEvent.ACTION_DOWN: {
+                    dragX = (int) event.getRawX() - layoutParams.leftMargin;
+                    dragY = (int) event.getRawY() - layoutParams.topMargin;
                 }
-                    break;
-                case MotionEvent.ACTION_UP:
-                {
+                break;
+                case MotionEvent.ACTION_UP: {
 
                 }
                 break;
                 case MotionEvent.ACTION_MOVE:
-                    if (mode == ZOOM)
-                    {
+                    if (mode == ZOOM) {
                         float newDist = spacing(event);
                         // If you want to tweak font scaling, this is the place to go.
-                        if (newDist > 10f)
-                        {
+                        if (newDist > 10f) {
                             float scale = newDist / oldDist;
 
-                            if (scale > 1)
-                            {
+                            if (scale > 1) {
                                 scale = 1.05f;
-                            }
-                            else if (scale < 1)
-                            {
+                            } else if (scale < 1) {
                                 scale = 0.95f;
                             }
 
                             float currentScale = v.getScaleX();
                             if ((currentScale < 2 && currentScale > 0.25)
-                                    ||(currentScale >= 2 && scale < 1)
-                                    || (currentScale <= 0.25 && scale > 1))
-                            {
+                                    || (currentScale >= 2 && scale < 1)
+                                    || (currentScale <= 0.25 && scale > 1)) {
                                 v.setScaleX(scale * v.getScaleX());
                                 v.setScaleY(scale * v.getScaleY());//.setTextSize(TypedValue.COMPLEX_UNIT_PX, currentSize);
                             }
                         }
-                    }
-                    else
-                    {
-                        int x = (int)event.getX();
-                        int y = (int)event.getY();
+                    } else {
+                        int x = (int) event.getX();
+                        int y = (int) event.getY();
                         int x_cord = (int) event.getRawX() - dragX;
                         int y_cord = (int) event.getRawY() - dragY;
                         float imageScaleX = v.getScaleX();
                         //float imageScaleY = v.getScaleY();
 
 
-                        if (x_cord > windowwidth - v.getWidth() * imageScaleX)
-                        {
-                            x_cord = (int)(windowwidth - v.getWidth() * imageScaleX);
+                        if (x_cord > windowwidth - v.getWidth() * imageScaleX) {
+                            x_cord = (int) (windowwidth - v.getWidth() * imageScaleX);
                         }
 
                         /*if (x_cord < 0) {
@@ -656,12 +624,9 @@ public class EditActivity extends Activity implements View.OnClickListener, View
                         }*/
 
                         layoutParams.leftMargin = x_cord;
-                        if (event.getRawY() > windowheight * 0.8)
-                        {
+                        if (event.getRawY() > windowheight * 0.8) {
                             layoutParams.topMargin = y_cord + 400;
-                        }
-                        else
-                        {
+                        } else {
                             layoutParams.topMargin = y_cord;
                         }
 
@@ -689,27 +654,37 @@ public class EditActivity extends Activity implements View.OnClickListener, View
     }
 
 
-
     /////////////////////////////////
     // Text Stuff
     /////////////////////////////////
 
     @Override
-    public boolean onEditorAction(TextView v, int actionId, KeyEvent event)
-    {
+    public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
         if (actionId == EditorInfo.IME_ACTION_SEARCH ||
                 actionId == EditorInfo.IME_ACTION_DONE ||
                 event.getAction() == KeyEvent.ACTION_DOWN &&
                         event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
-            if (!event.isShiftPressed())
-            {
+            if (!event.isShiftPressed()) {
                 // the user is done typing.
-                   text.setSelected(false);
+                text.setSelected(false);
                 return true;
             }
         }
         return false; // pass on to other listeners.
     }
 
+    @Override
+    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
 
+    }
+
+    @Override
+    public void onStartTrackingTouch(SeekBar seekBar) {
+
+    }
+
+    @Override
+    public void onStopTrackingTouch(SeekBar seekBar) {
+
+    }
 }

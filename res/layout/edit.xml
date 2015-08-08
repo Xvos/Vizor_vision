@@ -17,54 +17,60 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" >
 
-    </FrameLayout>
+        <HorizontalScrollView
+                android:id="@+id/funcScroll"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:gravity="bottom"
+            android:layout_gravity="center">
 
-    <HorizontalScrollView
-            android:id="@+id/funcScroll"
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:background="#00a0a0a0"
+                android:gravity="bottom"
+                android:orientation="horizontal"
+                android:measureWithLargestChild="false">
+
+                <Button
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/AddText"
+                        android:text="Text" />
+
+                <Button
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Image"
+                    android:id="@+id/imagesButton" />
+
+                <Button
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/FaceDetectButton"
+                        android:text="Face Detect" />
+
+                <Button
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/FiltersButton"
+                        android:text="Filters" />
+
+                <Button
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/CropButton"
+                        android:text="Crop" />
+            </LinearLayout>
+        </HorizontalScrollView>
+
+        <SeekBar
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:gravity="bottom">
-
-        <LinearLayout
-            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:background="#00a0a0a0"
-            android:gravity="bottom"
-            android:orientation="horizontal"
-            android:measureWithLargestChild="false">
-
-            <Button
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/AddText"
-                    android:text="Text" />
-
-            <Button
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Image"
-                android:id="@+id/imagesButton" />
-
-            <Button
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/FaceDetectButton"
-                    android:text="Face Detect" />
-
-            <Button
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/FiltersButton"
-                    android:text="Filters" />
-
-            <Button
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/CropButton"
-                    android:text="Crop" />
-        </LinearLayout>
-    </HorizontalScrollView>
+            android:id="@+id/seekBar"
+            android:layout_gravity="center" />
+    </FrameLayout>
 
     <HorizontalScrollView
         android:id="@+id/filterView"
@@ -435,7 +441,6 @@
         android:layout_gravity="center_horizontal"
         android:editable="true"
         android:background="#00000000"
-        android:text=" dfgn ,dm  sgm d,fm g "
         android:gravity="center_horizontal"
         android:focusable="true"
         android:enabled="true" />
