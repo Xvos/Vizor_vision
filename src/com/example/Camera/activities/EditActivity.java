@@ -477,6 +477,7 @@ public class EditActivity extends Activity implements View.OnClickListener, View
                         FrameLayout.LayoutParams.WRAP_CONTENT));
                 FrameLayout layout = (FrameLayout) findViewById(R.id.GalleryLayout);
                 newImage.setOnTouchListener(this);
+                newImage.setAdjustViewBounds(false);
                 images.add(newImage);
                 layout.addView(newImage);
             }
@@ -578,7 +579,8 @@ public class EditActivity extends Activity implements View.OnClickListener, View
                 }
                 break;
                 case MotionEvent.ACTION_MOVE:
-                    if (mode == ZOOM) {
+                    if (mode == ZOOM)
+                    {
                         float newDist = spacing(event);
                         // If you want to tweak font scaling, this is the place to go.
                         if (newDist > 10f) {
@@ -599,41 +601,30 @@ public class EditActivity extends Activity implements View.OnClickListener, View
                             }
                         }
                     } else {
-                        int x = (int) event.getX();
-                        int y = (int) event.getY();
                         int x_cord = (int) event.getRawX() - dragX;
                         int y_cord = (int) event.getRawY() - dragY;
                         float imageScaleX = v.getScaleX();
-                        //float imageScaleY = v.getScaleY();
-
-
-                        if (x_cord > windowwidth - v.getWidth() * imageScaleX) {
-                            x_cord = (int) (windowwidth - v.getWidth() * imageScaleX);
-                        }
-
-                        /*if (x_cord < 0) {
-                            x_cord = 0;
-                        }*/
-
-                        if (y_cord > windowheight - v.getHeight()) {
-                            y_cord = windowheight - v.getHeight();
-                        }
-
-                       /* if (y_cord < 0) {
-                            y_cord = 0;
-                        }*/
+                        int vWidth = v.getWidth();
+                        int vHeight = v.getHeight();
 
                         layoutParams.leftMargin = x_cord;
-                        if (event.getRawY() > windowheight * 0.8) {
+                        if (y_cord > windowheight * 0.8)
+                        {
                             layoutParams.topMargin = y_cord + 400;
-                        } else {
+                        }
+                        else
+                        {
                             layoutParams.topMargin = y_cord;
+                            layoutParams.width = vWidth;
+                            layoutParams.height = vHeight;
                         }
 
                         v.setLayoutParams(layoutParams);
-                        if (y_cord > windowheight * 0.85) {
+
+                        if (event.getRawY()  > windowheight * 0.9) {
                             FrameLayout layout = (FrameLayout) findViewById(R.id.GalleryLayout);
 
+                            images.remove(v);
                             layout.removeView(v);
                             v = null;
                         }
