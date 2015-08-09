@@ -3,4 +3,5 @@
     <string name="app_name">Vizor Vision</string>
     <string name="ButtonCameraSwitch">Switch</string>
     <string name="UploadButton">Upload</string>
+    <integer name="com_vk_sdk_AppId">4988320</integer>
 </resources>
