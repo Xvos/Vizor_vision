@@ -47,7 +47,7 @@
     <Button
         android:layout_width="95dp"
         android:layout_height="95dp"
-        android:id="@+id/PostButton"
+        android:id="@+id/postButton"
         android:layout_gravity="center_horizontal|bottom"
         android:background="@drawable/post"
         android:layout_marginBottom="15dp" />
@@ -55,7 +55,7 @@
     <EditText
         android:layout_width="290dp"
         android:layout_height="55dp"
-        android:id="@+id/PostText"
+        android:id="@+id/postTextField"
         android:layout_gravity="center"
         android:background="@drawable/text_bg_cencer"
         android:layout_marginTop="10dp" />

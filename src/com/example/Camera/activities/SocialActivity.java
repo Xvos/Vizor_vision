@@ -16,6 +16,10 @@ import android.widget.ImageView;
 
 import com.example.Camera.R;
 import com.example.Camera.control.SaveController;
+import com.example.Camera.control.SocialController;
+import com.vk.sdk.VKSdk;
+
+import java.util.ArrayList;
 
 /**
  * Created by nikitavalavko on 04.07.15.
@@ -33,6 +37,7 @@ public class SocialActivity extends Activity implements View.OnClickListener{
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.social);
+        VKSdk.initialize(this.getApplicationContext());
 
         Intent intent = getIntent();
 
@@ -41,7 +46,7 @@ public class SocialActivity extends Activity implements View.OnClickListener{
 
         image = (ImageView) findViewById(R.id.PostImageView);
         image.setImageBitmap(bitmap);
-        editText = (EditText) findViewById(R.id.PostText);
+        editText = (EditText) findViewById(R.id.postTextField);
         editText.setText(text);
 
         checkBoxFaceBook = (CheckBox) findViewById(R.id.socialButton1);
@@ -56,13 +61,12 @@ public class SocialActivity extends Activity implements View.OnClickListener{
         checkBoxInstagram = (CheckBox) findViewById(R.id.socialButton4);
         checkBoxInstagram.setBackgroundResource(R.drawable.chekbox_res);
 
-
         checkBoxFaceBook.setOnClickListener(this);
         checkBoxVK.setOnClickListener(this);
         checkBoxTelegram.setOnClickListener(this);
         checkBoxInstagram.setOnClickListener(this);
 
-        postButton = (Button) findViewById(R.id.PostButton);
+        postButton = (Button) findViewById(R.id.postButton);
         postButton.setBackgroundResource(R.drawable.post_button);
 
     }
@@ -84,8 +88,8 @@ public class SocialActivity extends Activity implements View.OnClickListener{
             case R.id.socialButton4:
                 Log.d("TAG", "SocialNet 4");
                 break;
-            case R.id.PostButton:
-                //Post stuff here
+            case R.id.postButton:
+                post();
                 break;
         }
     }
@@ -96,5 +100,24 @@ public class SocialActivity extends Activity implements View.OnClickListener{
         Intent intent = new Intent(this, CameraActivity.class);
         startActivity(intent);
         finish();
+    }
+
+    public void post() {
+
+        if (checkBoxFaceBook.isChecked()) {
+            //post on facebook
+        }
+
+        if (checkBoxVK.isChecked()) {
+            //post on vk
+        }
+
+        if (checkBoxInstagram.isChecked()) {
+            //post on instagram
+        }
+
+        if (checkBoxTelegram.isChecked()) {
+            SocialController.postOnTelegram(this, SaveController.lastSavedPicture, editText.getText().toString());
+        }
     }
 }
