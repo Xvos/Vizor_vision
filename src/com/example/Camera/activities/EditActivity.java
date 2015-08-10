@@ -10,6 +10,7 @@ import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.PointF;
+import android.graphics.drawable.BitmapDrawable;
 import android.media.FaceDetector;
 import android.os.Bundle;
 import android.util.FloatMath;
@@ -70,7 +71,7 @@ public class EditActivity extends Activity implements View.OnClickListener, View
     private ScaleGestureDetector mScaleDetector;
     private int dragX, dragY;
     private SeekBar bar;
-    private ArrayList<Bitmap> imageContents = new ArrayList<Bitmap>();
+    private ArrayList<Bitmap> imageOrigContents = new ArrayList<Bitmap>();
 
     int mode = NONE;
     float oldDist = 1f;
@@ -325,7 +326,8 @@ public class EditActivity extends Activity implements View.OnClickListener, View
 
             }
             break;
-            case R.id.CropButton: {
+            case R.id.CropButton:
+            {
                 //CropFilter
 
             }
@@ -338,7 +340,8 @@ public class EditActivity extends Activity implements View.OnClickListener, View
             break;
             case R.id.FiltersButton: {
                 Float buttonScrollYTo, filterScrollYTo, imageScrollYTo;
-                if (_isImagesSelected) {
+                if (_isImagesSelected)
+                {
                     imageScrollYTo = imageList.getY() + filterList.getHeight() * 2;
                     ObjectAnimator imageScrollAnimator = ObjectAnimator.ofFloat(imageList, "translationY",
                             imageList.getY(), imageScrollYTo);
@@ -346,12 +349,14 @@ public class EditActivity extends Activity implements View.OnClickListener, View
                     imageScrollAnimator.start();
                 }
 
-                if (_isFiltersSelected) {
+                if (_isFiltersSelected)
+                {
                     buttonScrollYTo = buttonScroll.getY() + filterList.getHeight();
                     filterScrollYTo = buttonScroll.getY() + filterList.getHeight();
-                } else {
+                } else
+                {
                     buttonScrollYTo = buttonScroll.getY() - filterList.getHeight();
-                    filterScrollYTo = buttonScroll.getY() - filterList.getHeight();
+                    filterScrollYTo = filterList.getY() - filterList.getHeight();
                 }
 
                 if (!_isImagesSelected) {
@@ -362,7 +367,7 @@ public class EditActivity extends Activity implements View.OnClickListener, View
                 }
 
                 ObjectAnimator filterListAnimator = ObjectAnimator.ofFloat(filterList, "translationY",
-                        buttonScroll.getY(), filterScrollYTo);
+                        filterList.getY(), filterScrollYTo);
                 filterListAnimator.setDuration(500);
                 filterListAnimator.start();
 
@@ -427,6 +432,16 @@ public class EditActivity extends Activity implements View.OnClickListener, View
                 grayscaleFilter.process(originalBitmap, bmp);
                 image.setImageBitmap(bmp);
                 bitmap = bmp;
+
+                for(int i = 0; i < images.size(); i++)
+                {
+                    images.get(i).buildDrawingCache();
+                    Bitmap curBitmap = images.get(i).getDrawingCache();
+                    Bitmap grayBitmap = curBitmap.copy(curBitmap.getConfig(), true);
+                    grayscaleFilter.process(curBitmap, grayBitmap);
+                    images.get(i).setImageBitmap(grayBitmap);
+
+                }
             }
             break;
 
@@ -479,6 +494,8 @@ public class EditActivity extends Activity implements View.OnClickListener, View
                 newImage.setOnTouchListener(this);
                 newImage.setAdjustViewBounds(false);
                 images.add(newImage);
+
+                //imageOrigContents.add((Bitmap)newImage.getDrawable().getBitmap());
                 layout.addView(newImage);
             }
             break;
