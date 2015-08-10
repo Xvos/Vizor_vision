@@ -11,6 +11,7 @@ import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.PointF;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.media.FaceDetector;
 import android.os.Bundle;
 import android.util.FloatMath;
@@ -71,7 +72,7 @@ public class EditActivity extends Activity implements View.OnClickListener, View
     private ScaleGestureDetector mScaleDetector;
     private int dragX, dragY;
     private SeekBar bar;
-    private ArrayList<Bitmap> imageOrigContents = new ArrayList<Bitmap>();
+    private ArrayList<Drawable> imageOrigContents = new ArrayList<Drawable>();
 
     int mode = NONE;
     float oldDist = 1f;
@@ -356,7 +357,7 @@ public class EditActivity extends Activity implements View.OnClickListener, View
                 } else
                 {
                     buttonScrollYTo = buttonScroll.getY() - filterList.getHeight();
-                    filterScrollYTo = filterList.getY() - filterList.getHeight();
+                    filterScrollYTo = buttonScroll.getY() - filterList.getHeight();
                 }
 
                 if (!_isImagesSelected) {
@@ -421,6 +422,11 @@ public class EditActivity extends Activity implements View.OnClickListener, View
                 Bitmap bmp = originalBitmap.copy(originalBitmap.getConfig(), true);
                 image.setImageBitmap(bmp);
                 bitmap = bmp;
+                for(int i = 0; i < images.size(); i++)
+                {
+                    images.get(i).setImageBitmap(null);
+                    images.get(i).setImageDrawable(imageOrigContents.get(i));
+                }
             }
             break;
 
@@ -439,6 +445,8 @@ public class EditActivity extends Activity implements View.OnClickListener, View
                     Bitmap curBitmap = images.get(i).getDrawingCache();
                     Bitmap grayBitmap = curBitmap.copy(curBitmap.getConfig(), true);
                     grayscaleFilter.process(curBitmap, grayBitmap);
+                    images.get(i).setImageResource(android.R.color.transparent);
+                    images.get(i).destroyDrawingCache();
                     images.get(i).setImageBitmap(grayBitmap);
 
                 }
@@ -493,9 +501,10 @@ public class EditActivity extends Activity implements View.OnClickListener, View
                 FrameLayout layout = (FrameLayout) findViewById(R.id.GalleryLayout);
                 newImage.setOnTouchListener(this);
                 newImage.setAdjustViewBounds(false);
+
                 images.add(newImage);
 
-                //imageOrigContents.add((Bitmap)newImage.getDrawable().getBitmap());
+                imageOrigContents.add(newImage.getDrawable());
                 layout.addView(newImage);
             }
             break;
@@ -506,6 +515,28 @@ public class EditActivity extends Activity implements View.OnClickListener, View
     /////////////////////////////////
     // Utility  Stuff
     /////////////////////////////////
+
+    public static Bitmap drawableToBitmap (Drawable drawable) {
+        Bitmap bitmap = null;
+
+        if (drawable instanceof BitmapDrawable) {
+            BitmapDrawable bitmapDrawable = (BitmapDrawable) drawable;
+            if(bitmapDrawable.getBitmap() != null) {
+                return bitmapDrawable.getBitmap();
+            }
+        }
+
+        if(drawable.getIntrinsicWidth() <= 0 || drawable.getIntrinsicHeight() <= 0) {
+            bitmap = Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888); // Single color bitmap will be created of 1x1 pixel
+        } else {
+            bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+        }
+
+        Canvas canvas = new Canvas(bitmap);
+        drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+        drawable.draw(canvas);
+        return bitmap;
+    }
 
     @Override
     public void onBackPressed() {
@@ -536,6 +567,7 @@ public class EditActivity extends Activity implements View.OnClickListener, View
             layoutParams = (FrameLayout.LayoutParams) curImage.getLayoutParams();
             curImage.buildDrawingCache();
             Bitmap curBitmap = curImage.getDrawingCache();
+
 
             // "RECREATE" THE NEW BITMAP
             Bitmap resizedBitmap = Bitmap.createScaledBitmap(
@@ -641,6 +673,7 @@ public class EditActivity extends Activity implements View.OnClickListener, View
                         if (event.getRawY()  > windowheight * 0.9) {
                             FrameLayout layout = (FrameLayout) findViewById(R.id.GalleryLayout);
 
+                            imageOrigContents.remove(images.indexOf(v));
                             images.remove(v);
                             layout.removeView(v);
                             v = null;
