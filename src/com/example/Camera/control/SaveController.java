@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
+import android.net.Uri;
 import android.widget.Toast;
 
 import java.io.ByteArrayOutputStream;
@@ -19,6 +20,8 @@ public class SaveController
     public static byte[] originalPicture;
 
     public static byte[] lastSavedPicture;
+
+    public static Uri pictureUri;
 
 
     public static void savePicture(byte[] imageByteArray)
@@ -35,7 +38,8 @@ public class SaveController
             }
 
             Bitmap  bitmap = BitmapFactory.decodeByteArray(imageByteArray, 0, imageByteArray.length);
-            FileOutputStream os = new FileOutputStream(String.format(Params.FOLDER_PATH + "/%d.jpg", System.currentTimeMillis()));
+            String filename = String.format(Params.FOLDER_PATH + "/%d.jpg", System.currentTimeMillis());
+            FileOutputStream os = new FileOutputStream(filename);
 
             ByteArrayOutputStream stream = new ByteArrayOutputStream();
             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
@@ -45,6 +49,7 @@ public class SaveController
             os.close();
 
             lastSavedPicture = byteArray;
+            pictureUri = Uri.parse("file://" + filename);
         }
 
         catch (Exception e)
@@ -79,7 +84,7 @@ public class SaveController
         if (waIntent != null)
         {
             waIntent.putExtra(Intent.EXTRA_TEXT, text );
-            //waIntent.putExtra(Intent.EXTRA_STREAM, imageByteArray);
+            waIntent.putExtra(Intent.EXTRA_STREAM, imageByteArray);
             activity.startActivity(Intent.createChooser(waIntent, "Share with"));
         }
         else

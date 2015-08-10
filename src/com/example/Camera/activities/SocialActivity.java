@@ -68,7 +68,7 @@ public class SocialActivity extends Activity implements View.OnClickListener{
 
         postButton = (Button) findViewById(R.id.postButton);
         postButton.setBackgroundResource(R.drawable.post_button);
-
+        postButton.setOnClickListener(this);
     }
 
     @Override
@@ -113,7 +113,7 @@ public class SocialActivity extends Activity implements View.OnClickListener{
         }
 
         if (checkBoxInstagram.isChecked()) {
-            //post on instagram
+            SocialController.postOnInstagram(this, SaveController.lastSavedPicture, editText.getText().toString());
         }
 
         if (checkBoxTelegram.isChecked()) {
