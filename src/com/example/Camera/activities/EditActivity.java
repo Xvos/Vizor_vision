@@ -7,16 +7,13 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Matrix;
 import android.graphics.Paint;
-import android.graphics.PointF;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.media.FaceDetector;
 import android.os.Bundle;
 import android.util.FloatMath;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
@@ -33,6 +30,7 @@ import android.widget.TextView;
 
 import com.example.Camera.R;
 import com.example.Camera.control.SaveController;
+import com.example.Camera.editor.filter.CropFilter;
 import com.example.Camera.editor.filter.SimpleGrayscaleFilter;
 
 import java.io.ByteArrayOutputStream;
@@ -329,8 +327,16 @@ public class EditActivity extends Activity implements View.OnClickListener, View
             break;
             case R.id.CropButton:
             {
-                //CropFilter
+                CropFilter cropFilter = new CropFilter(0, (originalBitmap.getHeight() - originalBitmap.getWidth()) / 2, originalBitmap.getWidth(), originalBitmap.getWidth());
+                Bitmap bmp;
 
+                bmp = originalBitmap.copy(originalBitmap.getConfig(), true);
+                cropFilter.process(originalBitmap, bmp);
+                image.setImageDrawable(null);
+                //image.destroyDrawingCache();
+
+                image.setImageBitmap(bmp);
+                bitmap = bmp;
             }
             break;
             case R.id.AddText: {
@@ -339,7 +345,8 @@ public class EditActivity extends Activity implements View.OnClickListener, View
                 text.setOnEditorActionListener(this);
             }
             break;
-            case R.id.FiltersButton: {
+            case R.id.FiltersButton:
+            {
                 Float buttonScrollYTo, filterScrollYTo, imageScrollYTo;
                 if (_isImagesSelected)
                 {

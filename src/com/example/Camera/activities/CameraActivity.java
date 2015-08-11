@@ -275,6 +275,7 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
                 Intent intent = new Intent(this, PreviewActivity.class);
                 SaveController.originalPicture = paramArrayOfByte;
                 startActivity(intent);
+                finish();
             }
         }
     }
