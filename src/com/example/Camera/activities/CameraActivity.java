@@ -4,9 +4,15 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Configuration;
 
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.hardware.Camera;
+import android.net.Uri;
 import android.os.Bundle;
 
+import android.os.ParcelFileDescriptor;
+import android.provider.MediaStore;
 import android.view.*;
 import android.widget.Button;
 import android.view.ViewGroup.LayoutParams;
@@ -15,6 +21,8 @@ import android.view.ViewGroup.LayoutParams;
 import com.example.Camera.R;
 import com.example.Camera.control.SaveController;
 
+import java.io.ByteArrayOutputStream;
+import java.io.FileDescriptor;
 import java.io.IOException;
 import java.util.List;
 
@@ -26,6 +34,9 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
      * ID параметра изображения
      */
     public final static String PICTURE = "PICTURE";
+
+    private static final int SELECT_PICTURE = 1;
+
 
     private Camera _camera;
     private SurfaceHolder _surfaceHolder;
@@ -232,21 +243,60 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
         }
         else if(v == _uploadButton)
         {
-            Intent intent = new Intent(this, UploadActivity.class);
-            startActivity(intent);
+            //Intent intent = new Intent(this, UploadActivity.class);
+            //startActivity(intent);
+
+           /* Intent intent = new Intent();
+            intent.setType("image/*");
+            intent.setAction(Intent.ACTION_GET_CONTENT);
+            startActivityForResult(Intent.createChooser(intent,
+                    "Select Picture"), SELECT_PICTURE);*/
+
+            // Create intent to Open Image applications like Gallery, Google Photos
+            Intent galleryIntent = new Intent(Intent.ACTION_PICK,
+                    android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+// Start the Intent
+            startActivityForResult(galleryIntent, SELECT_PICTURE);
+        }
+
+    }
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == RESULT_OK) {
+            if (requestCode == SELECT_PICTURE) {
+                Uri imageUri = data.getData();
+                Bitmap bmp = null;
+                try {
+                    bmp = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                byte[] paramArrayOfByte = convertBitmapToByteArray(bmp);
+                Intent intent = new Intent(this, PreviewActivity.class);
+                SaveController.originalPicture = paramArrayOfByte;
+                startActivity(intent);
+            }
         }
     }
+
+    private byte[] convertBitmapToByteArray(Bitmap bitmap)
+    {
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+        byte[] byteArray = stream.toByteArray();
+        return byteArray;
+    }
+
 
     @Override
     public void onPictureTaken(byte[] paramArrayOfByte, Camera paramCamera)
     {
         try {
+            stopCamera();
             Intent intent = new Intent(this, PreviewActivity.class);
             //intent.putExtra(PICTURE, paramArrayOfByte);
             SaveController.originalPicture = paramArrayOfByte;
             startActivity(intent);
-            stopCamera();
-
 
             //SaveController.postOnTelegram(this, paramArrayOfByte, "Test");
             finish();

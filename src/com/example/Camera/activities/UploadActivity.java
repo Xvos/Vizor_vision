@@ -56,11 +56,11 @@ public class UploadActivity extends Activity implements AdapterView.OnItemClickL
         // Set up an array of the Thumbnail Image ID column we want
         String[] projection = {MediaStore.Images.Thumbnails._ID};
         // Create the cursor pointing to the SDCard
-        cursor = managedQuery( MediaStore.Images.Thumbnails.INTERNAL_CONTENT_URI,
+        cursor = managedQuery( MediaStore.Images.Thumbnails.EXTERNAL_CONTENT_URI,
                 projection, // Which columns to return
                 null,       // Return all rows
                 null,
-                MediaStore.Images.Thumbnails.IMAGE_ID);
+                MediaStore.Images.Thumbnails._ID);
         // Get the column index of the Thumbnails Image ID
         columnIndex = cursor.getColumnIndexOrThrow(MediaStore.Images.Thumbnails._ID);
 
@@ -169,10 +169,10 @@ public class UploadActivity extends Activity implements AdapterView.OnItemClickL
                 cursor.moveToPosition(position);
                 // Get the current value for the requested column
                 int imageID = cursor.getInt(columnIndex);
-                Uri uri = Uri.withAppendedPath(
-                        MediaStore.Images.Thumbnails.INTERNAL_CONTENT_URI, "" + imageID);
                 // Set the content of the image based on the provided URI
-                picturesView.setImageURI(uri);
+                picturesView.setImageURI(Uri.withAppendedPath(
+                        MediaStore.Images.Thumbnails.EXTERNAL_CONTENT_URI, "" + imageID));
+              //  picturesView.setImageURI(uri);
                 picturesView.setScaleType(ImageView.ScaleType.FIT_XY);
                 picturesView.setPadding(8, 8, 8, 8);
                 picturesView.setLayoutParams(new GridView.LayoutParams(getWindowManager().getDefaultDisplay().getWidth() / 3,
