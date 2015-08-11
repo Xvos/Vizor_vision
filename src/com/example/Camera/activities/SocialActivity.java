@@ -6,7 +6,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.SurfaceView;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
@@ -17,9 +16,8 @@ import android.widget.ImageView;
 import com.example.Camera.R;
 import com.example.Camera.control.SaveController;
 import com.example.Camera.control.SocialController;
+import com.vk.sdk.VKScope;
 import com.vk.sdk.VKSdk;
-
-import java.util.ArrayList;
 
 /**
  * Created by nikitavalavko on 04.07.15.
@@ -105,19 +103,20 @@ public class SocialActivity extends Activity implements View.OnClickListener{
     public void post() {
 
         if (checkBoxFaceBook.isChecked()) {
-            //post on facebook
+            SocialController.postOnFacebook(this, editText.getText().toString());
         }
 
         if (checkBoxVK.isChecked()) {
-            //post on vk
+            //VKSdk.login(this, VKScope.WALL, VKScope.PHOTOS);
+            //SocialController.postOnVk(this, editText.getText().toString());
         }
 
         if (checkBoxInstagram.isChecked()) {
-            SocialController.postOnInstagram(this, SaveController.lastSavedPicture, editText.getText().toString());
+            SocialController.postOnInstagram(this);
         }
 
         if (checkBoxTelegram.isChecked()) {
-            SocialController.postOnTelegram(this, SaveController.lastSavedPicture, editText.getText().toString());
+            SocialController.postOnTelegram(this);
         }
     }
 }
