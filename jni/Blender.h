@@ -5,32 +5,33 @@
 #ifndef VIZOR_VISION_BLENDER_H
 #define VIZOR_VISION_BLENDER_H
 
+#include "Core.h"
 #include "Color.h"
 
-#define LUM(color) (((float)color.R * .3f) + ((float)color.G * .59f) + ((float)color.B * .11f))
+#define LUM(color) (((f32)color.R * .3f) + ((f32)color.G * .59f) + ((f32)color.B * .11f))
 
 #define ALPHA_BLEND(__cColor, __rColor, __function, __bopacity, __lopacity)\
         __cColor.R = ChannelBlend_AlphaF(__cColor.R, __rColor.R, __function, __bopacity, __lopacity);\
         __cColor.G = ChannelBlend_AlphaF(__cColor.G, __rColor.G, __function, __bopacity, __lopacity);\
         __cColor.B = ChannelBlend_AlphaF(__cColor.B, __rColor.B, __function, __bopacity, __lopacity);
 
-#define BLEND_FILTER(MACRO_data, MACRO_size, MACRO_function, MACRO_rColor, MACRO_opacity)\
-        unsigned int* bytes = (unsigned int*)MACRO_data;\
-        const unsigned int* lastPtr = bytes + (MACRO_size / sizeof(unsigned int));\
-        int bOpacity = (int)(MACRO_opacity * 256.0f);\
-        int lOpacity = 256 - bOpacity;\
+#define BLEND_FILTER(data, size, function, rColor, opacity)\
+        u32* bytes = (u32*)data;\
+        u32* lastPtr = bytes + (size / sizeof(u32));\
+        u32 bOpacity = (u32)(opacity * 256.0f);\
+        u32 lOpacity = 256 - bOpacity;\
         Color cColor;\
         while (bytes++ != lastPtr)\
         {\
             Color::fromABGR(&cColor, *bytes);\
-            ALPHA_BLEND(cColor, MACRO_rColor, MACRO_function, bOpacity, lOpacity);\
+            ALPHA_BLEND(cColor, rColor, function, bOpacity, lOpacity);\
             *bytes = cColor.toABGR();\
         }
 
 class Blender
 {
 public:
-    __inline__ void process(void* data, int size, int mode)
+    void process(void* data, u32 size, s32 mode)
     {
         switch (mode)
         {
@@ -68,7 +69,7 @@ public:
 
     }
 
-    __inline__ void fast_grayscale(void* data, int size)
+    FORCEINLINE void fast_grayscale(void* data, s32 size)
     {
         unsigned int* bytes = (unsigned int*)data;
         unsigned int* lastPtr = bytes + (size / sizeof(unsigned int));
