@@ -67,11 +67,10 @@ public class EditActivity extends Activity implements View.OnClickListener, View
     private EditText text;
     private Boolean _isFiltersSelected = false;
     private Boolean _isImagesSelected = false;
-    private ArrayList<Button> buttons = new ArrayList<Button>();
     private ArrayList<ImageView> images = new ArrayList<ImageView>();
     private ScaleGestureDetector mScaleDetector;
     private int dragX, dragY;
-    private SeekBar bar;
+
     private ArrayList<Drawable> imageOrigContents = new ArrayList<Drawable>();
 
     int mode = NONE;
@@ -125,8 +124,6 @@ public class EditActivity extends Activity implements View.OnClickListener, View
         text.setTextColor(Color.WHITE);
         text.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
 
-        bar = (SeekBar) findViewById(R.id.seekBar);
-        bar.setOnSeekBarChangeListener(this);
 
         //Image Buttons
         //TODO : Такая инициализация переменных напоминает говно. ПЕРЕДЕЛАТЬ!!
@@ -178,6 +175,8 @@ public class EditActivity extends Activity implements View.OnClickListener, View
         //grayScaleButton.setOnClickListener(this);
         imagesButton.setOnClickListener(this);
         clearFilerButton.setOnClickListener(this);
+
+        textButton.setBackgroundResource(R.drawable.images_button);
 
         //Images
         //TODO : Такая инициализация лисенеров тоже напоминает говно. ПЕРЕДЕЛАТЬ!!
@@ -459,17 +458,17 @@ public class EditActivity extends Activity implements View.OnClickListener, View
                 image.setImageBitmap(bmp);
                 bitmap = bmp;
 
-//                for(int i = 0; i < images.size(); i++)
-//                {
-//                    images.get(i).buildDrawingCache();
-//                    Bitmap curBitmap = images.get(i).getDrawingCache();
-//                    Bitmap grayBitmap = curBitmap.copy(curBitmap.getConfig(), true);
-//                    grayscaleFilter.process(curBitmap, grayBitmap);
-//                    images.get(i).setImageResource(android.R.color.transparent);
-//                    images.get(i).destroyDrawingCache();
-//                    images.get(i).setImageBitmap(grayBitmap);
-//
-//                }
+                for(int i = 0; i < images.size(); i++)
+                {
+                    images.get(i).buildDrawingCache();
+                    Bitmap curBitmap = images.get(i).getDrawingCache();
+                    Bitmap grayBitmap = curBitmap.copy(curBitmap.getConfig(), true);
+                    nativeUtils.blend(curBitmap, filterMap.get(v.getId()));
+                    images.get(i).setImageResource(android.R.color.transparent);
+                    images.get(i).destroyDrawingCache();
+                    images.get(i).setImageBitmap(grayBitmap);
+
+                }
             }
             break;
 
@@ -588,7 +587,6 @@ public class EditActivity extends Activity implements View.OnClickListener, View
             curImage.buildDrawingCache();
             Bitmap curBitmap = curImage.getDrawingCache();
 
-
             // "RECREATE" THE NEW BITMAP
             Bitmap resizedBitmap = Bitmap.createScaledBitmap(
                     curBitmap, (int) (curBitmap.getWidth() * scaleFactorX * curImage.getScaleX()),
@@ -603,10 +601,11 @@ public class EditActivity extends Activity implements View.OnClickListener, View
         if (text.getVisibility() == View.VISIBLE) {
             Paint paint = new Paint();
             paint.setColor(Color.WHITE);
+            paint.setStyle(Paint.Style.FILL);
             paint.setTextAlign(Paint.Align.CENTER);
             paint.setTextSize(text.getTextSize() + 25);
             canvas.drawText(text.getText(), 0, text.getText().length(),
-                    Float.valueOf((drawableBitmap.getWidth()) / 2), drawableBitmap.getHeight() * 4 / 5, paint);
+                    Float.valueOf((drawableBitmap.getWidth()) / 2), drawableBitmap.getHeight() * 4/5, paint);
         }
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         drawableBitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
