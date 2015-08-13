@@ -220,8 +220,13 @@ public class EditActivity extends Activity implements View.OnClickListener, View
         image37Button.setOnClickListener(this);
 
         //Filter Buttons
-        findViewById(R.id.grayScaleButton).setOnClickListener(this);
+        findViewById(R.id.filterButton1).setOnClickListener(this);
         findViewById(R.id.filterButton2).setOnClickListener(this);
+        findViewById(R.id.filterButton3).setOnClickListener(this);
+        findViewById(R.id.filterButton4).setOnClickListener(this);
+        findViewById(R.id.filterButton5).setOnClickListener(this);
+        findViewById(R.id.filterButton6).setOnClickListener(this);
+        findViewById(R.id.filterButton7).setOnClickListener(this);
 
         //Map
         imageMap = new HashMap<Integer, Integer>();
@@ -264,8 +269,13 @@ public class EditActivity extends Activity implements View.OnClickListener, View
         imageMap.put(R.id.image37Button, R.drawable.zombie_girl);
 
         filterMap = new HashMap<Integer, FilterType>();
-        filterMap.put(R.id.grayScaleButton, FilterType.FILTER_0);
+        filterMap.put(R.id.filterButton1, FilterType.FILTER_0);
         filterMap.put(R.id.filterButton2, FilterType.FILTER_1);
+        filterMap.put(R.id.filterButton3, FilterType.FILTER_2);
+        filterMap.put(R.id.filterButton4, FilterType.FILTER_3);
+        filterMap.put(R.id.filterButton5, FilterType.FILTER_4);
+        filterMap.put(R.id.filterButton6, FilterType.FILTER_5);
+        filterMap.put(R.id.filterButton7, FilterType.FILTER_6);
 
         mScaleDetector = new ScaleGestureDetector(getBaseContext(), new ScaleGestureDetector.OnScaleGestureListener() {
             @Override
@@ -449,11 +459,117 @@ public class EditActivity extends Activity implements View.OnClickListener, View
             }
             break;
 
-            case R.id.grayScaleButton: {
+            case R.id.filterButton1: {
                 Bitmap bmp = originalBitmap.copy(originalBitmap.getConfig(), true);
 
                 NativeUtils nativeUtils = new NativeUtils();
+                long stamp = System.nanoTime();
                 nativeUtils.blend(bmp, filterMap.get(v.getId()));
+                Log.d("VISION", "Time: " + (System.nanoTime() - stamp));
+
+                //grayscaleFilter.process(originalBitmap, bmp);
+                image.setImageBitmap(bmp);
+                bitmap = bmp;
+
+//                for(int i = 0; i < images.size(); i++)
+//                {
+//                    images.get(i).buildDrawingCache();
+//                    Bitmap curBitmap = images.get(i).getDrawingCache();
+//                    Bitmap grayBitmap = curBitmap.copy(curBitmap.getConfig(), true);
+//                    grayscaleFilter.process(curBitmap, grayBitmap);
+//                    images.get(i).setImageResource(android.R.color.transparent);
+//                    images.get(i).destroyDrawingCache();
+//                    images.get(i).setImageBitmap(grayBitmap);
+//
+//                }
+            }
+            break;
+
+            case R.id.filterButton2: {
+                Bitmap bmp = originalBitmap.copy(originalBitmap.getConfig(), true);
+
+                NativeUtils nativeUtils = new NativeUtils();
+                long stamp = System.nanoTime();
+                nativeUtils.blend(bmp, filterMap.get(v.getId()));
+                Log.d("VISION", "Time: " + (System.nanoTime() - stamp));
+
+                //grayscaleFilter.process(originalBitmap, bmp);
+                image.setImageBitmap(bmp);
+                bitmap = bmp;
+
+//                for(int i = 0; i < images.size(); i++)
+//                {
+//                    images.get(i).buildDrawingCache();
+//                    Bitmap curBitmap = images.get(i).getDrawingCache();
+//                    Bitmap grayBitmap = curBitmap.copy(curBitmap.getConfig(), true);
+//                    grayscaleFilter.process(curBitmap, grayBitmap);
+//                    images.get(i).setImageResource(android.R.color.transparent);
+//                    images.get(i).destroyDrawingCache();
+//                    images.get(i).setImageBitmap(grayBitmap);
+//
+//                }
+            }
+            break;
+
+            case R.id.filterButton3: {
+                Bitmap bmp = originalBitmap.copy(originalBitmap.getConfig(), true);
+
+                NativeUtils nativeUtils = new NativeUtils();
+                long stamp = System.nanoTime();
+                nativeUtils.blend(bmp, filterMap.get(v.getId()));
+                Log.d("VISION", "Time: " + (System.nanoTime() - stamp));
+
+                //grayscaleFilter.process(originalBitmap, bmp);
+                image.setImageBitmap(bmp);
+                bitmap = bmp;
+
+//                for(int i = 0; i < images.size(); i++)
+//                {
+//                    images.get(i).buildDrawingCache();
+//                    Bitmap curBitmap = images.get(i).getDrawingCache();
+//                    Bitmap grayBitmap = curBitmap.copy(curBitmap.getConfig(), true);
+//                    grayscaleFilter.process(curBitmap, grayBitmap);
+//                    images.get(i).setImageResource(android.R.color.transparent);
+//                    images.get(i).destroyDrawingCache();
+//                    images.get(i).setImageBitmap(grayBitmap);
+//
+//                }
+            }
+            break;
+
+            case R.id.filterButton4: {
+                Bitmap bmp = originalBitmap.copy(originalBitmap.getConfig(), true);
+
+                NativeUtils nativeUtils = new NativeUtils();
+                long stamp = System.nanoTime();
+                nativeUtils.blend(bmp, filterMap.get(v.getId()));
+                Log.d("VISION", "Time: " + (System.nanoTime() - stamp));
+
+                //grayscaleFilter.process(originalBitmap, bmp);
+                image.setImageBitmap(bmp);
+                bitmap = bmp;
+
+//                for(int i = 0; i < images.size(); i++)
+//                {
+//                    images.get(i).buildDrawingCache();
+//                    Bitmap curBitmap = images.get(i).getDrawingCache();
+//                    Bitmap grayBitmap = curBitmap.copy(curBitmap.getConfig(), true);
+//                    grayscaleFilter.process(curBitmap, grayBitmap);
+//                    images.get(i).setImageResource(android.R.color.transparent);
+//                    images.get(i).destroyDrawingCache();
+//                    images.get(i).setImageBitmap(grayBitmap);
+//
+//                }
+            }
+            break;
+
+            case R.id.filterButton5: {
+                Bitmap bmp = originalBitmap.copy(originalBitmap.getConfig(), true);
+
+                NativeUtils nativeUtils = new NativeUtils();
+                long stamp = System.nanoTime();
+                nativeUtils.blend(bmp, filterMap.get(v.getId()));
+                Log.d("VISION", "Time: " + (System.nanoTime() - stamp));
 
                 //grayscaleFilter.process(originalBitmap, bmp);
                 image.setImageBitmap(bmp);

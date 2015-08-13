@@ -9,19 +9,21 @@
 
 #define LUM(color) (((float)color.R * .3f) + ((float)color.G * .59f) + ((float)color.B * .11f))
 
-#define ALPHA_BLEND(__cColor, __rColor, __function, __opacity)\
-        __cColor.R = ChannelBlend_AlphaF(__cColor.R, __rColor.R, __function, __opacity);\
-        __cColor.G = ChannelBlend_AlphaF(__cColor.G, __rColor.G, __function, __opacity);\
-        __cColor.B = ChannelBlend_AlphaF(__cColor.B, __rColor.B, __function, __opacity);
+#define ALPHA_BLEND(__cColor, __rColor, __function, __bopacity, __lopacity)\
+        __cColor.R = ChannelBlend_AlphaF(__cColor.R, __rColor.R, __function, __bopacity, __lopacity);\
+        __cColor.G = ChannelBlend_AlphaF(__cColor.G, __rColor.G, __function, __bopacity, __lopacity);\
+        __cColor.B = ChannelBlend_AlphaF(__cColor.B, __rColor.B, __function, __bopacity, __lopacity);
 
 #define BLEND_FILTER(MACRO_data, MACRO_size, MACRO_function, MACRO_rColor, MACRO_opacity)\
         unsigned int* bytes = (unsigned int*)MACRO_data;\
-        unsigned int* lastPtr = bytes + (MACRO_size / sizeof(unsigned int));\
+        const unsigned int* lastPtr = bytes + (MACRO_size / sizeof(unsigned int));\
+        int bOpacity = (int)(MACRO_opacity * 256.0f);\
+        int lOpacity = 256 - bOpacity;\
         Color cColor;\
         while (bytes++ != lastPtr)\
         {\
             Color::fromABGR(&cColor, *bytes);\
-            ALPHA_BLEND(cColor, MACRO_rColor, MACRO_function, MACRO_opacity);\
+            ALPHA_BLEND(cColor, MACRO_rColor, MACRO_function, bOpacity, lOpacity);\
             *bytes = cColor.toABGR();\
         }
 
@@ -33,13 +35,33 @@ public:
         switch (mode)
         {
             case 0: {
-                Color rColor(97, 89, 20);
-                BLEND_FILTER(data, size, ChannelBlend_ColorDodge, rColor, .5f);
+                //SoftLight, 97 67 20, 70%
+                Color rColor(97, 67, 20);
+                BLEND_FILTER(data, size, ChannelBlend_SoftLight, rColor, 0.70f);
                 break;
             }
             case 1: {
+                //ColorDodge, 97 89 20, 50%
+                Color rColor(97, 89, 20);
+                BLEND_FILTER(data, size, ChannelBlend_ColorDodge, rColor, 0.5f);
+                break;
+            }
+            case 2: {
+                //Overlay, 195 153 128, 50%
+                Color rColor(195, 153, 128);
+                BLEND_FILTER(data, size, ChannelBlend_Overlay, rColor, 0.5f);
+                break;
+            }
+            case 3: {
+                //HardLight, 148 124 172, 50%
                 Color rColor(148, 124, 172);
-                BLEND_FILTER(data, size, ChannelBlend_HardLight, rColor, .5f);
+                BLEND_FILTER(data, size, ChannelBlend_HardLight, rColor, 0.5f);
+                break;
+            }
+            case 4: {
+                //Lightin 10%, 255 243 214
+                Color rColor(255, 243, 214);
+                BLEND_FILTER(data, size, ChannelBlend_HardLight, rColor, 0.1f);
                 break;
             }
         }

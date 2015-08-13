@@ -61,8 +61,10 @@
 #define ChannelBlend_Phoenix(B,L)    ((qMin(B,L) - max(B,L) + 255))
 
 //Add alpha parameter (opacity: float from 0.0 - 1.0
-#define ChannelBlend_Alpha(B,L,O)    ((O * B + (1 - O) * L))
-#define ChannelBlend_AlphaF(B,L,F,O) (ChannelBlend_Alpha(F(B,L),B,O))
+//#define ChannelBlend_Alpha(B,L,O)    ((O * B + (1 - O) * L))
+
+#define ChannelBlend_Alpha(B,L,BO,LO) ((B * BO) + (L * LO) >> 8)
+#define ChannelBlend_AlphaF(B,L,F,BO,LO) (ChannelBlend_Alpha(F(B,L),B,BO,LO))
 
 /*
  * Make a solid for blending

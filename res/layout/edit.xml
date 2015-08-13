@@ -99,50 +99,50 @@
             <Button
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/grayScaleButton"
-                android:text="GrayScale"
+                android:id="@+id/filterButton1"
+                android:text="Filter 1"
                 android:layout_marginBottom="0dp" />
 
             <Button
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/filterButton2"
-                android:text="GrayScale"
+                android:text="Filter 2"
                 android:layout_marginBottom="0dp" />
 
             <Button
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/button4"
-                android:text="GrayScale"
+                android:id="@+id/filterButton3"
+                android:text="Filter 3"
                 android:layout_marginBottom="0dp" />
 
             <Button
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/button5"
-                android:text="GrayScale"
+                android:id="@+id/filterButton4"
+                android:text="Filter 4"
                 android:layout_marginBottom="0dp" />
 
             <Button
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/button6"
-                android:text="GrayScale"
+                android:id="@+id/filterButton5"
+                android:text="Filter 5"
                 android:layout_marginBottom="0dp" />
 
             <Button
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/button7"
-                android:text="GrayScale"
+                android:id="@+id/filterButton6"
+                android:text="Filter 6"
                 android:layout_marginBottom="0dp" />
 
             <Button
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/button2"
-                android:text="GrayScale"
+                android:id="@+id/filterButton7"
+                android:text="Filter 7"
                 android:layout_marginBottom="0dp" />
 
         </LinearLayout>
