@@ -78,7 +78,7 @@ public class EditActivity extends Activity implements View.OnClickListener, View
     float oldDist = 1f;
 
     private Map<Integer, Integer> imageMap;
-    private Map<Integer, Class> filterMap;
+    private Map<Integer, FilterType> filterMap;
 
 
     @Override
@@ -112,7 +112,7 @@ public class EditActivity extends Activity implements View.OnClickListener, View
         textButton = (Button) findViewById(R.id.AddText);
         cropButton = (Button) findViewById(R.id.CropButton);
         filtersButton = (Button) findViewById(R.id.FiltersButton);
-        grayScaleButton = (Button) findViewById(R.id.grayScaleButton);
+        //grayScaleButton = (Button) findViewById(R.id.grayScaleButton);
         clearFilerButton = (Button) findViewById(R.id.noFilterButton);
         imagesButton = (Button) findViewById(R.id.imagesButton);
 
@@ -175,7 +175,7 @@ public class EditActivity extends Activity implements View.OnClickListener, View
         textButton.setOnClickListener(this);
         cropButton.setOnClickListener(this);
         filtersButton.setOnClickListener(this);
-        grayScaleButton.setOnClickListener(this);
+        //grayScaleButton.setOnClickListener(this);
         imagesButton.setOnClickListener(this);
         clearFilerButton.setOnClickListener(this);
 
@@ -219,6 +219,10 @@ public class EditActivity extends Activity implements View.OnClickListener, View
         image36Button.setOnClickListener(this);
         image37Button.setOnClickListener(this);
 
+        //Filter Buttons
+        findViewById(R.id.grayScaleButton).setOnClickListener(this);
+        findViewById(R.id.filterButton2).setOnClickListener(this);
+
         //Map
         imageMap = new HashMap<Integer, Integer>();
         imageMap.put(R.id.image1Button, R.drawable.bandit);
@@ -259,8 +263,9 @@ public class EditActivity extends Activity implements View.OnClickListener, View
         imageMap.put(R.id.image36Button, R.drawable.zombie_2);
         imageMap.put(R.id.image37Button, R.drawable.zombie_girl);
 
-        filterMap = new HashMap<Integer, Class>();
-        filterMap.put(R.id.grayScaleButton, Gra)
+        filterMap = new HashMap<Integer, FilterType>();
+        filterMap.put(R.id.grayScaleButton, FilterType.FILTER_0);
+        filterMap.put(R.id.filterButton2, FilterType.FILTER_1);
 
         mScaleDetector = new ScaleGestureDetector(getBaseContext(), new ScaleGestureDetector.OnScaleGestureListener() {
             @Override
@@ -445,11 +450,10 @@ public class EditActivity extends Activity implements View.OnClickListener, View
             break;
 
             case R.id.grayScaleButton: {
-                //SimpleGrayscaleFilter grayscaleFilter = new SimpleGrayscaleFilter();
                 Bitmap bmp = originalBitmap.copy(originalBitmap.getConfig(), true);
 
                 NativeUtils nativeUtils = new NativeUtils();
-                nativeUtils.blend(bmp, FilterType.FILTER_0);
+                nativeUtils.blend(bmp, filterMap.get(v.getId()));
 
                 //grayscaleFilter.process(originalBitmap, bmp);
                 image.setImageBitmap(bmp);
