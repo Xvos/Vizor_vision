@@ -12,12 +12,12 @@ LOCAL_SRC_FILES := com_example_Camera_NativeUtils.cpp
 #LOCAL_SRC_FILES := $(FILE_LIST:$(LOCAL_PATH)/%=%)
 
 # статические библиотеки, уже скомпиленные за нас
-LOCAL_STATIC_LIBRARIES := cpufeatures
+#LOCAL_STATIC_LIBRARIES := cpufeatures
 
 # добавим библиотеку для логирования
 LOCAL_LDLIBS := -llog
 
-LOCAL_CFLAGS := -g
+LOCAL_CFLAGS := -DNDEBUG
 
 include $(BUILD_SHARED_LIBRARY)
 

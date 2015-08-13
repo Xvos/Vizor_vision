@@ -2,9 +2,7 @@
 #include <android/log.h>
 #include <math.h>
 #include <stdio.h>
-#include <cpu-features.h>
 
-#include <string>
 
 #include "Blender.h"
 
