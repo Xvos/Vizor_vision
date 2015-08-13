@@ -76,6 +76,7 @@ public class EditActivity extends Activity implements View.OnClickListener, View
     float oldDist = 1f;
 
     private Map<Integer, Integer> imageMap;
+    private Map<Integer, Class> filterMap;
 
 
     @Override
@@ -256,6 +257,9 @@ public class EditActivity extends Activity implements View.OnClickListener, View
         imageMap.put(R.id.image36Button, R.drawable.zombie_2);
         imageMap.put(R.id.image37Button, R.drawable.zombie_girl);
 
+        filterMap = new HashMap<Integer, Class>();
+        filterMap.put(R.id.grayScaleButton, Gra)
+
         mScaleDetector = new ScaleGestureDetector(getBaseContext(), new ScaleGestureDetector.OnScaleGestureListener() {
             @Override
             public void onScaleEnd(ScaleGestureDetector detector) {
@@ -332,8 +336,9 @@ public class EditActivity extends Activity implements View.OnClickListener, View
 
                 bmp = originalBitmap.copy(originalBitmap.getConfig(), true);
                 cropFilter.process(originalBitmap, bmp);
+                image.setImageBitmap(null);
                 image.setImageDrawable(null);
-                //image.destroyDrawingCache();
+                image.destroyDrawingCache();
 
                 image.setImageBitmap(bmp);
                 bitmap = bmp;
