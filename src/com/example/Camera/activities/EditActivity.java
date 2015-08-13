@@ -28,8 +28,10 @@ import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import com.example.Camera.NativeUtils;
 import com.example.Camera.R;
 import com.example.Camera.control.SaveController;
+import com.example.Camera.editor.FilterType;
 import com.example.Camera.editor.filter.CropFilter;
 import com.example.Camera.editor.filter.SimpleGrayscaleFilter;
 
@@ -438,25 +440,27 @@ public class EditActivity extends Activity implements View.OnClickListener, View
             break;
 
             case R.id.grayScaleButton: {
-                SimpleGrayscaleFilter grayscaleFilter = new SimpleGrayscaleFilter();
-                Bitmap bmp;
+                //SimpleGrayscaleFilter grayscaleFilter = new SimpleGrayscaleFilter();
+                Bitmap bmp = originalBitmap.copy(originalBitmap.getConfig(), true);
 
-                bmp = originalBitmap.copy(originalBitmap.getConfig(), true);
-                grayscaleFilter.process(originalBitmap, bmp);
+                NativeUtils nativeUtils = new NativeUtils();
+                nativeUtils.blend(bmp, FilterType.FILTER_0);
+
+                //grayscaleFilter.process(originalBitmap, bmp);
                 image.setImageBitmap(bmp);
                 bitmap = bmp;
 
-                for(int i = 0; i < images.size(); i++)
-                {
-                    images.get(i).buildDrawingCache();
-                    Bitmap curBitmap = images.get(i).getDrawingCache();
-                    Bitmap grayBitmap = curBitmap.copy(curBitmap.getConfig(), true);
-                    grayscaleFilter.process(curBitmap, grayBitmap);
-                    images.get(i).setImageResource(android.R.color.transparent);
-                    images.get(i).destroyDrawingCache();
-                    images.get(i).setImageBitmap(grayBitmap);
-
-                }
+//                for(int i = 0; i < images.size(); i++)
+//                {
+//                    images.get(i).buildDrawingCache();
+//                    Bitmap curBitmap = images.get(i).getDrawingCache();
+//                    Bitmap grayBitmap = curBitmap.copy(curBitmap.getConfig(), true);
+//                    grayscaleFilter.process(curBitmap, grayBitmap);
+//                    images.get(i).setImageResource(android.R.color.transparent);
+//                    images.get(i).destroyDrawingCache();
+//                    images.get(i).setImageBitmap(grayBitmap);
+//
+//                }
             }
             break;
 
