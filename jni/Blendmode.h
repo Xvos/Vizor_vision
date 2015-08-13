@@ -5,18 +5,9 @@
 #ifndef VIZOR_VISION_BLENDMODE_H
 #define VIZOR_VISION_BLENDMODE_H
 
+#include "Core.h"
+
 #define _USE_BRANCHLESS_MINMAX
-
-#define TRUE 1
-#define FALSE 0
-
-#ifdef _USE_BRANCHLESS_MINMAX
-    #define qMax(a, b) (a > b) * a + (a <= b) * b
-    #define qMin(a, b) (a > b) * b + (a <= b) * a
-#else
-    #define qMax(a, b) a > b ? a : b
-    #define qMin(a, b) a > b ? b : a
-#endif
 
 /*
  * Separate channel blending with modes
@@ -24,16 +15,12 @@
  * return: result's channel color (int)
  */
 #define ChannelBlend_Normal(B,L)     ((B))
-//#define ChannelBlend_Lighten(B,L)    (((L > B) ? L:B))
-//#define ChannelBlend_Darken(B,L)     (((L > B) ? B:L))
 #define ChannelBlend_Lighten(B,L)    (qMax(L, B))
 #define ChannelBlend_Darken(B,L)     (qMin(L, B))
 #define ChannelBlend_Multiply(B,L)   (((B * L) / 255))
 #define ChannelBlend_Average(B,L)    (((B + L) / 2))
 #define ChannelBlend_Add(B,L)        ((qMin(255, (B + L))))
 
-//rewrite subtract mode
-//#define ChannelBlend_Subtract(B,L)   (((B + L < 255) ? 0:(B + L - 255)))
 #define ChannelBlend_Subtract(B,L)   ((qMax(0, (L-B))))
 #define ChannelBlend_Difference(B,L) ((qAbs(B - L)))
 #define ChannelBlend_Negation(B,L)   ((255 - abs(255 - B - L)))
@@ -41,16 +28,12 @@
 #define ChannelBlend_Exclusion(B,L)  ((B + L - 2 * B * L / 255))
 #define ChannelBlend_Overlay(B,L)    (((B < 128) ? (2 * B * L / 255):(255 - 2 * (255 - B) * (255 - L) / 255)))
 
-//#define ChannelBlend_SoftLight(B,L)  (((L < 128)?(2*((B>>1)+64))*((float)L/255):(255-(2*(255-((B>>1)+64))*(float)(255-L)/255))))
-//#define ChannelBlend_SoftLight(B,L)  (((B > 127)?((L)+(255-L)*((B-127.5)/127.5)*(0.5-qAbs(L-127.5)/255)):(L-L*((127.5-B)/127.5)*(0.5-qAbs(L-127.5)/255))))
 #define ChannelBlend_SoftLight(B,L)  (((L < 128)?(B*(L + 128)/255):(255-(255-B)*(255-(L-128))/255)))
 #define ChannelBlend_HardLight(B,L)  (ChannelBlend_Overlay(L,B))
 #define ChannelBlend_ColorDodge(B,L) (((L == 255) ? L:qMin(255, ((B << 8 ) / (255 - L)))))
 #define ChannelBlend_ColorBurn(B,L)  (((L == 0) ? L:qMax(0, (255 - ((255 - B) << 8 ) / L))))
 #define ChannelBlend_LinearDodge(B,L)(ChannelBlend_Add(B,L))
 
-//rewrite linearburn mode
-//#define ChannelBlend_LinearBurn(B,L) (ChannelBlend_Subtract(B,L))
 #define ChannelBlend_LinearBurn(B,L) ((qMax(0, (B + L - 255))))
 #define ChannelBlend_LinearLight(B,L)((L < 128)?ChannelBlend_LinearBurn(B,(2 * L)):ChannelBlend_LinearDodge(B,(2 * (L - 128))))
 #define ChannelBlend_VividLight(B,L) ((L < 128)?ChannelBlend_ColorBurn(B,(2 * L)):ChannelBlend_ColorDodge(B,(2 * (L - 128))))
@@ -61,8 +44,8 @@
 #define ChannelBlend_Phoenix(B,L)    ((qMin(B,L) - max(B,L) + 255))
 
 //Add alpha parameter (opacity: float from 0.0 - 1.0
-#define ChannelBlend_Alpha(B,L,O)    ((O * B + (1 - O) * L))
-#define ChannelBlend_AlphaF(B,L,F,O) (ChannelBlend_Alpha(F(B,L),B,O))
+#define ChannelBlend_Alpha(B,L,BO,LO) ((B * BO) + (L * LO) >> 8)
+#define ChannelBlend_AlphaF(B,L,F,BO,LO) (ChannelBlend_Alpha(F(B,L),B,BO,LO))
 
 /*
  * Make a solid for blending
