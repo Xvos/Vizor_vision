@@ -4,3 +4,6 @@
 #Собираем релизную версию
 APP_OPTIM := release
 
+#Собираем все ABI
+APP_ABI := armeabi armeabi-v7a x86 mips
+
