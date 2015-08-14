@@ -23,7 +23,6 @@ public class PreviewActivity extends Activity implements View.OnClickListener
 {
     private Button okButton, cancelButton;
     private Bitmap bitmap;
-    private byte[] pictureByteArray;
     private SurfaceView bitmapView;
     private ImageView image;
 
@@ -37,8 +36,9 @@ public class PreviewActivity extends Activity implements View.OnClickListener
         setContentView(R.layout.preview);
 
         Intent intent = getIntent();
-        pictureByteArray = SaveController.originalPicture;//intent.getByteArrayExtra(CameraActivity.PICTURE);
-        bitmap = BitmapFactory.decodeByteArray(pictureByteArray, 0, pictureByteArray.length);
+
+        bitmap = BitmapFactory.decodeByteArray(SaveController.originalPicture, 0, SaveController.originalPicture.length);
+        SaveController.bitmapToSave = bitmap;
 
         bitmapView = (SurfaceView) findViewById(R.id.BitmapView);
 
@@ -59,13 +59,19 @@ public class PreviewActivity extends Activity implements View.OnClickListener
     {
         if(v == cancelButton)
         {
+            SaveController.bitmapToSave = null;
+            SaveController.originalPicture = null;
+
             Intent intent = new Intent(this, CameraActivity.class);
             startActivity(intent);
+            finish();
         }
-        else if(v == okButton)
+        else
+        if(v == okButton)
         {
             Intent intent = new Intent(this, EditActivity.class);
              startActivity(intent);
+            finish();
         }
     }
 

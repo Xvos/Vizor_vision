@@ -40,10 +40,9 @@ public class SocialActivity extends Activity implements View.OnClickListener{
         Intent intent = getIntent();
 
         String text = intent.getExtras().getString("TEXT");
-        Bitmap bitmap = BitmapFactory.decodeByteArray(SaveController.lastSavedPicture, 0, SaveController.lastSavedPicture.length);
 
         image = (ImageView) findViewById(R.id.PostImageView);
-        image.setImageBitmap(bitmap);
+        image.setImageBitmap(SaveController.bitmapToSave);
         editText = (EditText) findViewById(R.id.postTextField);
         editText.setText(text);
 

@@ -7,7 +7,7 @@ public class Params {
     /**
      * Путь к папке, где будут храниться изображиния на диске
      */
-    public final static String FOLDER_PATH = "/sdcard/CameraExample/";
+    public final static String FOLDER_PATH = "/sdcard/Vision/";
 
     /**
      * Путь к карте памяти

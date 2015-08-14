@@ -88,6 +88,8 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
         _flashLightButton= (Button) findViewById(R.id.FlashlightButton);
         _flashLightButton.setOnClickListener(this);
         _flashLightButton.setBackgroundResource(_flashButtonRes[_curFlashType]);
+        SaveController.bitmapToSave = null;
+        SaveController.originalPicture = null;
     }
 
  /*   @Override
@@ -135,9 +137,18 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
         Camera.Parameters params = _camera.getParameters();
         params.setFlashMode(_flashTypes[_curFlashType]);
         params.setFocusMode(Camera.Parameters.FOCUS_MODE_AUTO);
-        params.setSceneMode(Camera.Parameters.SCENE_MODE_AUTO);
+        params.setSceneMode(Camera.Parameters.SCENE_MODE_BEACH);
         List<Camera.Size> sizes = params.getSupportedPictureSizes();
         params.setPictureSize(sizes.get(0).width,  sizes.get(0).height);
+
+        //params.setAutoExposureLock(false);
+        //params.setAutoWhiteBalanceLock(false);
+        //params.set("iso", "ISO800"); //Tried with 400, 800, 600 (values obtained from flatten())
+        //params.setColorEffect("none");
+        //params.set("scene-mode", "auto");
+        //params.setFocusMode("auto");
+        //params.setExposureCompensation(4);
+        //camera.setParameters(mParameters);
 
         _camera.setParameters(params);
         setCameraRotation();

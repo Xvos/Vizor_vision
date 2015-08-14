@@ -19,12 +19,12 @@ public class SaveController
 {
     public static byte[] originalPicture;
 
-    public static byte[] lastSavedPicture;
+    public static Bitmap bitmapToSave;
 
     public static Uri pictureUri;
 
 
-    public static void savePicture(byte[] imageByteArray)
+    public static void savePicture(Bitmap picture)
     {
         // сохраняем полученные jpg в папке /sdcard/CameraExample/
         // имя файла - System.currentTimeMillis()
@@ -37,18 +37,18 @@ public class SaveController
                 saveDir.mkdirs();
             }
 
-            Bitmap  bitmap = BitmapFactory.decodeByteArray(imageByteArray, 0, imageByteArray.length);
             String filename = String.format(Params.FOLDER_PATH + "/%d.jpg", System.currentTimeMillis());
             FileOutputStream os = new FileOutputStream(filename);
 
             ByteArrayOutputStream stream = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+            picture.compress(Bitmap.CompressFormat.JPEG, 100, stream);
             byte[] byteArray = stream.toByteArray();
 
             os.write(byteArray);
             os.close();
 
-            lastSavedPicture = byteArray;
+            bitmapToSave  = picture;
+
             pictureUri = Uri.parse("file://" + filename);
         }
 

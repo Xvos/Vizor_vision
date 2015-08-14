@@ -52,8 +52,7 @@ public class EditActivity extends Activity implements View.OnClickListener, View
     private int windowwidth;
     private int windowheight;
 
-    private Bitmap bitmap, originalBitmap;
-    private byte[] pictureByteArray;
+    private Bitmap originalBitmap;
     private ImageView image;
     private Button saveButton, faceDetectButton, textButton, filtersButton, cropButton,
             grayScaleButton, clearFilerButton, imagesButton;
@@ -89,16 +88,20 @@ public class EditActivity extends Activity implements View.OnClickListener, View
         windowwidth = getWindowManager().getDefaultDisplay().getWidth();
         windowheight = getWindowManager().getDefaultDisplay().getHeight();
 
-        Intent intent = getIntent();
-        pictureByteArray = SaveController.originalPicture;
-        bitmap = BitmapFactory.decodeByteArray(pictureByteArray, 0, pictureByteArray.length);
+        ////////////////////////////////////////////////////////////////////////////////
 
-        Bitmap bitmapToSave = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), null, true);
 
-        originalBitmap = bitmapToSave.copy(bitmapToSave.getConfig(), true);
+        //!!!!!!!!!!!!!!!!!!!РОМА!!! Я ЗДЕСЬ!!!!!!!!!!!
+        // TODO:
+
+
+        ////////////////////////////////////////////////////////////////////////////////
+        float scaleFactor = (float)Math.max(windowwidth, windowheight)/(float)Math.min(windowwidth, windowheight);
+
+        originalBitmap = Bitmap.createScaledBitmap(SaveController.bitmapToSave, windowwidth, (int)(windowheight / scaleFactor), false);//SaveController.bitmapToSave.copy(SaveController.bitmapToSave.getConfig(), true);
 
         image = (ImageView) findViewById(R.id.editImage);
-        image.setImageBitmap(bitmapToSave);
+        image.setImageBitmap(originalBitmap);
 
         //Lists
         buttonScroll = (HorizontalScrollView) findViewById(R.id.funcScroll);
@@ -172,7 +175,6 @@ public class EditActivity extends Activity implements View.OnClickListener, View
         textButton.setOnClickListener(this);
         cropButton.setOnClickListener(this);
         filtersButton.setOnClickListener(this);
-        //grayScaleButton.setOnClickListener(this);
         imagesButton.setOnClickListener(this);
         clearFilerButton.setOnClickListener(this);
 
@@ -357,7 +359,7 @@ public class EditActivity extends Activity implements View.OnClickListener, View
                 image.destroyDrawingCache();
 
                 image.setImageBitmap(bmp);
-                bitmap = bmp;
+                originalBitmap = bmp;
             }
             break;
             case R.id.AddText: {
@@ -447,9 +449,9 @@ public class EditActivity extends Activity implements View.OnClickListener, View
             // Filters
             ///////////////////////////
             case R.id.noFilterButton: {
-                Bitmap bmp = originalBitmap.copy(originalBitmap.getConfig(), true);
+                Bitmap bmp = SaveController.bitmapToSave.copy(SaveController.bitmapToSave.getConfig(), true);
                 image.setImageBitmap(bmp);
-                bitmap = bmp;
+                originalBitmap = bmp;
                 for(int i = 0; i < images.size(); i++)
                 {
                     images.get(i).setImageBitmap(null);
@@ -459,7 +461,7 @@ public class EditActivity extends Activity implements View.OnClickListener, View
             break;
 
             case R.id.filterButton1: {
-                Bitmap bmp = originalBitmap.copy(originalBitmap.getConfig(), true);
+                Bitmap bmp = SaveController.bitmapToSave.copy(SaveController.bitmapToSave.getConfig(), true);
 
                 NativeUtils nativeUtils = new NativeUtils();
                 long stamp = System.nanoTime();
@@ -468,7 +470,7 @@ public class EditActivity extends Activity implements View.OnClickListener, View
 
                 //grayscaleFilter.process(originalBitmap, bmp);
                 image.setImageBitmap(bmp);
-                bitmap = bmp;
+                originalBitmap = bmp;
 
 //                for(int i = 0; i < images.size(); i++)
 //                {
@@ -485,7 +487,7 @@ public class EditActivity extends Activity implements View.OnClickListener, View
             break;
 
             case R.id.filterButton2: {
-                Bitmap bmp = originalBitmap.copy(originalBitmap.getConfig(), true);
+                Bitmap bmp = SaveController.bitmapToSave.copy(SaveController.bitmapToSave.getConfig(), true);
 
                 NativeUtils nativeUtils = new NativeUtils();
                 long stamp = System.nanoTime();
@@ -494,7 +496,7 @@ public class EditActivity extends Activity implements View.OnClickListener, View
 
                 //grayscaleFilter.process(originalBitmap, bmp);
                 image.setImageBitmap(bmp);
-                bitmap = bmp;
+                originalBitmap = bmp;
 
 //                for(int i = 0; i < images.size(); i++)
 //                {
@@ -511,7 +513,7 @@ public class EditActivity extends Activity implements View.OnClickListener, View
             break;
 
             case R.id.filterButton3: {
-                Bitmap bmp = originalBitmap.copy(originalBitmap.getConfig(), true);
+                Bitmap bmp = SaveController.bitmapToSave.copy(SaveController.bitmapToSave.getConfig(), true);
 
                 NativeUtils nativeUtils = new NativeUtils();
                 long stamp = System.nanoTime();
@@ -520,7 +522,7 @@ public class EditActivity extends Activity implements View.OnClickListener, View
 
                 //grayscaleFilter.process(originalBitmap, bmp);
                 image.setImageBitmap(bmp);
-                bitmap = bmp;
+                originalBitmap = bmp;
 
 //                for(int i = 0; i < images.size(); i++)
 //                {
@@ -537,7 +539,7 @@ public class EditActivity extends Activity implements View.OnClickListener, View
             break;
 
             case R.id.filterButton4: {
-                Bitmap bmp = originalBitmap.copy(originalBitmap.getConfig(), true);
+                Bitmap bmp = SaveController.bitmapToSave.copy(SaveController.bitmapToSave.getConfig(), true);
 
                 NativeUtils nativeUtils = new NativeUtils();
                 long stamp = System.nanoTime();
@@ -546,7 +548,7 @@ public class EditActivity extends Activity implements View.OnClickListener, View
 
                 //grayscaleFilter.process(originalBitmap, bmp);
                 image.setImageBitmap(bmp);
-                bitmap = bmp;
+                originalBitmap = bmp;
 
 //                for(int i = 0; i < images.size(); i++)
 //                {
@@ -563,7 +565,7 @@ public class EditActivity extends Activity implements View.OnClickListener, View
             break;
 
             case R.id.filterButton5: {
-                Bitmap bmp = originalBitmap.copy(originalBitmap.getConfig(), true);
+                Bitmap bmp = SaveController.bitmapToSave.copy(SaveController.bitmapToSave.getConfig(), true);
 
                 NativeUtils nativeUtils = new NativeUtils();
                 long stamp = System.nanoTime();
@@ -572,7 +574,7 @@ public class EditActivity extends Activity implements View.OnClickListener, View
 
                 //grayscaleFilter.process(originalBitmap, bmp);
                 image.setImageBitmap(bmp);
-                bitmap = bmp;
+                originalBitmap = bmp;
 
                 for(int i = 0; i < images.size(); i++)
                 {
@@ -651,28 +653,6 @@ public class EditActivity extends Activity implements View.OnClickListener, View
     // Utility  Stuff
     /////////////////////////////////
 
-    public static Bitmap drawableToBitmap (Drawable drawable) {
-        Bitmap bitmap = null;
-
-        if (drawable instanceof BitmapDrawable) {
-            BitmapDrawable bitmapDrawable = (BitmapDrawable) drawable;
-            if(bitmapDrawable.getBitmap() != null) {
-                return bitmapDrawable.getBitmap();
-            }
-        }
-
-        if(drawable.getIntrinsicWidth() <= 0 || drawable.getIntrinsicHeight() <= 0) {
-            bitmap = Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888); // Single color bitmap will be created of 1x1 pixel
-        } else {
-            bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
-        }
-
-        Canvas canvas = new Canvas(bitmap);
-        drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
-        drawable.draw(canvas);
-        return bitmap;
-    }
-
     @Override
     public void onBackPressed() {
         Intent intent = new Intent(this, CameraActivity.class);
@@ -685,11 +665,11 @@ public class EditActivity extends Activity implements View.OnClickListener, View
     }
 
     private void parseBitmapAndSave() {
-        Bitmap drawableBitmap = bitmap.copy(Bitmap.Config.ARGB_8888, true);
+        Bitmap drawableBitmap = originalBitmap.copy(Bitmap.Config.ARGB_8888, true);
         Canvas canvas = new Canvas(drawableBitmap);
 
-        int bitmapW = bitmap.getWidth();
-        int bitmapH = bitmap.getHeight();
+        int bitmapW = originalBitmap.getWidth();
+        int bitmapH = originalBitmap.getHeight();
         int imageW = image.getWidth();
         int imageH = image.getHeight();
         float scaleFactorX = Float.valueOf(bitmapW) / imageW;
@@ -723,11 +703,9 @@ public class EditActivity extends Activity implements View.OnClickListener, View
             canvas.drawText(text.getText(), 0, text.getText().length(),
                     Float.valueOf((drawableBitmap.getWidth()) / 2), drawableBitmap.getHeight() * 4/5, paint);
         }
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        drawableBitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
-        byte[] byteArray = stream.toByteArray();
 
-        SaveController.savePicture(byteArray);
+
+        SaveController.savePicture(drawableBitmap);
     }
 
     /////////////////////////////////

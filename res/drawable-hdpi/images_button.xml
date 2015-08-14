@@ -1,0 +1,9 @@
+<selector xmlns:android="http://schemas.android.com/apk/res/android">    <item android:state_focused="true"
+        android:drawable="@drawable/edit_center"
+        />
+    <item android:state_pressed="true"
+        android:drawable="@drawable/edit_center"
+        />
+    <item android:drawable="@drawable/edit_center"
+        />  //means normal
+</selector>
