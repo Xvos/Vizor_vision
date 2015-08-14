@@ -16,7 +16,6 @@ import android.widget.ImageView;
 import com.example.Camera.R;
 import com.example.Camera.control.SaveController;
 import com.example.Camera.control.SocialController;
-import com.vk.sdk.VKScope;
 import com.vk.sdk.VKSdk;
 
 /**
@@ -107,8 +106,7 @@ public class SocialActivity extends Activity implements View.OnClickListener{
         }
 
         if (checkBoxVK.isChecked()) {
-            //VKSdk.login(this, VKScope.WALL, VKScope.PHOTOS);
-            //SocialController.postOnVk(this, editText.getText().toString());
+            SocialController.postOnVk(this);
         }
 
         if (checkBoxInstagram.isChecked()) {

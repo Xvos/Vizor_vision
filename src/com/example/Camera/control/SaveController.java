@@ -1,12 +1,9 @@
 package com.example.Camera.control;
 
-import android.app.Activity;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.net.Uri;
-import android.widget.Toast;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -74,22 +71,5 @@ public class SaveController
         mtx.postRotate(degree);
 
         return Bitmap.createBitmap(bitmap, 0, 0, w, h, mtx, true);
-    }
-
-    public static void postOnTelegram(Activity activity, byte[] imageByteArray, String text)
-    {
-        Intent waIntent = new Intent(Intent.ACTION_SEND);
-        waIntent.setType("text/plain");
-        waIntent.setPackage("org.telegram.messenger");
-        if (waIntent != null)
-        {
-            waIntent.putExtra(Intent.EXTRA_TEXT, text );
-            waIntent.putExtra(Intent.EXTRA_STREAM, imageByteArray);
-            activity.startActivity(Intent.createChooser(waIntent, "Share with"));
-        }
-        else
-        {
-            Toast.makeText(activity.getApplicationContext(), "Telegram is not installed", Toast.LENGTH_SHORT).show();
-        }
     }
 }
