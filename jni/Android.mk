@@ -18,6 +18,7 @@ LOCAL_SRC_FILES := com_example_Camera_NativeUtils.cpp
 LOCAL_LDLIBS := -llog
 
 LOCAL_CFLAGS := -DNDEBUG
+LOCAL_CFLAGS += -O3
 
 include $(BUILD_SHARED_LIBRARY)
 

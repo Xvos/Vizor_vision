@@ -20,78 +20,78 @@
         u32* lastPtr = bytes + (size / sizeof(u32));\
         u32 bOpacity = (u32)(opacity * 256.0f);\
         u32 lOpacity = 256 - bOpacity;\
-        Color cColor;\
+        color_t cColor;\
         while (bytes++ != lastPtr)\
         {\
-            Color::fromABGR(&cColor, *bytes);\
+            color_colorFromABGR(&cColor, *bytes);\
             ALPHA_BLEND(cColor, rColor, function, bOpacity, lOpacity);\
-            *bytes = cColor.toABGR();\
+            color_colorToABGR(&cColor, bytes);\
         }
 
-class Blender
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+void blender_Process(void* data, u32 size, s32 mode)
 {
-public:
-    void process(void* data, u32 size, s32 mode)
+    switch (mode)
     {
-        switch (mode)
-        {
-            case 0: {
-                //SoftLight, 97 67 20, 70%
-                Color rColor(97, 67, 20);
-                BLEND_FILTER(data, size, ChannelBlend_SoftLight, rColor, 0.70f);
-                break;
-            }
-            case 1: {
-                //ColorDodge, 97 89 20, 50%
-                Color rColor(97, 89, 20);
-                BLEND_FILTER(data, size, ChannelBlend_ColorDodge, rColor, 0.5f);
-                break;
-            }
-            case 2: {
-                //Overlay, 195 153 128, 50%
-                Color rColor(195, 153, 128);
-                BLEND_FILTER(data, size, ChannelBlend_Overlay, rColor, 0.5f);
-                break;
-            }
-            case 3: {
-                //HardLight, 148 124 172, 50%
-                Color rColor(148, 124, 172);
-                BLEND_FILTER(data, size, ChannelBlend_HardLight, rColor, 0.5f);
-                break;
-            }
-            case 4: {
-                //Lightin 10%, 255 243 214
-                Color rColor(255, 243, 214);
-                BLEND_FILTER(data, size, ChannelBlend_HardLight, rColor, 0.1f);
-                break;
-            }
+        case 0: {
+            //SoftLight, 97 67 20, 70%
+            color_t rColor = color_fromComponents(97, 67, 20);
+            BLEND_FILTER(data, size, ChannelBlend_SoftLight, rColor, 0.70f);
+            break;
         }
-
-    }
-
-    FORCEINLINE void fast_grayscale(void* data, s32 size)
-    {
-        unsigned int* bytes = (unsigned int*)data;
-        unsigned int* lastPtr = bytes + (size / sizeof(unsigned int));
-
-        Color cColor;
-        unsigned char lum;
-
-        while (bytes++ != lastPtr)
-        {
-            Color::fromABGR(&cColor, *bytes);
-
-            lum = LUM(cColor);
-            cColor.R = lum;
-            cColor.G = lum;
-            cColor.B = lum;
-
-            *bytes = cColor.toABGR();
+        case 1: {
+            //ColorDodge, 97 89 20, 50%
+            color_t rColor = color_fromComponents(97, 89, 20);
+            BLEND_FILTER(data, size, ChannelBlend_ColorDodge, rColor, 0.5f);
+            break;
+        }
+        case 2: {
+            //Overlay, 195 153 128, 50%
+            color_t rColor = color_fromComponents(195, 153, 128);
+            BLEND_FILTER(data, size, ChannelBlend_Overlay, rColor, 0.5f);
+            break;
+        }
+        case 3: {
+            //HardLight, 148 124 172, 50%
+            color_t rColor = color_fromComponents(148, 124, 172);
+            BLEND_FILTER(data, size, ChannelBlend_HardLight, rColor, 0.5f);
+            break;
+        }
+        case 4: {
+            //Lightin 10%, 255 243 214
+            color_t rColor = color_fromComponents(255, 243, 214);
+            BLEND_FILTER(data, size, ChannelBlend_HardLight, rColor, 0.1f);
+            break;
         }
     }
+}
 
+#ifdef __cplusplus
+}
+#endif
 
-};
-
+//    FORCEINLINE void fast_grayscale(void* data, s32 size)
+//    {
+//        unsigned int* bytes = (unsigned int*)data;
+//        unsigned int* lastPtr = bytes + (size / sizeof(unsigned int));
+//
+//        Color cColor;
+//        unsigned char lum;
+//
+//        while (bytes++ != lastPtr)
+//        {
+//            Color::fromABGR(&cColor, *bytes);
+//
+//            lum = LUM(cColor);
+//            cColor.R = lum;
+//            cColor.G = lum;
+//            cColor.B = lum;
+//
+//            *bytes = cColor.toABGR();
+//        }
+//    }
 
 #endif //VIZOR_VISION_BLENDER_H
