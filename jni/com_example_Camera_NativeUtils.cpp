@@ -40,9 +40,7 @@ JNIEXPORT void JNICALL Java_com_example_Camera_NativeUtils_blendWithColor
 	if(!isCopy)
 	{
 		int length = (int)env->GetArrayLength(*arr);
-
-		Blender b;
-		b.process(data, length, blendFunction);
+		blender_Process(data, length, blendFunction);
 	}
 	else
 	{
