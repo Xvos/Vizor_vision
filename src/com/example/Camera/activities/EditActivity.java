@@ -55,14 +55,8 @@ public class EditActivity extends Activity implements View.OnClickListener, View
     private Bitmap originalBitmap;
     private ImageView image;
     private Button saveButton, faceDetectButton, textButton, filtersButton, cropButton,
-            grayScaleButton, clearFilerButton, imagesButton;
-    private Button image1Button, image2Button, image3Button, image4Button, image5Button, image6Button,
-            image7Button, image8Button, image9Button, image10Button, image11Button, image12Button,
-            image13Button, image14Button, image15Button, image16Button, image17Button, image18Button,
-            image19Button, image20Button, image21Button, image22Button, image23Button, image24Button,
-            image25Button, image26Button, image27Button, image28Button, image29Button, image30Button,
-            image31Button, image32Button, image33Button, image34Button, image35Button, image36Button, image37Button;
-    private HorizontalScrollView buttonScroll, filterList, imageList;
+            clearFilerButton, imagesButton;
+       private HorizontalScrollView buttonScroll, filterList, imageList;
     private EditText text;
     private Boolean _isFiltersSelected = false;
     private Boolean _isImagesSelected = false;
@@ -96,9 +90,12 @@ public class EditActivity extends Activity implements View.OnClickListener, View
 
 
         ////////////////////////////////////////////////////////////////////////////////
-        //float scaleFactor = (float)Math.max(windowwidth, windowheight)/(float)Math.min(windowwidth, windowheight);
+        //float scaleFactor = (float)Math.min(windowwidth, windowheight)/(float)Math.max(windowwidth, windowheight);
+        float scaleFactor = (float)windowwidth / (float)SaveController.bitmapToSave.getWidth();
 
-        originalBitmap = SaveController.bitmapToSave.copy(SaveController.bitmapToSave.getConfig(), true);
+        originalBitmap = Bitmap.createScaledBitmap(SaveController.bitmapToSave, windowwidth, (int)(SaveController.bitmapToSave.getHeight() *
+                scaleFactor), false);
+        //SaveController.bitmapToSave.copy(SaveController.bitmapToSave.getConfig(), true);
 
         image = (ImageView) findViewById(R.id.editImage);
         image.setImageBitmap(originalBitmap);
@@ -526,7 +523,7 @@ public class EditActivity extends Activity implements View.OnClickListener, View
     }
 
     private void parseBitmapAndSave() {
-        Bitmap drawableBitmap = originalBitmap.copy(Bitmap.Config.ARGB_8888, true);
+        Bitmap drawableBitmap = SaveController.bitmapToSave.copy(Bitmap.Config.ARGB_8888, true);
         Canvas canvas = new Canvas(drawableBitmap);
 
         int bitmapW = originalBitmap.getWidth();
