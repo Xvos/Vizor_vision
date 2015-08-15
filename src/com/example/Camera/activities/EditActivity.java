@@ -96,9 +96,9 @@ public class EditActivity extends Activity implements View.OnClickListener, View
 
 
         ////////////////////////////////////////////////////////////////////////////////
-        float scaleFactor = (float)Math.max(windowwidth, windowheight)/(float)Math.min(windowwidth, windowheight);
+        //float scaleFactor = (float)Math.max(windowwidth, windowheight)/(float)Math.min(windowwidth, windowheight);
 
-        originalBitmap = Bitmap.createScaledBitmap(SaveController.bitmapToSave, windowwidth, (int)(windowheight / scaleFactor), false);//SaveController.bitmapToSave.copy(SaveController.bitmapToSave.getConfig(), true);
+        originalBitmap = SaveController.bitmapToSave.copy(SaveController.bitmapToSave.getConfig(), true);
 
         image = (ImageView) findViewById(R.id.editImage);
         image.setImageBitmap(originalBitmap);
@@ -114,7 +114,6 @@ public class EditActivity extends Activity implements View.OnClickListener, View
         textButton = (Button) findViewById(R.id.AddText);
         cropButton = (Button) findViewById(R.id.CropButton);
         filtersButton = (Button) findViewById(R.id.FiltersButton);
-        //grayScaleButton = (Button) findViewById(R.id.grayScaleButton);
         clearFilerButton = (Button) findViewById(R.id.noFilterButton);
         imagesButton = (Button) findViewById(R.id.imagesButton);
 
@@ -131,43 +130,43 @@ public class EditActivity extends Activity implements View.OnClickListener, View
         //Image Buttons
         //TODO : Такая инициализация переменных напоминает говно. ПЕРЕДЕЛАТЬ!!
 
-        image1Button = (Button) findViewById(R.id.image1Button);
-        image2Button = (Button) findViewById(R.id.image2Button);
-        image3Button = (Button) findViewById(R.id.image3Button);
-        image4Button = (Button) findViewById(R.id.image4Button);
-        image5Button = (Button) findViewById(R.id.image5Button);
-        image6Button = (Button) findViewById(R.id.image6Button);
-        image7Button = (Button) findViewById(R.id.image7Button);
-        image8Button = (Button) findViewById(R.id.image8Button);
-        image9Button = (Button) findViewById(R.id.image9Button);
-        image10Button = (Button) findViewById(R.id.image10Button);
-        image11Button = (Button) findViewById(R.id.image11Button);
-        image12Button = (Button) findViewById(R.id.image12Button);
-        image13Button = (Button) findViewById(R.id.image13Button);
-        image14Button = (Button) findViewById(R.id.image14Button);
-        image15Button = (Button) findViewById(R.id.image15Button);
-        image16Button = (Button) findViewById(R.id.image16Button);
-        image17Button = (Button) findViewById(R.id.image17Button);
-        image18Button = (Button) findViewById(R.id.image18Button);
-        image19Button = (Button) findViewById(R.id.image19Button);
-        image20Button = (Button) findViewById(R.id.image20Button);
-        image21Button = (Button) findViewById(R.id.image21Button);
-        image22Button = (Button) findViewById(R.id.image22Button);
-        image23Button = (Button) findViewById(R.id.image23Button);
-        image24Button = (Button) findViewById(R.id.image24Button);
-        image25Button = (Button) findViewById(R.id.image25Button);
-        image26Button = (Button) findViewById(R.id.image26Button);
-        image27Button = (Button) findViewById(R.id.image27Button);
-        image28Button = (Button) findViewById(R.id.image28Button);
-        image29Button = (Button) findViewById(R.id.image29Button);
-        image30Button = (Button) findViewById(R.id.image30Button);
-        image31Button = (Button) findViewById(R.id.image31Button);
-        image32Button = (Button) findViewById(R.id.image32Button);
-        image33Button = (Button) findViewById(R.id.image33Button);
-        image34Button = (Button) findViewById(R.id.image34Button);
-        image35Button = (Button) findViewById(R.id.image35Button);
-        image36Button = (Button) findViewById(R.id.image36Button);
-        image37Button = (Button) findViewById(R.id.image37Button);
+        findViewById(R.id.image1Button).setOnClickListener(this);
+        findViewById(R.id.image2Button).setOnClickListener(this);
+        findViewById(R.id.image3Button).setOnClickListener(this);
+        findViewById(R.id.image4Button).setOnClickListener(this);
+        findViewById(R.id.image5Button).setOnClickListener(this);
+        findViewById(R.id.image6Button).setOnClickListener(this);
+        findViewById(R.id.image7Button).setOnClickListener(this);
+        findViewById(R.id.image8Button).setOnClickListener(this);
+        findViewById(R.id.image9Button).setOnClickListener(this);
+        findViewById(R.id.image10Button).setOnClickListener(this);
+        findViewById(R.id.image11Button).setOnClickListener(this);
+        findViewById(R.id.image12Button).setOnClickListener(this);
+        findViewById(R.id.image13Button).setOnClickListener(this);
+        findViewById(R.id.image14Button).setOnClickListener(this);
+        findViewById(R.id.image15Button).setOnClickListener(this);
+        findViewById(R.id.image16Button).setOnClickListener(this);
+        findViewById(R.id.image17Button).setOnClickListener(this);
+        findViewById(R.id.image18Button).setOnClickListener(this);
+        findViewById(R.id.image19Button).setOnClickListener(this);
+        findViewById(R.id.image20Button).setOnClickListener(this);
+        findViewById(R.id.image21Button).setOnClickListener(this);
+        findViewById(R.id.image22Button).setOnClickListener(this);
+        findViewById(R.id.image23Button).setOnClickListener(this);
+        findViewById(R.id.image24Button).setOnClickListener(this);
+        findViewById(R.id.image25Button).setOnClickListener(this);
+        findViewById(R.id.image26Button).setOnClickListener(this);
+        findViewById(R.id.image27Button).setOnClickListener(this);
+        findViewById(R.id.image28Button).setOnClickListener(this);
+        findViewById(R.id.image29Button).setOnClickListener(this);
+        findViewById(R.id.image30Button).setOnClickListener(this);
+        findViewById(R.id.image31Button).setOnClickListener(this);
+        findViewById(R.id.image32Button).setOnClickListener(this);
+        findViewById(R.id.image33Button).setOnClickListener(this);
+        findViewById(R.id.image34Button).setOnClickListener(this);
+        findViewById(R.id.image35Button).setOnClickListener(this);
+        findViewById(R.id.image36Button).setOnClickListener(this);
+        findViewById(R.id.image37Button).setOnClickListener(this);
 
         //Setting button listeners
         saveButton.setOnClickListener(this);
@@ -178,47 +177,7 @@ public class EditActivity extends Activity implements View.OnClickListener, View
         imagesButton.setOnClickListener(this);
         clearFilerButton.setOnClickListener(this);
 
-        textButton.setBackgroundResource(R.drawable.images_button);
-
-        //Images
-        //TODO : Такая инициализация лисенеров тоже напоминает говно. ПЕРЕДЕЛАТЬ!!
-        image1Button.setOnClickListener(this);
-        image2Button.setOnClickListener(this);
-        image3Button.setOnClickListener(this);
-        image4Button.setOnClickListener(this);
-        image5Button.setOnClickListener(this);
-        image6Button.setOnClickListener(this);
-        image7Button.setOnClickListener(this);
-        image8Button.setOnClickListener(this);
-        image9Button.setOnClickListener(this);
-        image10Button.setOnClickListener(this);
-        image11Button.setOnClickListener(this);
-        image12Button.setOnClickListener(this);
-        image13Button.setOnClickListener(this);
-        image14Button.setOnClickListener(this);
-        image15Button.setOnClickListener(this);
-        image16Button.setOnClickListener(this);
-        image17Button.setOnClickListener(this);
-        image18Button.setOnClickListener(this);
-        image19Button.setOnClickListener(this);
-        image20Button.setOnClickListener(this);
-        image21Button.setOnClickListener(this);
-        image22Button.setOnClickListener(this);
-        image23Button.setOnClickListener(this);
-        image24Button.setOnClickListener(this);
-        image25Button.setOnClickListener(this);
-        image26Button.setOnClickListener(this);
-        image27Button.setOnClickListener(this);
-        image28Button.setOnClickListener(this);
-        image29Button.setOnClickListener(this);
-        image30Button.setOnClickListener(this);
-        image31Button.setOnClickListener(this);
-        image32Button.setOnClickListener(this);
-        image33Button.setOnClickListener(this);
-        image34Button.setOnClickListener(this);
-        image35Button.setOnClickListener(this);
-        image36Button.setOnClickListener(this);
-        image37Button.setOnClickListener(this);
+        //textButton.setBackgroundResource(R.drawable.images_button);
 
         //Filter Buttons
         findViewById(R.id.filterButton1).setOnClickListener(this);
@@ -460,7 +419,12 @@ public class EditActivity extends Activity implements View.OnClickListener, View
             }
             break;
 
-            case R.id.filterButton1: {
+            case R.id.filterButton1:
+            case R.id.filterButton2:
+            case R.id.filterButton3:
+            case R.id.filterButton4:
+            case R.id.filterButton5:
+            {
                 Bitmap bmp = SaveController.bitmapToSave.copy(SaveController.bitmapToSave.getConfig(), true);
 
                 NativeUtils nativeUtils = new NativeUtils();
@@ -486,109 +450,6 @@ public class EditActivity extends Activity implements View.OnClickListener, View
             }
             break;
 
-            case R.id.filterButton2: {
-                Bitmap bmp = SaveController.bitmapToSave.copy(SaveController.bitmapToSave.getConfig(), true);
-
-                NativeUtils nativeUtils = new NativeUtils();
-                long stamp = System.nanoTime();
-                nativeUtils.blend(bmp, filterMap.get(v.getId()));
-                Log.d("VISION", "Time: " + (System.nanoTime() - stamp));
-
-                //grayscaleFilter.process(originalBitmap, bmp);
-                image.setImageBitmap(bmp);
-                originalBitmap = bmp;
-
-//                for(int i = 0; i < images.size(); i++)
-//                {
-//                    images.get(i).buildDrawingCache();
-//                    Bitmap curBitmap = images.get(i).getDrawingCache();
-//                    Bitmap grayBitmap = curBitmap.copy(curBitmap.getConfig(), true);
-//                    grayscaleFilter.process(curBitmap, grayBitmap);
-//                    images.get(i).setImageResource(android.R.color.transparent);
-//                    images.get(i).destroyDrawingCache();
-//                    images.get(i).setImageBitmap(grayBitmap);
-//
-//                }
-            }
-            break;
-
-            case R.id.filterButton3: {
-                Bitmap bmp = SaveController.bitmapToSave.copy(SaveController.bitmapToSave.getConfig(), true);
-
-                NativeUtils nativeUtils = new NativeUtils();
-                long stamp = System.nanoTime();
-                nativeUtils.blend(bmp, filterMap.get(v.getId()));
-                Log.d("VISION", "Time: " + (System.nanoTime() - stamp));
-
-                //grayscaleFilter.process(originalBitmap, bmp);
-                image.setImageBitmap(bmp);
-                originalBitmap = bmp;
-
-//                for(int i = 0; i < images.size(); i++)
-//                {
-//                    images.get(i).buildDrawingCache();
-//                    Bitmap curBitmap = images.get(i).getDrawingCache();
-//                    Bitmap grayBitmap = curBitmap.copy(curBitmap.getConfig(), true);
-//                    grayscaleFilter.process(curBitmap, grayBitmap);
-//                    images.get(i).setImageResource(android.R.color.transparent);
-//                    images.get(i).destroyDrawingCache();
-//                    images.get(i).setImageBitmap(grayBitmap);
-//
-//                }
-            }
-            break;
-
-            case R.id.filterButton4: {
-                Bitmap bmp = SaveController.bitmapToSave.copy(SaveController.bitmapToSave.getConfig(), true);
-
-                NativeUtils nativeUtils = new NativeUtils();
-                long stamp = System.nanoTime();
-                nativeUtils.blend(bmp, filterMap.get(v.getId()));
-                Log.d("VISION", "Time: " + (System.nanoTime() - stamp));
-
-                //grayscaleFilter.process(originalBitmap, bmp);
-                image.setImageBitmap(bmp);
-                originalBitmap = bmp;
-
-//                for(int i = 0; i < images.size(); i++)
-//                {
-//                    images.get(i).buildDrawingCache();
-//                    Bitmap curBitmap = images.get(i).getDrawingCache();
-//                    Bitmap grayBitmap = curBitmap.copy(curBitmap.getConfig(), true);
-//                    grayscaleFilter.process(curBitmap, grayBitmap);
-//                    images.get(i).setImageResource(android.R.color.transparent);
-//                    images.get(i).destroyDrawingCache();
-//                    images.get(i).setImageBitmap(grayBitmap);
-//
-//                }
-            }
-            break;
-
-            case R.id.filterButton5: {
-                Bitmap bmp = SaveController.bitmapToSave.copy(SaveController.bitmapToSave.getConfig(), true);
-
-                NativeUtils nativeUtils = new NativeUtils();
-                long stamp = System.nanoTime();
-                nativeUtils.blend(bmp, filterMap.get(v.getId()));
-                Log.d("VISION", "Time: " + (System.nanoTime() - stamp));
-
-                //grayscaleFilter.process(originalBitmap, bmp);
-                image.setImageBitmap(bmp);
-                originalBitmap = bmp;
-
-                for(int i = 0; i < images.size(); i++)
-                {
-                    images.get(i).buildDrawingCache();
-                    Bitmap curBitmap = images.get(i).getDrawingCache();
-                    Bitmap grayBitmap = curBitmap.copy(curBitmap.getConfig(), true);
-                    nativeUtils.blend(curBitmap, filterMap.get(v.getId()));
-                    images.get(i).setImageResource(android.R.color.transparent);
-                    images.get(i).destroyDrawingCache();
-                    images.get(i).setImageBitmap(grayBitmap);
-
-                }
-            }
-            break;
 
             ////////////////////////////
             // Images

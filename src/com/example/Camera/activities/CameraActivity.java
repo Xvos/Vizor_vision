@@ -140,15 +140,13 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
         params.setSceneMode(Camera.Parameters.SCENE_MODE_BEACH);
         List<Camera.Size> sizes = params.getSupportedPictureSizes();
         params.setPictureSize(sizes.get(0).width,  sizes.get(0).height);
+        params.setAutoExposureLock(false);
+        params.setAutoWhiteBalanceLock(false);
+        params.set("iso", "ISO800"); //Tried with 400, 800, 600 (values obtained from flatten())
+        params.setColorEffect("none");
+        params.set("scene-mode", "auto");
+        params.setExposureCompensation(4);
 
-        //params.setAutoExposureLock(false);
-        //params.setAutoWhiteBalanceLock(false);
-        //params.set("iso", "ISO800"); //Tried with 400, 800, 600 (values obtained from flatten())
-        //params.setColorEffect("none");
-        //params.set("scene-mode", "auto");
-        //params.setFocusMode("auto");
-        //params.setExposureCompensation(4);
-        //camera.setParameters(mParameters);
 
         _camera.setParameters(params);
         setCameraRotation();
