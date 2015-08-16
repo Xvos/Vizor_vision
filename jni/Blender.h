@@ -7,6 +7,7 @@
 
 #include "Core.h"
 #include "Color.h"
+#include "EBlendFunction.h"
 
 #define LUM(color) (((f32)color.R * .3f) + ((f32)color.G * .59f) + ((f32)color.B * .11f))
 
@@ -32,38 +33,146 @@
 extern "C" {
 #endif
 
-void blender_Process(void* data, u32 size, s32 mode)
+/*
+ * Data - data in ABRG8 format.
+ * Size - size in bytes of the data
+ * Mode - function to blend
+ * IntColor - color to blend with as an integer
+ * Float - opacity
+ */
+void blender_Process(void* data, u32 size, s32 mode, s32 intColor, float opacity)
 {
-    switch (mode)
+    color_t rColor;
+    color_colorFromARGB(&rColor, (u32)intColor);
+
+    E_BLEND_FUNCTION blend_function = (E_BLEND_FUNCTION)mode;
+
+    switch (blend_function)
     {
-        case 0: {
-            //SoftLight, 97 67 20, 70%
-            color_t rColor = color_fromComponents(97, 67, 20);
-            BLEND_FILTER(data, size, ChannelBlend_SoftLight, rColor, 0.70f);
+        case EBF_NORMAL: {
+            BLEND_FILTER(data, size, ChannelBlend_Normal, rColor, opacity);
             break;
         }
-        case 1: {
-            //ColorDodge, 97 89 20, 50%
-            color_t rColor = color_fromComponents(97, 89, 20);
-            BLEND_FILTER(data, size, ChannelBlend_ColorDodge, rColor, 0.5f);
+
+        case EBF_LIGHTEN: {
+            BLEND_FILTER(data, size, ChannelBlend_Lighten, rColor, opacity);
             break;
         }
-        case 2: {
-            //Overlay, 195 153 128, 50%
-            color_t rColor = color_fromComponents(195, 153, 128);
-            BLEND_FILTER(data, size, ChannelBlend_Overlay, rColor, 0.5f);
+
+        case EBF_DARKEN: {
+            BLEND_FILTER(data, size, ChannelBlend_Darken, rColor, opacity);
             break;
         }
-        case 3: {
-            //HardLight, 148 124 172, 50%
-            color_t rColor = color_fromComponents(148, 124, 172);
-            BLEND_FILTER(data, size, ChannelBlend_HardLight, rColor, 0.5f);
+
+        case EBF_MULTIPLY: {
+            BLEND_FILTER(data, size, ChannelBlend_Multiply, rColor, opacity);
             break;
         }
-        case 4: {
-            //Lightin 10%, 255 243 214
-            color_t rColor = color_fromComponents(255, 243, 214);
-            BLEND_FILTER(data, size, ChannelBlend_HardLight, rColor, 0.1f);
+
+        case EBF_AVERAGE: {
+            BLEND_FILTER(data, size, ChannelBlend_Average, rColor, opacity);
+            break;
+        }
+
+        case EBF_ADD: {
+            BLEND_FILTER(data, size, ChannelBlend_Add, rColor, opacity);
+            break;
+        }
+
+
+
+        case EBF_SUBTRACT: {
+            BLEND_FILTER(data, size, ChannelBlend_Subtract, rColor, opacity);
+            break;
+        }
+
+        case EBF_DIFFERENCE: {
+            BLEND_FILTER(data, size, ChannelBlend_Difference, rColor, opacity);
+            break;
+        }
+
+        case EBF_NEGATION: {
+            BLEND_FILTER(data, size, ChannelBlend_Negation, rColor, opacity);
+            break;
+        }
+
+        case EBF_SCREEN: {
+            BLEND_FILTER(data, size, ChannelBlend_Screen, rColor, opacity);
+            break;
+        }
+
+        case EBF_EXCLUSION: {
+            BLEND_FILTER(data, size, ChannelBlend_Exclusion, rColor, opacity);
+            break;
+        }
+
+        case EBF_OVERLAY: {
+            BLEND_FILTER(data, size, ChannelBlend_Overlay, rColor, opacity);
+            break;
+        }
+
+        case EBF_SOFT_LIGHT: {
+            BLEND_FILTER(data, size, ChannelBlend_SoftLight, rColor, opacity);
+            break;
+        }
+
+        case EBF_HARD_LIGHT: {
+            BLEND_FILTER(data, size, ChannelBlend_HardLight, rColor, opacity);
+            break;
+        }
+
+        case EBF_COLOR_DODGE: {
+            BLEND_FILTER(data, size, ChannelBlend_ColorDodge, rColor, opacity);
+            break;
+        }
+
+        case EBF_COLOR_BURN: {
+            BLEND_FILTER(data, size, ChannelBlend_ColorBurn, rColor, opacity);
+            break;
+        }
+
+        case EBF_LINEAR_DODGE: {
+            BLEND_FILTER(data, size, ChannelBlend_LinearDodge, rColor, opacity);
+            break;
+        }
+
+        case EBF_LINEAR_BURN: {
+            BLEND_FILTER(data, size, ChannelBlend_LinearBurn, rColor, opacity);
+            break;
+        }
+
+        case EBF_LINEAR_LIGHT: {
+            BLEND_FILTER(data, size, ChannelBlend_LinearLight, rColor, opacity);
+            break;
+        }
+
+        case EBF_VIVID_LIGHT: {
+            BLEND_FILTER(data, size, ChannelBlend_VividLight, rColor, opacity);
+            break;
+        }
+
+        case EBF_PIN_LIGHT: {
+            BLEND_FILTER(data, size, ChannelBlend_PinLight, rColor, opacity);
+            break;
+        }
+
+        case EBF_HARD_MIX: {
+            BLEND_FILTER(data, size, ChannelBlend_HardMix, rColor, opacity);
+            break;
+        }
+
+        case EBF_REFLECT: {
+            BLEND_FILTER(data, size, ChannelBlend_Reflect, rColor, opacity);
+            break;
+        }
+
+        case EBF_GLOW: {
+            BLEND_FILTER(data, size, ChannelBlend_Glow, rColor, opacity);
+            break;
+        }
+
+        case EBF_PHOENIX: {
+            BLEND_FILTER(data, size, ChannelBlend_Phoenix, rColor, opacity);
             break;
         }
     }

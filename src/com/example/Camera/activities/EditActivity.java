@@ -30,7 +30,7 @@ import android.widget.TextView;
 import com.example.Camera.NativeUtils;
 import com.example.Camera.R;
 import com.example.Camera.control.SaveController;
-import com.example.Camera.editor.FilterType;
+import com.example.Camera.editor.FilterPrefab;
 import com.example.Camera.editor.filter.CropFilter;
 
 import java.util.ArrayList;
@@ -67,7 +67,7 @@ public class EditActivity extends Activity implements View.OnClickListener, View
     float oldDist = 1f;
 
     private Map<Integer, Integer> imageMap;
-    private Map<Integer, FilterType> filterMap;
+    private Map<Integer, FilterPrefab> filterMap;
 
 
     @Override
@@ -221,14 +221,14 @@ public class EditActivity extends Activity implements View.OnClickListener, View
         imageMap.put(R.id.image36Button, R.drawable.zombie_2);
         imageMap.put(R.id.image37Button, R.drawable.zombie_girl);
 
-        filterMap = new HashMap<Integer, FilterType>();
-        filterMap.put(R.id.filterButton1, FilterType.FILTER_0);
-        filterMap.put(R.id.filterButton2, FilterType.FILTER_1);
-        filterMap.put(R.id.filterButton3, FilterType.FILTER_2);
-        filterMap.put(R.id.filterButton4, FilterType.FILTER_3);
-        filterMap.put(R.id.filterButton5, FilterType.FILTER_4);
-        filterMap.put(R.id.filterButton6, FilterType.FILTER_5);
-        filterMap.put(R.id.filterButton7, FilterType.FILTER_6);
+        filterMap = new HashMap<Integer, FilterPrefab>();
+        filterMap.put(R.id.filterButton1, FilterPrefab.Filter0);
+        filterMap.put(R.id.filterButton2, FilterPrefab.Filter1);
+        filterMap.put(R.id.filterButton3, FilterPrefab.Filter2);
+        filterMap.put(R.id.filterButton4, FilterPrefab.Filter3);
+        filterMap.put(R.id.filterButton5, FilterPrefab.Filter4);
+        filterMap.put(R.id.filterButton6, FilterPrefab.Filter5);
+        filterMap.put(R.id.filterButton7, FilterPrefab.Filter6);
 
         mScaleDetector = new ScaleGestureDetector(getBaseContext(), new ScaleGestureDetector.OnScaleGestureListener() {
             @Override
@@ -417,7 +417,8 @@ public class EditActivity extends Activity implements View.OnClickListener, View
             case R.id.filterButton3:
             case R.id.filterButton4:
             case R.id.filterButton5:
-            {
+            case R.id.filterButton6:
+            case R.id.filterButton7: {
                 Bitmap bmp = SaveController.bitmapToSave.copy(SaveController.bitmapToSave.getConfig(), true);
 
                 NativeUtils nativeUtils = new NativeUtils();
@@ -434,7 +435,7 @@ public class EditActivity extends Activity implements View.OnClickListener, View
 //                    images.get(i).buildDrawingCache();
 //                    Bitmap curBitmap = images.get(i).getDrawingCache();
 //                    Bitmap grayBitmap = curBitmap.copy(curBitmap.getConfig(), true);
-//                    grayscaleFilter.process(curBitmap, grayBitmap);
+//                    nativeUtils.blend(curBitmap, filterMap.get(v.getId()));
 //                    images.get(i).setImageResource(android.R.color.transparent);
 //                    images.get(i).destroyDrawingCache();
 //                    images.get(i).setImageBitmap(grayBitmap);
@@ -442,7 +443,6 @@ public class EditActivity extends Activity implements View.OnClickListener, View
 //                }
             }
             break;
-
 
             ////////////////////////////
             // Images
