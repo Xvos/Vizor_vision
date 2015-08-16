@@ -4,11 +4,10 @@ import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.drawable.BitmapDrawable;
+import android.graphics.PointF;
 import android.graphics.drawable.Drawable;
 import android.media.FaceDetector;
 import android.os.Bundle;
@@ -33,9 +32,7 @@ import com.example.Camera.R;
 import com.example.Camera.control.SaveController;
 import com.example.Camera.editor.FilterType;
 import com.example.Camera.editor.filter.CropFilter;
-import com.example.Camera.editor.filter.SimpleGrayscaleFilter;
 
-import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -85,17 +82,11 @@ public class EditActivity extends Activity implements View.OnClickListener, View
         ////////////////////////////////////////////////////////////////////////////////
 
 
-        //!!!!!!!!!!!!!!!!!!!РОМА!!! Я ЗДЕСЬ!!!!!!!!!!!
-        // TODO:
-
-
-        ////////////////////////////////////////////////////////////////////////////////
-        //float scaleFactor = (float)Math.min(windowwidth, windowheight)/(float)Math.max(windowwidth, windowheight);
         float scaleFactor = (float)windowwidth / (float)SaveController.bitmapToSave.getWidth();
 
         originalBitmap = Bitmap.createScaledBitmap(SaveController.bitmapToSave, windowwidth, (int)(SaveController.bitmapToSave.getHeight() *
                 scaleFactor), false);
-        //SaveController.bitmapToSave.copy(SaveController.bitmapToSave.getConfig(), true);
+
 
         image = (ImageView) findViewById(R.id.editImage);
         image.setImageBitmap(originalBitmap);
@@ -113,6 +104,13 @@ public class EditActivity extends Activity implements View.OnClickListener, View
         filtersButton = (Button) findViewById(R.id.FiltersButton);
         clearFilerButton = (Button) findViewById(R.id.noFilterButton);
         imagesButton = (Button) findViewById(R.id.imagesButton);
+
+       /* faceDetectButton.setBackgroundResource(R.drawable.action_button);
+        textButton.setBackgroundResource(R.drawable.action_button);
+        cropButton.setBackgroundResource(R.drawable.action_button);
+        filtersButton.setBackgroundResource(R.drawable.action_button);
+        imagesButton.setBackgroundResource(R.drawable.action_button);
+        saveButton.setBackgroundResource(R.drawable.save_button);*/
 
         //Edit Text
         text = (EditText) findViewById(R.id.editText);
@@ -173,8 +171,6 @@ public class EditActivity extends Activity implements View.OnClickListener, View
         filtersButton.setOnClickListener(this);
         imagesButton.setOnClickListener(this);
         clearFilerButton.setOnClickListener(this);
-
-        //textButton.setBackgroundResource(R.drawable.images_button);
 
         //Filter Buttons
         findViewById(R.id.filterButton1).setOnClickListener(this);
@@ -266,27 +262,27 @@ public class EditActivity extends Activity implements View.OnClickListener, View
             }
             break;
             case R.id.FaceDetectButton: {
-               /* int i = 0;
-                Bitmap bitmap = BitmapFactory.decodeByteArray(pictureByteArray, 0, pictureByteArray.length);
+                int i = 0;
+                //Bitmap bitmap = BitmapFactory.decodeByteArray(pictureByteArray, 0, pictureByteArray.length);
                 FrameLayout layout = (FrameLayout)findViewById(R.id.GalleryLayout);
 
-                while(!buttons.isEmpty())
+               /* while(!buttons.isEmpty())
                 {
                     layout.removeView(buttons.get(0));
                     buttons.remove(0);
-                }
+                }*/
 
-                FaceDetector fd = new FaceDetector(bitmap.getWidth(), bitmap.getHeight(), 5);
+                FaceDetector fd = new FaceDetector(originalBitmap.getWidth(), originalBitmap.getHeight(), 5);
                 FaceDetector.Face[] faces = new FaceDetector.Face[5];
-                int c = fd.findFaces(bitmap, faces);
+                int c = fd.findFaces(originalBitmap, faces);
                 for (i = 0; i < c; i++)
                 {
                     Log.d("TAG", Float.toString(faces[i].eyesDistance()));
                     Log.d("TAG", Float.toString(image.getScaleX()));
                     Log.d("TAG", Float.toString(image.getScaleY()));
 
-                    Float scaleX = Float.valueOf(image.getWidth()) / bitmap.getWidth();
-                    Float scaleY = Float.valueOf(image.getHeight()) / bitmap.getHeight();
+                    Float scaleX = (float)(image.getWidth()) / originalBitmap.getWidth();
+                    Float scaleY = (float)(image.getHeight()) / originalBitmap.getHeight();
 
                     PointF midPoint = new PointF();
                     faces[i].getMidPoint(midPoint);
@@ -299,7 +295,7 @@ public class EditActivity extends Activity implements View.OnClickListener, View
                     b.setAlpha((float) 0.6);
 
                     layout.addView(b);
-                }*/
+                }
 
             }
             break;
@@ -526,12 +522,12 @@ public class EditActivity extends Activity implements View.OnClickListener, View
         Bitmap drawableBitmap = SaveController.bitmapToSave.copy(Bitmap.Config.ARGB_8888, true);
         Canvas canvas = new Canvas(drawableBitmap);
 
-        int bitmapW = originalBitmap.getWidth();
-        int bitmapH = originalBitmap.getHeight();
+        int bitmapW = drawableBitmap.getWidth();
+        int bitmapH = drawableBitmap.getHeight();
         int imageW = image.getWidth();
         int imageH = image.getHeight();
-        float scaleFactorX = Float.valueOf(bitmapW) / imageW;
-        float scaleFactorY = Float.valueOf(bitmapH) / imageH;
+        float scaleFactorX = (float)bitmapW / imageW;
+        float scaleFactorY = (float)bitmapH /imageH;
         FrameLayout.LayoutParams layoutParams;
         ImageView curImage;
 
@@ -546,20 +542,27 @@ public class EditActivity extends Activity implements View.OnClickListener, View
                     curBitmap, (int) (curBitmap.getWidth() * scaleFactorX * curImage.getScaleX()),
                     (int) (curBitmap.getHeight() * scaleFactorY * curImage.getScaleY()), false);
 
-            canvas.drawBitmap(resizedBitmap, layoutParams.leftMargin * scaleFactorX + (int) (curBitmap.getWidth() * (1 - curImage.getScaleX())),
-                    layoutParams.topMargin * scaleFactorY + (int) (curBitmap.getWidth() * (1 - curImage.getScaleX())), null);
+            canvas.drawBitmap(resizedBitmap, layoutParams.leftMargin * scaleFactorX + (curBitmap.getWidth() -  resizedBitmap.getWidth()),
+                    layoutParams.topMargin * scaleFactorY +  (curBitmap.getHeight() - resizedBitmap.getHeight()), null);
         }
 
 
         //Adding Text
-        if (text.getVisibility() == View.VISIBLE) {
+        if (text.getVisibility() == View.VISIBLE)
+        {
+            int textHeight = (int)(text.getTextSize() * (float)drawableBitmap.getHeight() / originalBitmap.getHeight());
+            Paint recPaint = new Paint();
+            recPaint.setColor(0x8c313131);
+            canvas.drawRect(0, drawableBitmap.getHeight() * 5/6 - textHeight, drawableBitmap.getWidth(),
+                    drawableBitmap.getHeight() * 5/6 + textHeight/8, recPaint);
+
             Paint paint = new Paint();
             paint.setColor(Color.WHITE);
             paint.setStyle(Paint.Style.FILL);
             paint.setTextAlign(Paint.Align.CENTER);
-            paint.setTextSize(text.getTextSize() + 25);
+            paint.setTextSize(text.getTextSize() * (float)drawableBitmap.getHeight() / originalBitmap.getHeight());
             canvas.drawText(text.getText(), 0, text.getText().length(),
-                    Float.valueOf((drawableBitmap.getWidth()) / 2), drawableBitmap.getHeight() * 4/5, paint);
+                    Float.valueOf((drawableBitmap.getWidth()) / 2), drawableBitmap.getHeight() * 5/6, paint);
         }
 
 

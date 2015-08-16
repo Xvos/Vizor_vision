@@ -65,6 +65,14 @@
             </LinearLayout>
         </HorizontalScrollView>
 
+        <Button
+            android:id="@+id/SaveButton"
+                android:layout_width="76dp"
+                android:layout_height="73dp"
+            android:background="@drawable/save"
+            android:layout_gravity="right|top">
+        </Button>
+
     </FrameLayout>
 
     <HorizontalScrollView
@@ -422,12 +430,6 @@
 
         </LinearLayout>
     </HorizontalScrollView>
-
-    <Button android:text="Save"
-            android:id="@+id/SaveButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-    </Button>
 
     <EditText
         android:layout_width="fill_parent"
