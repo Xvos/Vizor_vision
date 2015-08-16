@@ -137,18 +137,16 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
         Camera.Parameters params = _camera.getParameters();
         params.setFlashMode(_flashTypes[_curFlashType]);
         params.setFocusMode(Camera.Parameters.FOCUS_MODE_AUTO);
-        params.setSceneMode(Camera.Parameters.SCENE_MODE_BEACH);
+        //params.setSceneMode(Camera.Parameters.SCENE_MODE_BEACH);
         List<Camera.Size> sizes = params.getSupportedPictureSizes();
         params.setPictureSize(sizes.get(0).width,  sizes.get(0).height);
+        params.setAutoExposureLock(false);
+        params.setAutoWhiteBalanceLock(false);
+        params.set("iso", "ISO800"); //Tried with 400, 800, 600 (values obtained from flatten())
+        params.setColorEffect("none");
+        params.set("scene-mode", "auto");
+        params.setExposureCompensation(4);
 
-        //params.setAutoExposureLock(false);
-        //params.setAutoWhiteBalanceLock(false);
-        //params.set("iso", "ISO800"); //Tried with 400, 800, 600 (values obtained from flatten())
-        //params.setColorEffect("none");
-        //params.set("scene-mode", "auto");
-        //params.setFocusMode("auto");
-        //params.setExposureCompensation(4);
-        //camera.setParameters(mParameters);
 
         _camera.setParameters(params);
         setCameraRotation();
@@ -207,7 +205,7 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
             {
                 _camera.autoFocus(this);
             }
-            //_camera.takePicture(null, null, null, this);
+
         }
         else if(v == _flashLightButton)
         {
@@ -254,19 +252,10 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
         }
         else if(v == _uploadButton)
         {
-            //Intent intent = new Intent(this, UploadActivity.class);
-            //startActivity(intent);
-
-           /* Intent intent = new Intent();
-            intent.setType("image/*");
-            intent.setAction(Intent.ACTION_GET_CONTENT);
-            startActivityForResult(Intent.createChooser(intent,
-                    "Select Picture"), SELECT_PICTURE);*/
-
-            // Create intent to Open Image applications like Gallery, Google Photos
+             // Create intent to Open Image applications like Gallery, Google Photos
             Intent galleryIntent = new Intent(Intent.ACTION_PICK,
                     android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-// Start the Intent
+            // Start the Intent
             startActivityForResult(galleryIntent, SELECT_PICTURE);
         }
 
@@ -306,11 +295,9 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
         try {
             stopCamera();
             Intent intent = new Intent(this, PreviewActivity.class);
-            //intent.putExtra(PICTURE, paramArrayOfByte);
             SaveController.originalPicture = paramArrayOfByte;
             startActivity(intent);
 
-            //SaveController.postOnTelegram(this, paramArrayOfByte, "Test");
             finish();
         }
         catch (Exception e)
