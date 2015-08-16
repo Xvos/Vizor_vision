@@ -3,11 +3,14 @@ package com.example.Camera.activities;
 import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PointF;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.media.FaceDetector;
 import android.os.Bundle;
@@ -24,6 +27,7 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
@@ -105,12 +109,25 @@ public class EditActivity extends Activity implements View.OnClickListener, View
         clearFilerButton = (Button) findViewById(R.id.noFilterButton);
         imagesButton = (Button) findViewById(R.id.imagesButton);
 
-       /* faceDetectButton.setBackgroundResource(R.drawable.action_button);
+        /*faceDetectButton.setBackgroundResource(R.drawable.action_button);
         textButton.setBackgroundResource(R.drawable.action_button);
         cropButton.setBackgroundResource(R.drawable.action_button);
         filtersButton.setBackgroundResource(R.drawable.action_button);
         imagesButton.setBackgroundResource(R.drawable.action_button);
         saveButton.setBackgroundResource(R.drawable.save_button);*/
+
+        Resources res = getResources();
+        Bitmap back = BitmapFactory.decodeResource(res, R.drawable.bg);
+        Bitmap cropIcon = BitmapFactory.decodeResource(res, R.drawable.crop);
+        Bitmap textIcon = BitmapFactory.decodeResource(res, R.drawable.text);
+        Bitmap filterIcon = BitmapFactory.decodeResource(res, R.drawable.filters);
+        Bitmap imageIcon = BitmapFactory.decodeResource(res, R.drawable.images);
+
+
+        cropButton.setBackground(new BitmapDrawable(getResources(), mergeBitmaps(back, cropIcon)));
+        textButton.setBackground(new BitmapDrawable(getResources(), mergeBitmaps(back, textIcon)));
+        filtersButton.setBackground(new BitmapDrawable(getResources(), mergeBitmaps(back, filterIcon)));
+        imagesButton.setBackground(new BitmapDrawable(getResources(), mergeBitmaps(back, imageIcon)));
 
         //Edit Text
         text = (EditText) findViewById(R.id.editText);
@@ -121,6 +138,7 @@ public class EditActivity extends Activity implements View.OnClickListener, View
         text.setTextColor(Color.WHITE);
         text.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
 
+        LinearLayout funcLayout = (LinearLayout) findViewById(R.id.funcList);
 
         //Image Buttons
         //TODO : Такая инициализация переменных напоминает говно. ПЕРЕДЕЛАТЬ!!
@@ -322,7 +340,9 @@ public class EditActivity extends Activity implements View.OnClickListener, View
             break;
             case R.id.FiltersButton:
             {
-                Float buttonScrollYTo, filterScrollYTo, imageScrollYTo;
+                int buttonScrollYTo;
+                int filterScrollYTo;
+                float imageScrollYTo;
                 if (_isImagesSelected)
                 {
                     imageScrollYTo = imageList.getY() + filterList.getHeight() * 2;
@@ -334,12 +354,12 @@ public class EditActivity extends Activity implements View.OnClickListener, View
 
                 if (_isFiltersSelected)
                 {
-                    buttonScrollYTo = buttonScroll.getY() + filterList.getHeight();
-                    filterScrollYTo = buttonScroll.getY() + filterList.getHeight();
+                    buttonScrollYTo = windowheight - buttonScroll.getHeight();
+                    filterScrollYTo = windowheight;
                 } else
                 {
-                    buttonScrollYTo = buttonScroll.getY() - filterList.getHeight();
-                    filterScrollYTo = buttonScroll.getY() - filterList.getHeight();
+                    buttonScrollYTo = windowheight - filterList.getHeight() - buttonScroll.getHeight();
+                    filterScrollYTo = buttonScrollYTo;
                 }
 
                 if (!_isImagesSelected) {
@@ -373,9 +393,17 @@ public class EditActivity extends Activity implements View.OnClickListener, View
                 if (_isImagesSelected) {
                     buttonScrollYTo = buttonScroll.getY() + filterList.getHeight();
                     imageScrollYTo = buttonScroll.getY() + filterList.getHeight() * 2;
-                } else {
+                } else
+                {
                     buttonScrollYTo = buttonScroll.getY() - filterList.getHeight();
-                    imageScrollYTo = buttonScroll.getY() - filterList.getHeight() * 2;
+                    if(_isFiltersSelected)
+                    {
+                        imageScrollYTo = buttonScroll.getY() - filterList.getHeight();
+                    }
+                    else
+                    {
+                        imageScrollYTo = buttonScroll.getY() - filterList.getHeight() * 2;
+                    }
                 }
 
 
@@ -426,21 +454,21 @@ public class EditActivity extends Activity implements View.OnClickListener, View
                 nativeUtils.blend(bmp, filterMap.get(v.getId()));
                 Log.d("VISION", "Time: " + (System.nanoTime() - stamp));
 
-                //grayscaleFilter.process(originalBitmap, bmp);
+
                 image.setImageBitmap(bmp);
                 originalBitmap = bmp;
 
-//                for(int i = 0; i < images.size(); i++)
-//                {
-//                    images.get(i).buildDrawingCache();
-//                    Bitmap curBitmap = images.get(i).getDrawingCache();
-//                    Bitmap grayBitmap = curBitmap.copy(curBitmap.getConfig(), true);
-//                    nativeUtils.blend(curBitmap, filterMap.get(v.getId()));
-//                    images.get(i).setImageResource(android.R.color.transparent);
-//                    images.get(i).destroyDrawingCache();
-//                    images.get(i).setImageBitmap(grayBitmap);
-//
-//                }
+                for(int i = 0; i < images.size(); i++)
+                {
+                    images.get(i).buildDrawingCache();
+                    Bitmap curBitmap = images.get(i).getDrawingCache();
+                    Bitmap grayBitmap = curBitmap.copy(curBitmap.getConfig(), true);
+                    nativeUtils.blend(curBitmap, filterMap.get(v.getId()));
+                    images.get(i).setImageResource(android.R.color.transparent);
+                    images.get(i).destroyDrawingCache();
+                    images.get(i).setImageBitmap(grayBitmap);
+
+                }
             }
             break;
 
@@ -492,7 +520,6 @@ public class EditActivity extends Activity implements View.OnClickListener, View
                 FrameLayout layout = (FrameLayout) findViewById(R.id.GalleryLayout);
                 newImage.setOnTouchListener(this);
                 newImage.setAdjustViewBounds(false);
-
                 images.add(newImage);
 
                 imageOrigContents.add(newImage.getDrawable());
@@ -506,6 +533,19 @@ public class EditActivity extends Activity implements View.OnClickListener, View
     /////////////////////////////////
     // Utility  Stuff
     /////////////////////////////////
+
+    private static Bitmap mergeBitmaps(Bitmap original, Bitmap overlay) {
+        Bitmap result = Bitmap.createBitmap(original.getWidth(), original
+                .getHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(result);
+        Paint paint = new Paint();
+        paint.setAntiAlias(true);
+
+        canvas.drawBitmap(original, 0, 0, paint);
+        canvas.drawBitmap(overlay, 230, 80, paint);
+
+        return result;
+    }
 
     @Override
     public void onBackPressed() {
