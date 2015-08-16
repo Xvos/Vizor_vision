@@ -7,8 +7,6 @@
 
 #include "Core.h"
 
-#define _USE_BRANCHLESS_MINMAX
-
 /*
  * Separate channel blending with modes
  * params: B - Base Layer color (int), L - Blended Layer color (int)
@@ -23,7 +21,7 @@
 
 #define ChannelBlend_Subtract(B,L)   ((qMax(0, (L-B))))
 #define ChannelBlend_Difference(B,L) ((qAbs(B - L)))
-#define ChannelBlend_Negation(B,L)   ((255 - abs(255 - B - L)))
+#define ChannelBlend_Negation(B,L)   ((255 - qAbs(255 - B - L)))
 #define ChannelBlend_Screen(B,L)     ((255 - (((255 - B) * (255 - L)) >> 8)))
 #define ChannelBlend_Exclusion(B,L)  ((B + L - 2 * B * L / 255))
 #define ChannelBlend_Overlay(B,L)    (((B < 128) ? (2 * B * L / 255):(255 - 2 * (255 - B) * (255 - L) / 255)))
@@ -41,7 +39,7 @@
 #define ChannelBlend_HardMix(B,L)    (((ChannelBlend_VividLight(B,L) < 128) ? 0:255))
 #define ChannelBlend_Reflect(B,L)    (((L == 255) ? L:qMin(255, (B * B / (255 - L)))))
 #define ChannelBlend_Glow(B,L)       (ChannelBlend_Reflect(L,B))
-#define ChannelBlend_Phoenix(B,L)    ((qMin(B,L) - max(B,L) + 255))
+#define ChannelBlend_Phoenix(B,L)    ((qMin(B,L) - qMax(B,L) + 255))
 
 //Add alpha parameter (opacity: float from 0.0 - 1.0
 #define ChannelBlend_Alpha(B,L,BO,LO) ((B * BO) + (L * LO) >> 8)

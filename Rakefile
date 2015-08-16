@@ -6,7 +6,7 @@ end
 
 task :native_build do |t|
 	ndk_folder = "#{ENV['ANDROID_NDK']}"
-	build_exe = ndk_folder + "/ndk-build NDK_DEBUG=0"
+	build_exe = ndk_folder + "/ndk-build"
 
 	sh(build_exe)
 end

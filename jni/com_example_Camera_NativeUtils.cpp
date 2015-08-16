@@ -17,7 +17,7 @@ extern "C" {
 
 
 JNIEXPORT void JNICALL Java_com_example_Camera_NativeUtils_blendWithColor
-        (JNIEnv *env, jclass klass, jobject bitmap, jint imageWidth, jint imageHeight, jint blendFunction)
+        (JNIEnv *env, jclass klass, jobject bitmap, jint imageWidth, jint imageHeight, jint blendFunction, jint intColor, jfloat opacity)
 {
     // fetch the class
     jclass bitmapClass = env->GetObjectClass(bitmap);
@@ -39,8 +39,8 @@ JNIEXPORT void JNICALL Java_com_example_Camera_NativeUtils_blendWithColor
 
 	if(!isCopy)
 	{
-		int length = (int)env->GetArrayLength(*arr);
-		blender_Process(data, length, blendFunction);
+		u32 length = (u32)env->GetArrayLength(*arr);
+		blender_Process(data, length, blendFunction, intColor, opacity);
 	}
 	else
 	{

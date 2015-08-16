@@ -30,6 +30,12 @@ color_t color_fromComponents(u32 R, u32 G, u32 B)
     return newColor;
 }
 
+void color_colorFromARGB(color_t *color, const u32 abgrColor) {
+    color->R = ((abgrColor >> 16) & 0x000000FF);
+    color->G = ((abgrColor >> 8) & 0x000000FF);
+    color->B = ((abgrColor) & 0x000000FF);
+}
+
 void color_colorFromABGR(color_t *color, const u32 abgrColor) {
     color->B = ((abgrColor >> 16) & 0x000000FF);
     color->G = ((abgrColor >> 8) & 0x000000FF);

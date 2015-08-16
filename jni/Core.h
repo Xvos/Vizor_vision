@@ -55,4 +55,6 @@ typedef double f64;
     #define qMin(a, b) a > b ? b : a
 #endif
 
+#define qAbs(a) a > 0 ? a : -a
+
 #endif //VIZOR_VISION_CORE_H

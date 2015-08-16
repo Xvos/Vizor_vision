@@ -10,8 +10,7 @@ extern "C" {
 
 
 JNIEXPORT void JNICALL Java_com_example_Camera_NativeUtils_blendWithColor
-  (JNIEnv *, jclass, jobject, jint, jint, jint);
-
+  (JNIEnv *, jclass, jobject, jint, jint, jint, jint, jfloat);
 
 #ifdef __cplusplus
 }
