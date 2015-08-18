@@ -25,7 +25,7 @@ public class SocialActivity extends Activity implements View.OnClickListener{
 
     private ImageView image;
     private EditText editText;
-    private CheckBox checkBoxFaceBook, checkBoxVK, checkBoxInstagram, checkBoxTelegram;
+    private CheckBox checkBoxFaceBook, checkBoxVK, checkBoxInstagram, checkBoxTelegram, checkBoxViber;
     private Button postButton;
 
     @Override
@@ -57,6 +57,9 @@ public class SocialActivity extends Activity implements View.OnClickListener{
         checkBoxInstagram = (CheckBox) findViewById(R.id.socialButton4);
         checkBoxInstagram.setBackgroundResource(R.drawable.chekbox_res);
 
+        checkBoxViber = (CheckBox) findViewById(R.id.socialButton5);
+        checkBoxViber.setBackgroundResource(R.drawable.chekbox_res);
+
         checkBoxFaceBook.setOnClickListener(this);
         checkBoxVK.setOnClickListener(this);
         checkBoxTelegram.setOnClickListener(this);
@@ -83,6 +86,9 @@ public class SocialActivity extends Activity implements View.OnClickListener{
                 break;
             case R.id.socialButton4:
                 Log.d("TAG", "SocialNet 4");
+                break;
+            case R.id.socialButton5:
+                Log.d("TAG", "SocialNet 5");
                 break;
             case R.id.postButton:
                 post();
@@ -114,6 +120,10 @@ public class SocialActivity extends Activity implements View.OnClickListener{
 
         if (checkBoxTelegram.isChecked()) {
             SocialController.postOnTelegram(this);
+        }
+
+        if (checkBoxViber.isChecked()) {
+            SocialController.postOnViber(this);
         }
     }
 }

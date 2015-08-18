@@ -70,4 +70,21 @@ public class SocialController {
                     Toast.LENGTH_SHORT).show();
         }
     }
+
+    public static void postOnViber(Activity activity)
+    {
+        Intent share = new Intent(android.content.Intent.ACTION_SEND);
+        share.setType("image/png");
+        share.setPackage("com.viber.voip");
+        if (share != null)
+        {
+            share.putExtra(Intent.EXTRA_STREAM, SaveController.pictureUri);
+            activity.startActivity(share.createChooser(share, "Share With"));
+        }
+        else
+        {
+            Toast.makeText(activity.getApplicationContext(), "Viber application is not installed",
+                    Toast.LENGTH_SHORT).show();
+        }
+    }
 }
