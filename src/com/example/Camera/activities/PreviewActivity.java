@@ -37,7 +37,10 @@ public class PreviewActivity extends Activity implements View.OnClickListener
 
         Intent intent = getIntent();
 
-        bitmap = BitmapFactory.decodeByteArray(SaveController.originalPicture, 0, SaveController.originalPicture.length);
+        BitmapFactory.Options opt = new BitmapFactory.Options();
+        opt.inMutable = true;
+
+        bitmap = BitmapFactory.decodeByteArray(SaveController.originalPicture, 0, SaveController.originalPicture.length, opt);
         SaveController.bitmapToSave = bitmap;
 
         bitmapView = (SurfaceView) findViewById(R.id.BitmapView);

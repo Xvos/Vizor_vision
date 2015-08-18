@@ -141,7 +141,7 @@ public class EditActivity extends Activity implements View.OnClickListener, View
         imagesYoffset = -back.getHeight();
         imageLayoutParams.topMargin = imagesYoffset;
         //image.setLayoutParams(imageLayoutParams);
-        image.setY(-cropButton.getHeight()/2);
+        image.setY(-cropButton.getHeight() / 2);
 
         //Image Buttons
         //TODO : Такая инициализация переменных напоминает говно. ПЕРЕДЕЛАТЬ!!
@@ -644,7 +644,10 @@ public class EditActivity extends Activity implements View.OnClickListener, View
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
     }
 
-    private void parseBitmapAndSave() {
+
+
+    private void parseBitmapAndSave()
+    {
         Bitmap drawableBitmap = SaveController.bitmapToSave;
         Canvas canvas = new Canvas(drawableBitmap);
 
@@ -676,6 +679,8 @@ public class EditActivity extends Activity implements View.OnClickListener, View
             canvas.drawBitmap(resizedBitmap,(layoutParams.leftMargin) * scaleFactorX + xOffset,
                     (layoutParams.topMargin + curImage.getY()) * scaleFactorY + yOffset, null);
         }
+
+        // TODO: process image here!
 
 
         //Adding Text
