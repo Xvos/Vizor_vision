@@ -12,6 +12,7 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
 
+import com.example.Camera.BitmapFactoryHelper;
 import com.example.Camera.R;
 import com.example.Camera.control.SaveController;
 
@@ -37,11 +38,10 @@ public class PreviewActivity extends Activity implements View.OnClickListener
 
         Intent intent = getIntent();
 
-        BitmapFactory.Options opt = new BitmapFactory.Options();
-        opt.inMutable = true;
-
-        bitmap = BitmapFactory.decodeByteArray(SaveController.originalPicture, 0, SaveController.originalPicture.length, opt);
+        bitmap = BitmapFactoryHelper.decodeInScreenResolution(this, SaveController.originalPicture);
         SaveController.bitmapToSave = bitmap;
+
+        // Do other stuff
 
         bitmapView = (SurfaceView) findViewById(R.id.BitmapView);
 
