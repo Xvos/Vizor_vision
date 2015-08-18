@@ -621,8 +621,9 @@ public class EditActivity extends Activity implements View.OnClickListener, View
     }
 
     private static Bitmap mergeBitmaps(Bitmap original, Bitmap overlay) {
+
         Bitmap result = Bitmap.createBitmap(original.getWidth(), original
-                .getHeight(), Bitmap.Config.ARGB_8888);
+                .getHeight(), original.getConfig());
         Canvas canvas = new Canvas(result);
         Paint paint = new Paint();
         paint.setAntiAlias(true);
@@ -631,6 +632,17 @@ public class EditActivity extends Activity implements View.OnClickListener, View
         canvas.drawBitmap(overlay, 230, 80, paint);
 
         return result;
+
+        // TODO: Никите - проверить на Ромином HTC и залить версию ниже
+//        Bitmap result = original.copy(original.getConfig(), true);
+//
+//        Canvas canvas = new Canvas(result);
+//        Paint paint = new Paint();
+//        paint.setAntiAlias(true);
+//
+//        canvas.drawBitmap(overlay, 230, 80, paint);
+//
+//        return result;
     }
 
     @Override
@@ -689,16 +701,23 @@ public class EditActivity extends Activity implements View.OnClickListener, View
             int textHeight = (int)(text.getTextSize() * (float)drawableBitmap.getHeight() / originalBitmap.getHeight());
             Paint recPaint = new Paint();
             recPaint.setColor(0x8c313131);
-            canvas.drawRect(0, drawableBitmap.getHeight() * 5/6 - textHeight, drawableBitmap.getWidth(),
-                    drawableBitmap.getHeight() * 5/6 + textHeight/8, recPaint);
+            canvas.drawRect(0,
+                    drawableBitmap.getHeight() * 5.0f / 6.0f - textHeight,
+                    drawableBitmap.getWidth(),
+                    drawableBitmap.getHeight() * 5.0f / 6.0f + textHeight / 8.0f,
+                    recPaint);
 
             Paint paint = new Paint();
             paint.setColor(Color.WHITE);
             paint.setStyle(Paint.Style.FILL);
             paint.setTextAlign(Paint.Align.CENTER);
             paint.setTextSize(text.getTextSize() * (float)drawableBitmap.getHeight() / originalBitmap.getHeight());
-            canvas.drawText(text.getText(), 0, text.getText().length(),
-                    Float.valueOf((drawableBitmap.getWidth()) / 2), drawableBitmap.getHeight() * 5/6, paint);
+            canvas.drawText(text.getText(),
+                    0,
+                    text.getText().length(),
+                    (drawableBitmap.getWidth()) / 2.0f,
+                    drawableBitmap.getHeight() * 5.0f / 6.0f,
+                    paint);
         }
 
 
