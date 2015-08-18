@@ -472,7 +472,7 @@ public class EditActivity extends Activity implements View.OnClickListener, View
                 for(int i = 0; i < images.size(); i++)
                 {
                     images.get(i).buildDrawingCache();
-                    Bitmap curBitmap = images.get(i).getDrawingCache();
+                    Bitmap curBitmap =  ((BitmapDrawable)imageOrigContents.get(i)).getBitmap();
                     Bitmap grayBitmap = curBitmap.copy(curBitmap.getConfig(), true);
                     curBitmap = null;
                     nativeUtils.blend(grayBitmap, filterMap.get(v.getId()));
@@ -645,7 +645,7 @@ public class EditActivity extends Activity implements View.OnClickListener, View
     }
 
     private void parseBitmapAndSave() {
-        Bitmap drawableBitmap = SaveController.bitmapToSave.copy(Bitmap.Config.ARGB_8888, true);
+        Bitmap drawableBitmap = SaveController.bitmapToSave;
         Canvas canvas = new Canvas(drawableBitmap);
 
         int bitmapW = drawableBitmap.getWidth();
@@ -661,7 +661,7 @@ public class EditActivity extends Activity implements View.OnClickListener, View
             curImage = images.get(i);
             layoutParams = (FrameLayout.LayoutParams) curImage.getLayoutParams();
             curImage.buildDrawingCache();
-            Bitmap curBitmap = curImage.getDrawingCache();
+            Bitmap curBitmap = ((BitmapDrawable)imageOrigContents.get(i)).getBitmap();
 
             // битмап для сохранения
             Bitmap resizedBitmap = Bitmap.createScaledBitmap(
@@ -673,8 +673,8 @@ public class EditActivity extends Activity implements View.OnClickListener, View
             int xOffset = (int)((resizedBitmap.getWidth() / scale) - resizedBitmap.getWidth())/2;
             int yOffset = (int)((resizedBitmap.getHeight() / scale) - resizedBitmap.getHeight())/2;
 
-            canvas.drawBitmap(resizedBitmap,(layoutParams.leftMargin - xOffset) * scaleFactorX,
-                    (layoutParams.topMargin - yOffset + curImage.getY()) * scaleFactorY, null);
+            canvas.drawBitmap(resizedBitmap,(layoutParams.leftMargin) * scaleFactorX + xOffset,
+                    (layoutParams.topMargin + curImage.getY()) * scaleFactorY + yOffset, null);
         }
 
 
@@ -729,7 +729,7 @@ public class EditActivity extends Activity implements View.OnClickListener, View
                 }
                 break;
                 case MotionEvent.ACTION_UP: {
-
+                    //v.
                 }
                 break;
                 case MotionEvent.ACTION_MOVE:
