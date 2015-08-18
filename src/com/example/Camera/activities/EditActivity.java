@@ -346,13 +346,11 @@ public class EditActivity extends Activity implements View.OnClickListener, View
             break;
             case R.id.FiltersButton:
             {
-                int buttonScrollYTo;
-                int filterScrollYTo;
-                float imageScrollYTo;
+                float buttonScrollYTo, filterScrollYTo, imageScrollYTo;
                 if (_isImagesSelected)
                 {
-                    imageScrollYTo = imageList.getY() + filterList.getHeight() * 2;
-                    ObjectAnimator imageScrollAnimator = ObjectAnimator.ofFloat(imageList, "translationY",
+                    imageScrollYTo = (float)windowheight;
+                    ObjectAnimator imageScrollAnimator = ObjectAnimator.ofFloat(imageList, "y",
                             imageList.getY(), imageScrollYTo);
                     imageScrollAnimator.setDuration(500);
                     imageScrollAnimator.start();
@@ -365,17 +363,17 @@ public class EditActivity extends Activity implements View.OnClickListener, View
                 } else
                 {
                     buttonScrollYTo = windowheight - filterList.getHeight() - buttonScroll.getHeight();
-                    filterScrollYTo = buttonScrollYTo;
+                    filterScrollYTo = windowheight - filterList.getHeight();
                 }
 
-                if (!_isImagesSelected) {
-                    ObjectAnimator buttonScrollAnimator = ObjectAnimator.ofFloat(buttonScroll, "translationY",
-                            buttonScroll.getY(), buttonScrollYTo);
-                    buttonScrollAnimator.setDuration(500);
-                    buttonScrollAnimator.start();
-                }
 
-                ObjectAnimator filterListAnimator = ObjectAnimator.ofFloat(filterList, "translationY",
+                ObjectAnimator buttonScrollAnimator = ObjectAnimator.ofFloat(buttonScroll, "y",
+                        buttonScroll.getY(), buttonScrollYTo);
+                buttonScrollAnimator.setDuration(500);
+                buttonScrollAnimator.start();
+
+
+                ObjectAnimator filterListAnimator = ObjectAnimator.ofFloat(filterList, "y",
                         filterList.getY(), filterScrollYTo);
                 filterListAnimator.setDuration(500);
                 filterListAnimator.start();
@@ -388,41 +386,41 @@ public class EditActivity extends Activity implements View.OnClickListener, View
             }
             break;
             case R.id.imagesButton: {
-                Float buttonScrollYTo, filterScrollYTo, imageScrollYTo;
+                float buttonScrollYTo, filterScrollYTo, imageScrollYTo;
 
                 if (_isFiltersSelected) {
-                    filterScrollYTo = buttonScroll.getY() + filterList.getHeight();
-                    ObjectAnimator filterListAnimator = ObjectAnimator.ofFloat(filterList, "translationY",
-                            buttonScroll.getY(), filterScrollYTo);
+                    filterScrollYTo = (float)windowheight;
+                    ObjectAnimator filterListAnimator = ObjectAnimator.ofFloat(filterList, "y",
+                            filterList.getY(), filterScrollYTo);
                     filterListAnimator.setDuration(500);
                     filterListAnimator.start();
                 }
 
-                if (_isImagesSelected) {
-                    buttonScrollYTo = buttonScroll.getY() + filterList.getHeight();
-                    imageScrollYTo = buttonScroll.getY() + filterList.getHeight() * 2;
-                } else
+                if (_isImagesSelected)
                 {
-                    buttonScrollYTo = buttonScroll.getY() - filterList.getHeight();
+                    buttonScrollYTo = (float)windowheight - buttonScroll.getHeight();
+                    imageScrollYTo = (float)windowheight;
+                }
+                else
+                {
+                    buttonScrollYTo = (float)windowheight - buttonScroll.getHeight() - imageList.getHeight();
                     if(_isFiltersSelected)
                     {
-                        imageScrollYTo = buttonScroll.getY() - filterList.getHeight();
+                        imageScrollYTo = (float)windowheight - imageList.getHeight();
                     }
                     else
                     {
-                        imageScrollYTo = buttonScroll.getY() - filterList.getHeight() * 2;
+                        imageScrollYTo = (float)windowheight - imageList.getHeight();
                     }
                 }
 
 
-                if (!_isFiltersSelected) {
-                    ObjectAnimator buttonScrollAnimator = ObjectAnimator.ofFloat(buttonScroll, "translationY",
-                            buttonScroll.getY(), buttonScrollYTo);
-                    buttonScrollAnimator.setDuration(500);
-                    buttonScrollAnimator.start();
-                }
+                ObjectAnimator buttonScrollAnimator = ObjectAnimator.ofFloat(buttonScroll, "y",
+                        buttonScroll.getY(), buttonScrollYTo);
+                buttonScrollAnimator.setDuration(500);
+                buttonScrollAnimator.start();
 
-                ObjectAnimator imagesListAnimator = ObjectAnimator.ofFloat(imageList, "translationY",
+                ObjectAnimator imagesListAnimator = ObjectAnimator.ofFloat(imageList, "y",
                         imageList.getY(), imageScrollYTo);
                 imagesListAnimator.setDuration(500);
                 imagesListAnimator.start();
@@ -467,12 +465,11 @@ public class EditActivity extends Activity implements View.OnClickListener, View
 
 
                 image.setImageBitmap(bmp);
-                //originalBitmap = bmp;
 
                 for(int i = 0; i < images.size(); i++)
                 {
                     images.get(i).buildDrawingCache();
-                    Bitmap curBitmap = images.get(i).getDrawingCache();
+                    Bitmap curBitmap =  ((BitmapDrawable)imageOrigContents.get(i)).getBitmap();
                     Bitmap grayBitmap = curBitmap.copy(curBitmap.getConfig(), true);
                     curBitmap = null;
                     nativeUtils.blend(grayBitmap, filterMap.get(v.getId()));
@@ -536,6 +533,13 @@ public class EditActivity extends Activity implements View.OnClickListener, View
 
                 imageOrigContents.add(newImage.getDrawable());
                 layout.addView(newImage);
+
+                findViewById(R.id.SaveButton).bringToFront();
+                findViewById(R.id.funcScroll).bringToFront();
+                findViewById(R.id.filterView).bringToFront();
+                findViewById(R.id.imageScrollView).bringToFront();
+                text.bringToFront();
+
             }
             break;
         }
@@ -676,7 +680,7 @@ public class EditActivity extends Activity implements View.OnClickListener, View
             curImage = images.get(i);
             layoutParams = (FrameLayout.LayoutParams) curImage.getLayoutParams();
             curImage.buildDrawingCache();
-            Bitmap curBitmap = curImage.getDrawingCache();
+            Bitmap curBitmap = ((BitmapDrawable)imageOrigContents.get(i)).getBitmap();
 
             // битмап для сохранения
             Bitmap resizedBitmap = Bitmap.createScaledBitmap(
@@ -688,8 +692,8 @@ public class EditActivity extends Activity implements View.OnClickListener, View
             int xOffset = (int)((resizedBitmap.getWidth() / scale) - resizedBitmap.getWidth())/2;
             int yOffset = (int)((resizedBitmap.getHeight() / scale) - resizedBitmap.getHeight())/2;
 
-            canvas.drawBitmap(resizedBitmap,(layoutParams.leftMargin - xOffset) * scaleFactorX,
-                    (layoutParams.topMargin - yOffset + curImage.getY()) * scaleFactorY, null);
+            canvas.drawBitmap(resizedBitmap,(layoutParams.leftMargin) * scaleFactorX + xOffset,
+                    (layoutParams.topMargin + curImage.getY()) * scaleFactorY + yOffset, null);
         }
 
         // TODO: process image here!
@@ -753,7 +757,7 @@ public class EditActivity extends Activity implements View.OnClickListener, View
                 }
                 break;
                 case MotionEvent.ACTION_UP: {
-
+                    //v.
                 }
                 break;
                 case MotionEvent.ACTION_MOVE:
