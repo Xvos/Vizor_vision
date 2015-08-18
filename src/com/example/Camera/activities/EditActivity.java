@@ -346,9 +346,7 @@ public class EditActivity extends Activity implements View.OnClickListener, View
             break;
             case R.id.FiltersButton:
             {
-                int buttonScrollYTo;
-                int filterScrollYTo;
-                float imageScrollYTo;
+                float buttonScrollYTo, filterScrollYTo, imageScrollYTo;
                 if (_isImagesSelected)
                 {
                     imageScrollYTo = (float)windowheight;
@@ -365,16 +363,15 @@ public class EditActivity extends Activity implements View.OnClickListener, View
                 } else
                 {
                     buttonScrollYTo = windowheight - filterList.getHeight() - buttonScroll.getHeight();
-                    filterScrollYTo = buttonScrollYTo;
+                    filterScrollYTo = windowheight - filterList.getHeight();
                 }
 
-                if (!_isImagesSelected)
-                {
-                    ObjectAnimator buttonScrollAnimator = ObjectAnimator.ofFloat(buttonScroll, "y",
-                            buttonScroll.getY(), buttonScrollYTo);
-                    buttonScrollAnimator.setDuration(500);
-                    buttonScrollAnimator.start();
-                }
+
+                ObjectAnimator buttonScrollAnimator = ObjectAnimator.ofFloat(buttonScroll, "y",
+                        buttonScroll.getY(), buttonScrollYTo);
+                buttonScrollAnimator.setDuration(500);
+                buttonScrollAnimator.start();
+
 
                 ObjectAnimator filterListAnimator = ObjectAnimator.ofFloat(filterList, "y",
                         filterList.getY(), filterScrollYTo);
@@ -389,12 +386,12 @@ public class EditActivity extends Activity implements View.OnClickListener, View
             }
             break;
             case R.id.imagesButton: {
-                Float buttonScrollYTo, filterScrollYTo, imageScrollYTo;
+                float buttonScrollYTo, filterScrollYTo, imageScrollYTo;
 
                 if (_isFiltersSelected) {
-                    filterScrollYTo = buttonScroll.getY() + filterList.getHeight();
+                    filterScrollYTo = (float)windowheight;
                     ObjectAnimator filterListAnimator = ObjectAnimator.ofFloat(filterList, "y",
-                            buttonScroll.getY(), filterScrollYTo);
+                            filterList.getY(), filterScrollYTo);
                     filterListAnimator.setDuration(500);
                     filterListAnimator.start();
                 }
@@ -406,7 +403,7 @@ public class EditActivity extends Activity implements View.OnClickListener, View
                 }
                 else
                 {
-                    buttonScrollYTo = buttonScroll.getY() - imageList.getHeight();
+                    buttonScrollYTo = (float)windowheight - buttonScroll.getHeight() - imageList.getHeight();
                     if(_isFiltersSelected)
                     {
                         imageScrollYTo = (float)windowheight - imageList.getHeight();
@@ -418,14 +415,10 @@ public class EditActivity extends Activity implements View.OnClickListener, View
                 }
 
 
-                if (!_isFiltersSelected)
-                {
-                    ObjectAnimator buttonScrollAnimator = ObjectAnimator.ofFloat(buttonScroll, "y",
-                            buttonScroll.getY(), buttonScrollYTo);
-                    buttonScrollAnimator.setDuration(500);
-                    buttonScrollAnimator.start();
-
-                }
+                ObjectAnimator buttonScrollAnimator = ObjectAnimator.ofFloat(buttonScroll, "y",
+                        buttonScroll.getY(), buttonScrollYTo);
+                buttonScrollAnimator.setDuration(500);
+                buttonScrollAnimator.start();
 
                 ObjectAnimator imagesListAnimator = ObjectAnimator.ofFloat(imageList, "y",
                         imageList.getY(), imageScrollYTo);
