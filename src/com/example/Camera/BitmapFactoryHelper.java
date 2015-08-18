@@ -11,24 +11,9 @@ import java.io.FileDescriptor;
  */
 public class BitmapFactoryHelper
 {
-    private static FileDescriptor _fileDescriptor = null;
-    private static byte[] _byteArray = null;
-
-    public static Bitmap decodeInScreenResolution(Activity activity, FileDescriptor fileDescriptor)
-    {
-        _byteArray = null;
-        _fileDescriptor = fileDescriptor;
-
-        return null;
-    }
-
     public static Bitmap decodeInScreenResolution(Activity activity, byte[] byteArray)
     {
-        _byteArray = byteArray;
-        _fileDescriptor = null;
-
         BitmapFactory.Options opt = new BitmapFactory.Options();
-        opt.inMutable = true;
         opt.inPreferredConfig = Bitmap.Config.ARGB_8888;
 
         // Decode bounds
@@ -52,9 +37,13 @@ public class BitmapFactoryHelper
         return Bitmap.createScaledBitmap(bitmap, windowwidth, (int)(bitmap.getHeight() * scaleFactor), false);
     }
 
-    public static boolean isLoadedFromFileDescriptor()
+    public static Bitmap decodeInFullResolution(byte[] byteArray)
     {
-        return (_fileDescriptor != null) && (_byteArray == null);
+        BitmapFactory.Options opt = new BitmapFactory.Options();
+        opt.inPreferredConfig = Bitmap.Config.ARGB_8888;
+        opt.inMutable = true;
+
+        return BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length, opt);
     }
 
     public static int log2( int bits )

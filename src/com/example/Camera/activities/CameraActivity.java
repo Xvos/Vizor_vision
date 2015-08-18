@@ -5,26 +5,26 @@ import android.content.Intent;
 import android.content.res.AssetFileDescriptor;
 import android.content.res.Configuration;
 
-import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.hardware.Camera;
 import android.net.Uri;
 import android.os.Bundle;
 
-import android.os.ParcelFileDescriptor;
-import android.provider.MediaStore;
 import android.view.*;
 import android.widget.Button;
 import android.view.ViewGroup.LayoutParams;
 
 
+import com.example.Camera.BitmapFactoryHelper;
 import com.example.Camera.R;
 import com.example.Camera.control.SaveController;
 
 import java.io.ByteArrayOutputStream;
 import java.io.FileDescriptor;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 
 
@@ -89,7 +89,7 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
         _flashLightButton= (Button) findViewById(R.id.FlashlightButton);
         _flashLightButton.setOnClickListener(this);
         _flashLightButton.setBackgroundResource(_flashButtonRes[_curFlashType]);
-        SaveController.bitmapToSave = null;
+        SaveController.tempBitmap = null;
         SaveController.originalPicture = null;
     }
 
@@ -266,35 +266,55 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
         if (resultCode == RESULT_OK) {
             if (requestCode == SELECT_PICTURE) {
                 Uri imageUri = data.getData();
-                Bitmap bmp = null;
+
                 try
                 {
                     AssetFileDescriptor fileDescriptor = getContentResolver().openAssetFileDescriptor(imageUri, "r");
-                    bmp = BitmapFactory.decodeFileDescriptor(fileDescriptor.getFileDescriptor());
 
-                    //bmp = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
+                    FileInputStream stream = new FileInputStream(fileDescriptor.getFileDescriptor());
+                    SaveController.originalPicture = readDesc(fileDescriptor.getFileDescriptor());
+
+                    stream.close();
                 }
                 catch (IOException e)
                 {
                     e.printStackTrace();
                 }
-                byte[] paramArrayOfByte = convertBitmapToByteArray(bmp);
+
                 Intent intent = new Intent(this, PreviewActivity.class);
-                SaveController.originalPicture = paramArrayOfByte;
                 startActivity(intent);
                 finish();
             }
         }
     }
 
-    private byte[] convertBitmapToByteArray(Bitmap bitmap)
+    public byte[] readDesc(FileDescriptor file) throws IOException
     {
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
-        byte[] byteArray = stream.toByteArray();
-        return byteArray;
-    }
+        ByteArrayOutputStream ous = null;
+        InputStream ios = null;
+        try {
+            byte[] buffer = new byte[4096];
+            ous = new ByteArrayOutputStream();
+            ios = new FileInputStream(file);
+            int read = 0;
+            while ( (read = ios.read(buffer)) != -1 ) {
+                ous.write(buffer, 0, read);
+            }
+        } finally {
+            try {
+                if ( ous != null )
+                    ous.close();
+            } catch ( IOException e) {
+            }
 
+            try {
+                if ( ios != null )
+                    ios.close();
+            } catch ( IOException e) {
+            }
+        }
+        return ous.toByteArray();
+    }
 
     @Override
     public void onPictureTaken(byte[] paramArrayOfByte, Camera paramCamera)

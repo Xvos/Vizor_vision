@@ -1,7 +1,6 @@
 package com.example.Camera.control;
 
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.net.Uri;
 
@@ -16,7 +15,7 @@ public class SaveController
 {
     public static byte[] originalPicture;
 
-    public static Bitmap bitmapToSave;
+    public static Bitmap tempBitmap;
 
     public static Uri pictureUri;
 
@@ -44,7 +43,7 @@ public class SaveController
             os.write(byteArray);
             os.close();
 
-            bitmapToSave  = picture;
+            tempBitmap = picture;
 
             pictureUri = Uri.parse("file://" + filename);
         }
