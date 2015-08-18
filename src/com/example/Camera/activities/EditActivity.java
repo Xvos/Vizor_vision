@@ -132,10 +132,6 @@ public class EditActivity extends Activity implements View.OnClickListener, View
         text.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
 
         FrameLayout.LayoutParams imageLayoutParams = (FrameLayout.LayoutParams) image.getLayoutParams();
-        imagesYoffset = -back.getHeight();
-        imageLayoutParams.topMargin = imagesYoffset;
-        //image.setLayoutParams(imageLayoutParams);
-        image.setY(-cropButton.getHeight() / 2);
 
         //Image Buttons
         //TODO : Такая инициализация переменных напоминает говно. ПЕРЕДЕЛАТЬ!!
@@ -247,6 +243,8 @@ public class EditActivity extends Activity implements View.OnClickListener, View
 
         //вставляем мерж
         setImegeButtonsBacks();
+        imagesYoffset = -(int)(cropButton.getBackground().getIntrinsicHeight() * 0.48f);
+        image.setY(imagesYoffset);
 
         mScaleDetector = new ScaleGestureDetector(getBaseContext(), new ScaleGestureDetector.OnScaleGestureListener() {
             @Override
@@ -375,7 +373,7 @@ public class EditActivity extends Activity implements View.OnClickListener, View
                 _isFiltersSelected = !_isFiltersSelected;
                 _isImagesSelected = false;
 
-                imageMove();
+                imageMove((int)(buttonScrollYTo - buttonScroll.getY()));
 
             }
             break;
@@ -423,7 +421,7 @@ public class EditActivity extends Activity implements View.OnClickListener, View
                 _isImagesSelected = !_isImagesSelected;
                 _isFiltersSelected = false;
 
-                imageMove();
+                imageMove((int)(buttonScrollYTo - buttonScroll.getY()));
 
             }
             break;
@@ -463,7 +461,7 @@ public class EditActivity extends Activity implements View.OnClickListener, View
                 for(int i = 0; i < images.size(); i++)
                 {
                     images.get(i).buildDrawingCache();
-                    Bitmap curBitmap =  ((BitmapDrawable)imageOrigContents.get(i)).getBitmap();
+                    Bitmap curBitmap = ((BitmapDrawable)imageOrigContents.get(i)).getBitmap();
                     Bitmap grayBitmap = curBitmap.copy(curBitmap.getConfig(), true);
                     curBitmap = null;
                     nativeUtils.blend(grayBitmap, filterMap.get(v.getId()));
@@ -545,28 +543,24 @@ public class EditActivity extends Activity implements View.OnClickListener, View
     /////////////////////////////////
 
 
-    private void imageMove()
+    private void imageMove(int delta)
     {
-        if(!_isFiltersSelected && !_isImagesSelected)
-        {
-            imagesYoffset = 0;
-        }
-        else
-        {
-            imagesYoffset =  -imageList.getHeight();
-        }
-
-        ObjectAnimator imageAnimator = ObjectAnimator.ofFloat(image, "translationY",
-                image.getY() + cropButton.getHeight() + imageList.getHeight(), imagesYoffset);
+        ObjectAnimator imageAnimator = ObjectAnimator.ofFloat(image, "y",
+                image.getY(), image.getY() + delta);
         imageAnimator.setDuration(500);
         imageAnimator.start();
+
+        ObjectAnimator textAnimator = ObjectAnimator.ofFloat(text, "y",
+                text.getY(), text.getY() + delta);
+        textAnimator.setDuration(500);
+        textAnimator.start();
 
         for (int i = 0; i < images.size(); i++)
         {
             ImageView curImage = images.get(i);
 
-            ObjectAnimator curImageAnimator = ObjectAnimator.ofFloat(curImage, "translationY",
-                    curImage.getY(), imagesYoffset);
+            ObjectAnimator curImageAnimator = ObjectAnimator.ofFloat(curImage, "y",
+                    curImage.getY(), curImage.getY() + delta);
             curImageAnimator.setDuration(500);
             curImageAnimator.start();
         }
@@ -694,8 +688,8 @@ public class EditActivity extends Activity implements View.OnClickListener, View
             int xOffset = (int)((resizedBitmap.getWidth() / scale) - resizedBitmap.getWidth())/2;
             int yOffset = (int)((resizedBitmap.getHeight() / scale) - resizedBitmap.getHeight())/2;
 
-            canvas.drawBitmap(resizedBitmap,(layoutParams.leftMargin) * scaleFactorX + xOffset,
-                    (layoutParams.topMargin + curImage.getY()) * scaleFactorY + yOffset, null);
+            canvas.drawBitmap(resizedBitmap,curImage.getX() * scaleFactorX + xOffset,
+                    (curImage.getY() - image.getY()) * scaleFactorY + yOffset, null);
         }
 
         // TODO: process image here!
@@ -754,12 +748,12 @@ public class EditActivity extends Activity implements View.OnClickListener, View
                     mode = NONE;
                     break;
                 case MotionEvent.ACTION_DOWN: {
-                    dragX = (int) event.getRawX() - layoutParams.leftMargin;
-                    dragY = (int) event.getRawY() - layoutParams.topMargin;
+                    dragX = (int) event.getRawX() - (int)v.getX();//layoutParams.leftMargin;
+                    dragY = (int) event.getRawY() - (int)v.getY();//layoutParams.topMargin;
                 }
                 break;
                 case MotionEvent.ACTION_UP: {
-                    //v.
+
                 }
                 break;
                 case MotionEvent.ACTION_MOVE:
@@ -791,18 +785,20 @@ public class EditActivity extends Activity implements View.OnClickListener, View
                         int vWidth = v.getWidth();
                         int vHeight = v.getHeight();
 
-                        layoutParams.leftMargin = x_cord;
+                        //layoutParams.leftMargin = x_cord;
                         if (y_cord > windowheight * 0.8)
                         {
                             layoutParams.topMargin = y_cord + 400;
                         }
                         else
                         {
-                            layoutParams.topMargin = y_cord;
-                            layoutParams.width = vWidth;
+                            //layoutParams.topMargin = y_cord;
+                            //layoutParams.width = vWidth;
                             layoutParams.height = vHeight;
                         }
 
+                        v.setX(x_cord);
+                        v.setY(y_cord);
                         v.setLayoutParams(layoutParams);
 
                         if (event.getRawY()  > windowheight * 0.9) {
