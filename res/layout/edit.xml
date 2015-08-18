@@ -172,6 +172,70 @@
                 android:layout_marginBottom="0dp"
                 android:background="@drawable/pic" />
 
+            <Button
+                android:layout_width="75dp"
+                android:layout_height="75dp"
+                android:id="@+id/filterButton8"
+                android:text=" "
+                android:layout_marginBottom="0dp"
+                android:background="@drawable/pic" />
+
+            <Button
+                android:layout_width="75dp"
+                android:layout_height="75dp"
+                android:id="@+id/filterButton9"
+                android:text=" "
+                android:layout_marginBottom="0dp"
+                android:background="@drawable/pic" />
+
+            <Button
+                android:layout_width="75dp"
+                android:layout_height="75dp"
+                android:id="@+id/filterButton10"
+                android:text=" "
+                android:layout_marginBottom="0dp"
+                android:background="@drawable/pic" />
+
+            <Button
+                android:layout_width="75dp"
+                android:layout_height="75dp"
+                android:id="@+id/filterButton11"
+                android:text=" "
+                android:layout_marginBottom="0dp"
+                android:background="@drawable/pic" />
+
+            <Button
+                android:layout_width="75dp"
+                android:layout_height="75dp"
+                android:id="@+id/filterButton12"
+                android:text=" "
+                android:layout_marginBottom="0dp"
+                android:background="@drawable/pic" />
+
+            <Button
+                android:layout_width="75dp"
+                android:layout_height="75dp"
+                android:id="@+id/filterButton13"
+                android:text=" "
+                android:layout_marginBottom="0dp"
+                android:background="@drawable/pic" />
+
+            <Button
+                android:layout_width="75dp"
+                android:layout_height="75dp"
+                android:id="@+id/filterButton14"
+                android:text=" "
+                android:layout_marginBottom="0dp"
+                android:background="@drawable/pic" />
+
+            <Button
+                android:layout_width="75dp"
+                android:layout_height="75dp"
+                android:id="@+id/filterButton15"
+                android:text=" "
+                android:layout_marginBottom="0dp"
+                android:background="@drawable/pic" />
+
         </LinearLayout>
     </HorizontalScrollView>
 

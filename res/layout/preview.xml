@@ -25,7 +25,7 @@
         android:id="@+id/CancelButton"
             android:layout_width="80dp"
             android:layout_height="80dp"
-        android:layout_gravity="left|bottom"
+        android:layout_gravity="right|top"
         android:background="@drawable/close"
         android:focusable="false">
     </Button>
