@@ -33,6 +33,50 @@
 extern "C" {
 #endif
 
+
+FORCEINLINE void blender_fastGrayscale(void* data, s32 size)
+{
+    u32* bytes = (unsigned int*)data;
+    u32* lastPtr = bytes + (size / sizeof(unsigned int));
+
+    color_t cColor;
+
+    while (bytes++ != lastPtr)
+    {
+        color_colorFromABGR(&cColor, *bytes);
+
+        cColor.R = LUM(cColor);
+        cColor.G = cColor.R;
+        cColor.B = cColor.R;
+
+        color_colorToABGR(&cColor, bytes);
+    }
+}
+
+
+FORCEINLINE void blender_blendImage(void* data1, void* data2, s32 size)
+{
+    u32* bytes1 = (u32*)data1;
+    u32* bytes2 = (u32*)data2;
+
+    u32* lastPtr = bytes1 + (size / sizeof(u32));
+
+    color_t c1, c2;
+
+    while (bytes1++ != lastPtr)
+    {
+        color_colorFromABGR(&c1, *bytes1);
+        color_colorFromABGR(&c2, *bytes2);
+
+        ALPHA_BLEND(c1, c2, ChannelBlend_SoftLight, 200, 56);
+
+        color_colorToABGR(&c1, bytes1);
+
+        bytes2++;
+    }
+}
+
+
 /*
  * Data - data in ABRG8 format.
  * Size - size in bytes of the data
@@ -40,7 +84,7 @@ extern "C" {
  * IntColor - color to blend with as an integer
  * Float - opacity
  */
-void blender_Process(void* data, u32 size, s32 mode, s32 intColor, float opacity)
+FORCEINLINE void blender_Process(void* data, u32 size, s32 mode, s32 intColor, float opacity)
 {
     color_t rColor;
     color_colorFromARGB(&rColor, (u32)intColor);
@@ -182,25 +226,6 @@ void blender_Process(void* data, u32 size, s32 mode, s32 intColor, float opacity
 }
 #endif
 
-//    FORCEINLINE void fast_grayscale(void* data, s32 size)
-//    {
-//        unsigned int* bytes = (unsigned int*)data;
-//        unsigned int* lastPtr = bytes + (size / sizeof(unsigned int));
-//
-//        Color cColor;
-//        unsigned char lum;
-//
-//        while (bytes++ != lastPtr)
-//        {
-//            Color::fromABGR(&cColor, *bytes);
-//
-//            lum = LUM(cColor);
-//            cColor.R = lum;
-//            cColor.G = lum;
-//            cColor.B = lum;
-//
-//            *bytes = cColor.toABGR();
-//        }
-//    }
+
 
 #endif //VIZOR_VISION_BLENDER_H

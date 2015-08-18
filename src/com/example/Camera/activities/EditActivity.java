@@ -462,7 +462,7 @@ public class EditActivity extends Activity implements View.OnClickListener, View
 
                 NativeUtils nativeUtils = new NativeUtils();
                 long stamp = System.nanoTime();
-                nativeUtils.blend(bmp, filterMap.get(v.getId()));
+                nativeUtils.blend(bmp, bmp /*filterMap.get(v.getId())*/);
                 Log.d("VISION", "Time: " + (System.nanoTime() - stamp));
 
 
@@ -474,7 +474,7 @@ public class EditActivity extends Activity implements View.OnClickListener, View
                     images.get(i).buildDrawingCache();
                     Bitmap curBitmap = images.get(i).getDrawingCache();
                     Bitmap grayBitmap = curBitmap.copy(curBitmap.getConfig(), true);
-                    nativeUtils.blend(curBitmap, filterMap.get(v.getId()));
+                    nativeUtils.blend(curBitmap, curBitmap/* filterMap.get(v.getId())*/);
                     images.get(i).setImageResource(android.R.color.transparent);
                     images.get(i).destroyDrawingCache();
                     images.get(i).setImageBitmap(grayBitmap);

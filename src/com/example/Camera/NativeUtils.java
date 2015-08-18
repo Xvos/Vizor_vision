@@ -13,9 +13,22 @@ public class NativeUtils {
 
     public void blend(Bitmap bitmap, FilterPrefab prefab)
     {
-        blendWithColor(bitmap, bitmap.getWidth(), bitmap.getHeight(), prefab.getBlendFunction().ordinal(),
-                prefab.getColor(), prefab.getOpacity());
+        blendWithColor(bitmap, prefab.getBlendFunction().ordinal(), prefab.getColor(), prefab.getOpacity());
     }
 
-    private native void blendWithColor(Bitmap imageData, int imageWidth, int imageHeight, int blendFunction, int color, float opacity);
+    public void blend(Bitmap bitmap1, Bitmap bitmap2)
+    {
+        blendWithImage(bitmap1, bitmap2);
+    }
+
+    public void grayscale(Bitmap bitmap)
+    {
+        makeGrayscale(bitmap);
+    }
+
+    private native void blendWithColor(Bitmap bitmap, int blendFunction, int color, float opacity);
+
+    private native void blendWithImage(Bitmap bitmap1, Bitmap bitmap2);
+
+    private native void makeGrayscale(Bitmap bitmap);
 }
