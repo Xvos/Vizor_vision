@@ -462,19 +462,20 @@ public class EditActivity extends Activity implements View.OnClickListener, View
 
                 NativeUtils nativeUtils = new NativeUtils();
                 long stamp = System.nanoTime();
-                nativeUtils.blend(bmp, bmp /*filterMap.get(v.getId())*/);
+                nativeUtils.blend(bmp, filterMap.get(v.getId()));
                 Log.d("VISION", "Time: " + (System.nanoTime() - stamp));
 
 
                 image.setImageBitmap(bmp);
-                originalBitmap = bmp;
+                //originalBitmap = bmp;
 
                 for(int i = 0; i < images.size(); i++)
                 {
                     images.get(i).buildDrawingCache();
                     Bitmap curBitmap = images.get(i).getDrawingCache();
                     Bitmap grayBitmap = curBitmap.copy(curBitmap.getConfig(), true);
-                    nativeUtils.blend(curBitmap, curBitmap/* filterMap.get(v.getId())*/);
+                    curBitmap = null;
+                    nativeUtils.blend(grayBitmap, filterMap.get(v.getId()));
                     images.get(i).setImageResource(android.R.color.transparent);
                     images.get(i).destroyDrawingCache();
                     images.get(i).setImageBitmap(grayBitmap);
