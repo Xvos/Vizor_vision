@@ -65,6 +65,11 @@ public class EditActivity extends Activity implements View.OnClickListener, View
     private ScaleGestureDetector mScaleDetector;
     private int dragX, dragY;
 
+    /**
+     * Поправка на высоту UI
+     */
+    private int imagesYoffset = 0;
+
     private ArrayList<Drawable> imageOrigContents = new ArrayList<Drawable>();
 
     int mode = NONE;
@@ -102,20 +107,14 @@ public class EditActivity extends Activity implements View.OnClickListener, View
 
         //Buttons
         saveButton = (Button) findViewById(R.id.SaveButton);
-        faceDetectButton = (Button) findViewById(R.id.FaceDetectButton);
+        //faceDetectButton = (Button) findViewById(R.id.FaceDetectButton);
         textButton = (Button) findViewById(R.id.AddText);
         cropButton = (Button) findViewById(R.id.CropButton);
         filtersButton = (Button) findViewById(R.id.FiltersButton);
         clearFilerButton = (Button) findViewById(R.id.noFilterButton);
         imagesButton = (Button) findViewById(R.id.imagesButton);
 
-        /*faceDetectButton.setBackgroundResource(R.drawable.action_button);
-        textButton.setBackgroundResource(R.drawable.action_button);
-        cropButton.setBackgroundResource(R.drawable.action_button);
-        filtersButton.setBackgroundResource(R.drawable.action_button);
-        imagesButton.setBackgroundResource(R.drawable.action_button);
-        saveButton.setBackgroundResource(R.drawable.save_button);*/
-
+        //Создаем иклнки для функционала
         Resources res = getResources();
         Bitmap back = BitmapFactory.decodeResource(res, R.drawable.bg);
         Bitmap cropIcon = BitmapFactory.decodeResource(res, R.drawable.crop);
@@ -123,11 +122,11 @@ public class EditActivity extends Activity implements View.OnClickListener, View
         Bitmap filterIcon = BitmapFactory.decodeResource(res, R.drawable.filters);
         Bitmap imageIcon = BitmapFactory.decodeResource(res, R.drawable.images);
 
-
-        cropButton.setBackground(new BitmapDrawable(getResources(), mergeBitmaps(back, cropIcon)));
-        textButton.setBackground(new BitmapDrawable(getResources(), mergeBitmaps(back, textIcon)));
-        filtersButton.setBackground(new BitmapDrawable(getResources(), mergeBitmaps(back, filterIcon)));
-        imagesButton.setBackground(new BitmapDrawable(getResources(), mergeBitmaps(back, imageIcon)));
+        //Задаем UI кнопок функционала
+        cropButton.setBackground(new BitmapDrawable(res, mergeBitmaps(back, cropIcon)));
+        textButton.setBackground(new BitmapDrawable(res, mergeBitmaps(back, textIcon)));
+        filtersButton.setBackground(new BitmapDrawable(res, mergeBitmaps(back, filterIcon)));
+        imagesButton.setBackground(new BitmapDrawable(res, mergeBitmaps(back, imageIcon)));
 
         //Edit Text
         text = (EditText) findViewById(R.id.editText);
@@ -138,7 +137,11 @@ public class EditActivity extends Activity implements View.OnClickListener, View
         text.setTextColor(Color.WHITE);
         text.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
 
-        LinearLayout funcLayout = (LinearLayout) findViewById(R.id.funcList);
+        FrameLayout.LayoutParams imageLayoutParams = (FrameLayout.LayoutParams) image.getLayoutParams();
+        imagesYoffset = -back.getHeight();
+        imageLayoutParams.topMargin = imagesYoffset;
+        //image.setLayoutParams(imageLayoutParams);
+        image.setY(-cropButton.getHeight()/2);
 
         //Image Buttons
         //TODO : Такая инициализация переменных напоминает говно. ПЕРЕДЕЛАТЬ!!
@@ -183,7 +186,7 @@ public class EditActivity extends Activity implements View.OnClickListener, View
 
         //Setting button listeners
         saveButton.setOnClickListener(this);
-        faceDetectButton.setOnClickListener(this);
+        //faceDetectButton.setOnClickListener(this);
         textButton.setOnClickListener(this);
         cropButton.setOnClickListener(this);
         filtersButton.setOnClickListener(this);
@@ -248,6 +251,9 @@ public class EditActivity extends Activity implements View.OnClickListener, View
         filterMap.put(R.id.filterButton6, FilterPrefab.Filter5);
         filterMap.put(R.id.filterButton7, FilterPrefab.Filter6);
 
+        //вставляем мерж
+        setImegeButtonsBacks();
+
         mScaleDetector = new ScaleGestureDetector(getBaseContext(), new ScaleGestureDetector.OnScaleGestureListener() {
             @Override
             public void onScaleEnd(ScaleGestureDetector detector) {
@@ -279,16 +285,16 @@ public class EditActivity extends Activity implements View.OnClickListener, View
                 finish();
             }
             break;
-            case R.id.FaceDetectButton: {
+           /* case R.id.FaceDetectButton: {
                 int i = 0;
                 //Bitmap bitmap = BitmapFactory.decodeByteArray(pictureByteArray, 0, pictureByteArray.length);
                 FrameLayout layout = (FrameLayout)findViewById(R.id.GalleryLayout);
 
-               /* while(!buttons.isEmpty())
+                while(!buttons.isEmpty())
                 {
                     layout.removeView(buttons.get(0));
                     buttons.remove(0);
-                }*/
+                }
 
                 FaceDetector fd = new FaceDetector(originalBitmap.getWidth(), originalBitmap.getHeight(), 5);
                 FaceDetector.Face[] faces = new FaceDetector.Face[5];
@@ -316,7 +322,7 @@ public class EditActivity extends Activity implements View.OnClickListener, View
                 }
 
             }
-            break;
+            break;*/
             case R.id.CropButton:
             {
                 CropFilter cropFilter = new CropFilter(0, (originalBitmap.getHeight() - originalBitmap.getWidth()) / 2, originalBitmap.getWidth(), originalBitmap.getWidth());
@@ -377,6 +383,8 @@ public class EditActivity extends Activity implements View.OnClickListener, View
                 _isFiltersSelected = !_isFiltersSelected;
                 _isImagesSelected = false;
 
+                imageMove();
+
             }
             break;
             case R.id.imagesButton: {
@@ -419,8 +427,11 @@ public class EditActivity extends Activity implements View.OnClickListener, View
                 imagesListAnimator.setDuration(500);
                 imagesListAnimator.start();
 
+
                 _isImagesSelected = !_isImagesSelected;
                 _isFiltersSelected = false;
+
+                imageMove();
 
             }
             break;
@@ -447,7 +458,7 @@ public class EditActivity extends Activity implements View.OnClickListener, View
             case R.id.filterButton5:
             case R.id.filterButton6:
             case R.id.filterButton7: {
-                Bitmap bmp = SaveController.bitmapToSave.copy(SaveController.bitmapToSave.getConfig(), true);
+                Bitmap bmp = originalBitmap.copy(SaveController.bitmapToSave.getConfig(), true);
 
                 NativeUtils nativeUtils = new NativeUtils();
                 long stamp = System.nanoTime();
@@ -534,6 +545,80 @@ public class EditActivity extends Activity implements View.OnClickListener, View
     // Utility  Stuff
     /////////////////////////////////
 
+
+    private void imageMove()
+    {
+        if(!_isFiltersSelected && !_isImagesSelected)
+        {
+            imagesYoffset = 0;
+        }
+        else
+        {
+            imagesYoffset =  -imageList.getHeight();
+        }
+
+        ObjectAnimator imageAnimator = ObjectAnimator.ofFloat(image, "translationY",
+                image.getY() + cropButton.getHeight() + imageList.getHeight(), imagesYoffset);
+        imageAnimator.setDuration(500);
+        imageAnimator.start();
+
+        for (int i = 0; i < images.size(); i++)
+        {
+            ImageView curImage = images.get(i);
+
+            ObjectAnimator curImageAnimator = ObjectAnimator.ofFloat(curImage, "translationY",
+                    curImage.getY(), imagesYoffset);
+            curImageAnimator.setDuration(500);
+            curImageAnimator.start();
+        }
+    }
+
+    private  void setImegeButtonsBacks()
+    {
+        //TODO: Говнокодилось для скорости ввиду того, что я не нашел более простого способа в час ночи. ПЕРЕДЕЛАТЬ на человевчестий лад
+        Resources res = getResources();
+        Bitmap back =  BitmapFactory.decodeResource(res, R.drawable.select_bg);
+        //findViewById(R.id.image1Button).setBackground(new BitmapDrawable(res, mergeBitmaps(back, BitmapFactory.decodeResource(res,R.drawable.bandit))));
+        //findViewById(R.id.image2Button).setBackground(new BitmapDrawable(res, mergeBitmaps(back, BitmapFactory.decodeResource(res,R.drawable.bear))));
+
+        /*imageMap.put(R.id.image2Button, R.drawable.bear);
+        imageMap.put(R.id.image3Button, R.drawable.beard);
+        imageMap.put(R.id.image4Button, R.drawable.black_princess);
+        imageMap.put(R.id.image5Button, R.drawable.blond_princess);
+        imageMap.put(R.id.image6Button, R.drawable.chiken);
+        imageMap.put(R.id.image7Button, R.drawable.cowboy);
+        imageMap.put(R.id.image8Button, R.drawable.foot_1);
+        imageMap.put(R.id.image9Button, R.drawable.foot_2);
+        imageMap.put(R.id.image10Button, R.drawable.foot_3);
+        imageMap.put(R.id.image11Button, R.drawable.foot_4);
+        imageMap.put(R.id.image12Button, R.drawable.glasses);
+        imageMap.put(R.id.image13Button, R.drawable.gnom);
+        imageMap.put(R.id.image14Button, R.drawable.gold_like);
+        imageMap.put(R.id.image15Button, R.drawable.logo_black);
+        imageMap.put(R.id.image16Button, R.drawable.logo_white);
+        imageMap.put(R.id.image17Button, R.drawable.logo_zf);
+        imageMap.put(R.id.image18Button, R.drawable.mask_b);
+        imageMap.put(R.id.image19Button, R.drawable.mask_w);
+        imageMap.put(R.id.image20Button, R.drawable.logo_klone);
+        imageMap.put(R.id.image21Button, R.drawable.logo_loyalty);
+        imageMap.put(R.id.image22Button, R.drawable.mustache);
+        imageMap.put(R.id.image23Button, R.drawable.mustache_1);
+        imageMap.put(R.id.image24Button, R.drawable.mustache_2);
+        imageMap.put(R.id.image25Button, R.drawable.paty_bear);
+        imageMap.put(R.id.image26Button, R.drawable.pavlin);
+        imageMap.put(R.id.image27Button, R.drawable.pers);
+        imageMap.put(R.id.image28Button, R.drawable.red_princess);
+        imageMap.put(R.id.image29Button, R.drawable.sheep);
+        imageMap.put(R.id.image30Button, R.drawable.sheriff);
+        imageMap.put(R.id.image31Button, R.drawable.vova_1);
+        imageMap.put(R.id.image32Button, R.drawable.vova_2);
+        imageMap.put(R.id.image33Button, R.drawable.vova_3);
+        imageMap.put(R.id.image34Button, R.drawable.zombie);
+        imageMap.put(R.id.image35Button, R.drawable.zombie_1);
+        imageMap.put(R.id.image36Button, R.drawable.zombie_2);
+        imageMap.put(R.id.image37Button, R.drawable.zombie_girl);*/
+    }
+
     private static Bitmap mergeBitmaps(Bitmap original, Bitmap overlay) {
         Bitmap result = Bitmap.createBitmap(original.getWidth(), original
                 .getHeight(), Bitmap.Config.ARGB_8888);
@@ -577,13 +662,18 @@ public class EditActivity extends Activity implements View.OnClickListener, View
             curImage.buildDrawingCache();
             Bitmap curBitmap = curImage.getDrawingCache();
 
-            // "RECREATE" THE NEW BITMAP
+            // битмап для сохранения
             Bitmap resizedBitmap = Bitmap.createScaledBitmap(
                     curBitmap, (int) (curBitmap.getWidth() * scaleFactorX * curImage.getScaleX()),
-                    (int) (curBitmap.getHeight() * scaleFactorY * curImage.getScaleY()), false);
+                    (int) (curBitmap.getHeight() * scaleFactorX * curImage.getScaleY()), false);
 
-            canvas.drawBitmap(resizedBitmap, layoutParams.leftMargin * scaleFactorX + (curBitmap.getWidth() -  resizedBitmap.getWidth()),
-                    layoutParams.topMargin * scaleFactorY +  (curBitmap.getHeight() - resizedBitmap.getHeight()), null);
+            float scale= curImage.getScaleX();
+
+            int xOffset = (int)((resizedBitmap.getWidth() / scale) - resizedBitmap.getWidth())/2;
+            int yOffset = (int)((resizedBitmap.getHeight() / scale) - resizedBitmap.getHeight())/2;
+
+            canvas.drawBitmap(resizedBitmap,(layoutParams.leftMargin - xOffset) * scaleFactorX,
+                    (layoutParams.topMargin - yOffset + curImage.getY()) * scaleFactorY, null);
         }
 
 
