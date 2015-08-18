@@ -2,6 +2,7 @@ package com.example.Camera.activities;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.res.AssetFileDescriptor;
 import android.content.res.Configuration;
 
 import android.database.Cursor;
@@ -266,9 +267,15 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
             if (requestCode == SELECT_PICTURE) {
                 Uri imageUri = data.getData();
                 Bitmap bmp = null;
-                try {
-                    bmp = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
-                } catch (IOException e) {
+                try
+                {
+                    AssetFileDescriptor fileDescriptor = getContentResolver().openAssetFileDescriptor(imageUri, "r");
+                    bmp = BitmapFactory.decodeFileDescriptor(fileDescriptor.getFileDescriptor());
+
+                    //bmp = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
+                }
+                catch (IOException e)
+                {
                     e.printStackTrace();
                 }
                 byte[] paramArrayOfByte = convertBitmapToByteArray(bmp);

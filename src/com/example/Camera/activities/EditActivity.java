@@ -351,8 +351,8 @@ public class EditActivity extends Activity implements View.OnClickListener, View
                 float imageScrollYTo;
                 if (_isImagesSelected)
                 {
-                    imageScrollYTo = imageList.getY() + filterList.getHeight() * 2;
-                    ObjectAnimator imageScrollAnimator = ObjectAnimator.ofFloat(imageList, "translationY",
+                    imageScrollYTo = (float)windowheight;
+                    ObjectAnimator imageScrollAnimator = ObjectAnimator.ofFloat(imageList, "y",
                             imageList.getY(), imageScrollYTo);
                     imageScrollAnimator.setDuration(500);
                     imageScrollAnimator.start();
@@ -368,14 +368,15 @@ public class EditActivity extends Activity implements View.OnClickListener, View
                     filterScrollYTo = buttonScrollYTo;
                 }
 
-                if (!_isImagesSelected) {
-                    ObjectAnimator buttonScrollAnimator = ObjectAnimator.ofFloat(buttonScroll, "translationY",
+                if (!_isImagesSelected)
+                {
+                    ObjectAnimator buttonScrollAnimator = ObjectAnimator.ofFloat(buttonScroll, "y",
                             buttonScroll.getY(), buttonScrollYTo);
                     buttonScrollAnimator.setDuration(500);
                     buttonScrollAnimator.start();
                 }
 
-                ObjectAnimator filterListAnimator = ObjectAnimator.ofFloat(filterList, "translationY",
+                ObjectAnimator filterListAnimator = ObjectAnimator.ofFloat(filterList, "y",
                         filterList.getY(), filterScrollYTo);
                 filterListAnimator.setDuration(500);
                 filterListAnimator.start();
@@ -392,37 +393,41 @@ public class EditActivity extends Activity implements View.OnClickListener, View
 
                 if (_isFiltersSelected) {
                     filterScrollYTo = buttonScroll.getY() + filterList.getHeight();
-                    ObjectAnimator filterListAnimator = ObjectAnimator.ofFloat(filterList, "translationY",
+                    ObjectAnimator filterListAnimator = ObjectAnimator.ofFloat(filterList, "y",
                             buttonScroll.getY(), filterScrollYTo);
                     filterListAnimator.setDuration(500);
                     filterListAnimator.start();
                 }
 
-                if (_isImagesSelected) {
-                    buttonScrollYTo = buttonScroll.getY() + filterList.getHeight();
-                    imageScrollYTo = buttonScroll.getY() + filterList.getHeight() * 2;
-                } else
+                if (_isImagesSelected)
                 {
-                    buttonScrollYTo = buttonScroll.getY() - filterList.getHeight();
+                    buttonScrollYTo = (float)windowheight - buttonScroll.getHeight();
+                    imageScrollYTo = (float)windowheight;
+                }
+                else
+                {
+                    buttonScrollYTo = buttonScroll.getY() - imageList.getHeight();
                     if(_isFiltersSelected)
                     {
-                        imageScrollYTo = buttonScroll.getY() - filterList.getHeight();
+                        imageScrollYTo = (float)windowheight - imageList.getHeight();
                     }
                     else
                     {
-                        imageScrollYTo = buttonScroll.getY() - filterList.getHeight() * 2;
+                        imageScrollYTo = (float)windowheight - imageList.getHeight();
                     }
                 }
 
 
-                if (!_isFiltersSelected) {
-                    ObjectAnimator buttonScrollAnimator = ObjectAnimator.ofFloat(buttonScroll, "translationY",
+                if (!_isFiltersSelected)
+                {
+                    ObjectAnimator buttonScrollAnimator = ObjectAnimator.ofFloat(buttonScroll, "y",
                             buttonScroll.getY(), buttonScrollYTo);
                     buttonScrollAnimator.setDuration(500);
                     buttonScrollAnimator.start();
+
                 }
 
-                ObjectAnimator imagesListAnimator = ObjectAnimator.ofFloat(imageList, "translationY",
+                ObjectAnimator imagesListAnimator = ObjectAnimator.ofFloat(imageList, "y",
                         imageList.getY(), imageScrollYTo);
                 imagesListAnimator.setDuration(500);
                 imagesListAnimator.start();
@@ -467,7 +472,6 @@ public class EditActivity extends Activity implements View.OnClickListener, View
 
 
                 image.setImageBitmap(bmp);
-                //originalBitmap = bmp;
 
                 for(int i = 0; i < images.size(); i++)
                 {
@@ -536,6 +540,13 @@ public class EditActivity extends Activity implements View.OnClickListener, View
 
                 imageOrigContents.add(newImage.getDrawable());
                 layout.addView(newImage);
+
+                findViewById(R.id.SaveButton).bringToFront();
+                findViewById(R.id.funcScroll).bringToFront();
+                findViewById(R.id.filterView).bringToFront();
+                findViewById(R.id.imageScrollView).bringToFront();
+                text.bringToFront();
+
             }
             break;
         }
