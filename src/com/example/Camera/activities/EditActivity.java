@@ -131,7 +131,7 @@ public class EditActivity extends Activity implements View.OnClickListener, View
         //Edit Text
         text = (EditText) findViewById(R.id.editText);
         FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) text.getLayoutParams();
-        layoutParams.topMargin = windowheight * 4 / 5;
+        layoutParams.topMargin = (int)(windowheight * 5.0f / 6.0f);
         text.setLayoutParams(layoutParams);
         text.setVisibility(View.INVISIBLE);
         text.setTextColor(Color.WHITE);

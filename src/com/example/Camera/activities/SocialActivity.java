@@ -125,9 +125,5 @@ public class SocialActivity extends Activity implements View.OnClickListener{
         if (checkBoxViber.isChecked()) {
             SocialController.postOnViber(this);
         }
-
-        Intent intent = new Intent(this, CameraActivity.class);
-        startActivity(intent);
-        finish();
     }
 }
