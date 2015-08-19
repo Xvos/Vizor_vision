@@ -14,6 +14,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.FloatMath;
 import android.util.Log;
+import android.util.SparseArray;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
@@ -73,8 +74,8 @@ public class EditActivity extends Activity implements View.OnClickListener, View
     int mode = NONE;
     float oldDist = 1f;
 
-    private Map<Integer, Integer> imageMap;
-    private Map<Integer, FilterPrefab> filterMap;
+    private SparseArray<Integer> imageMap;
+    private SparseArray<FilterPrefab> filterMap;
 
     private FilterPrefab _activeFilterPrefab = null;
 
@@ -204,9 +205,12 @@ public class EditActivity extends Activity implements View.OnClickListener, View
         findViewById(R.id.filterButton5).setOnClickListener(this);
         findViewById(R.id.filterButton6).setOnClickListener(this);
         findViewById(R.id.filterButton7).setOnClickListener(this);
+        findViewById(R.id.filterButton8).setOnClickListener(this);
+        findViewById(R.id.filterButton9).setOnClickListener(this);
+        findViewById(R.id.filterButton10).setOnClickListener(this);
 
         //Map
-        imageMap = new HashMap<Integer, Integer>();
+        imageMap = new SparseArray<Integer>();
         imageMap.put(R.id.image1Button, R.drawable.bandit);
         imageMap.put(R.id.image2Button, R.drawable.bear);
         imageMap.put(R.id.image3Button, R.drawable.beard);
@@ -255,7 +259,7 @@ public class EditActivity extends Activity implements View.OnClickListener, View
         imageMap.put(R.id.image46Button, R.drawable.vizor8);
         imageMap.put(R.id.image47Button, R.drawable.cow);
 
-        filterMap = new HashMap<Integer, FilterPrefab>();
+        filterMap = new SparseArray<FilterPrefab>();
         filterMap.put(R.id.filterButton1, FilterPrefab.Filter0);
         filterMap.put(R.id.filterButton2, FilterPrefab.Filter1);
         filterMap.put(R.id.filterButton3, FilterPrefab.Filter2);
@@ -263,6 +267,9 @@ public class EditActivity extends Activity implements View.OnClickListener, View
         filterMap.put(R.id.filterButton5, FilterPrefab.Filter4);
         filterMap.put(R.id.filterButton6, FilterPrefab.Filter5);
         filterMap.put(R.id.filterButton7, FilterPrefab.Filter6);
+        filterMap.put(R.id.filterButton8, FilterPrefab.Filter7);
+        filterMap.put(R.id.filterButton9, FilterPrefab.Filter8);
+        filterMap.put(R.id.filterButton10, FilterPrefab.Filter9);
 
         //вставляем мерж
         setImegeButtonsBacks();
@@ -484,7 +491,10 @@ public class EditActivity extends Activity implements View.OnClickListener, View
             case R.id.filterButton4:
             case R.id.filterButton5:
             case R.id.filterButton6:
-            case R.id.filterButton7: {
+            case R.id.filterButton7:
+            case R.id.filterButton8:
+            case R.id.filterButton9:
+            case R.id.filterButton10: {
                 Bitmap bmp = originalBitmap.copy(SaveController.tempBitmap.getConfig(), true);
 
                 NativeUtils nativeUtils = new NativeUtils();

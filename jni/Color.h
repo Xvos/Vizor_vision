@@ -23,13 +23,11 @@ extern "C" {
     color->B = (color->B * 255) / color->A;
 
 struct color_t {
-    u32 A;
-    u32 R;
-    u32 G;
-    u32 B;
+    // Знаковые инты нужны для корректного сравнения в наших прекрасных режимах смешивания.
+    s32 A, R, G, B;
 };
 
-color_t color_fromComponents(u32 A, u32 R, u32 G, u32 B)
+color_t color_fromComponents(s32 A, s32 R, s32 G, s32 B)
 {
     color_t newColor;
 
@@ -43,19 +41,19 @@ color_t color_fromComponents(u32 A, u32 R, u32 G, u32 B)
 
 void color_colorFromARGB(color_t *color, const u32 abgrColor)
 {
-    color->A = (abgrColor >> 24) & 0x000000FF;
-    color->R = (abgrColor >> 16) & 0x000000FF;
-    color->G = (abgrColor >>  8) & 0x000000FF;
-    color->B = abgrColor & 0x000000FF;
+    color->A = (s32)((abgrColor >> 24) & 0x000000FF);
+    color->R = (s32)((abgrColor >> 16) & 0x000000FF);
+    color->G = (s32)((abgrColor >>  8) & 0x000000FF);
+    color->B = (s32)(abgrColor & 0x000000FF);
 
     UNPREMULTIPLY_ALPHA(color);
 }
 
 void color_colorFromABGR(color_t *color, const u32 abgrColor) {
-    color->A = (abgrColor >> 24) & 0x000000FF;
-    color->B = (abgrColor >> 16) & 0x000000FF;
-    color->G = (abgrColor >> 8) & 0x000000FF;
-    color->R = abgrColor & 0x000000FF;
+    color->A = (s32)((abgrColor >> 24) & 0x000000FF);
+    color->B = (s32)((abgrColor >> 16) & 0x000000FF);
+    color->G = (s32)((abgrColor >> 8) & 0x000000FF);
+    color->R = (s32)(abgrColor & 0x000000FF);
 }
 
 void color_colorToABGR(color_t *color, u32 *abgrColor)
@@ -63,10 +61,10 @@ void color_colorToABGR(color_t *color, u32 *abgrColor)
     PREMULTIPLY_ALPHA(color);
 
     *abgrColor =
-            ((color->A) << 24) & 0xFF000000 |
-            ((color->B) << 16) & 0x00FF0000 |
-            ((color->G) <<  8) & 0x0000FF00 |
-             (color->R) & 0x000000FF;
+            (((u32)color->A) << 24) & 0xFF000000 |
+            (((u32)color->B) << 16) & 0x00FF0000 |
+            (((u32)color->G) <<  8) & 0x0000FF00 |
+             ((u32)color->R) & 0x000000FF;
 }
 
 #ifdef __cplusplus
