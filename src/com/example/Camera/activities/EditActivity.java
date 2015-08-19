@@ -94,7 +94,8 @@ public class EditActivity extends Activity implements View.OnClickListener, View
 
 
         image = (ImageView) findViewById(R.id.editImage);
-        image.setImageBitmap(originalBitmap);
+        Drawable d = new BitmapDrawable(getResources(), originalBitmap);
+        image.setImageDrawable(d);
 
         //Lists
         buttonScroll = (HorizontalScrollView) findViewById(R.id.funcScroll);
@@ -339,7 +340,9 @@ public class EditActivity extends Activity implements View.OnClickListener, View
             break;*/
             case R.id.CropButton:
             {
-                CropFilter cropFilter = new CropFilter(0, (originalBitmap.getHeight() - originalBitmap.getWidth()) / 2, originalBitmap.getWidth(), originalBitmap.getWidth());
+                CropFilter cropFilter = new CropFilter(0,
+                        (originalBitmap.getHeight() - originalBitmap.getWidth()) / 2,
+                        originalBitmap.getWidth(), originalBitmap.getWidth());
                 Bitmap bmp;
 
                 bmp = originalBitmap.copy(originalBitmap.getConfig(), true);
@@ -348,8 +351,10 @@ public class EditActivity extends Activity implements View.OnClickListener, View
                 image.setImageResource(android.R.color.transparent);
                 image.destroyDrawingCache();
 
-                image.setImageBitmap(bmp);
-                originalBitmap = bmp;
+                Drawable d = new BitmapDrawable(getResources(), bmp);
+
+                image.setImageDrawable(d);
+                //originalBitmap = bmp;
             }
             break;
             case R.id.AddText: {
