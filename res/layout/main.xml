@@ -41,5 +41,9 @@
         android:layout_marginRight="50dp">
     </Button>
 
+    <requestFocus android:layout_gravity="center" />
+
+    <requestFocus android:layout_gravity="center" />
+
 </FrameLayout>
 

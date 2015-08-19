@@ -33,7 +33,7 @@
             android:layout_width="fill_parent"
             android:layout_height="65dp"
             android:gravity="bottom"
-        android:layout_gravity="left|bottom">
+        android:layout_gravity="center_horizontal|bottom">
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -216,7 +216,7 @@
                 android:id="@+id/filterButton11"
                 android:text=" "
                 android:layout_marginBottom="0dp"
-                android:background="@drawable/pic"
+                android:background="@drawable/filter_icon_11"
                 android:layout_marginLeft="5dp" />
 
             <Button
@@ -225,7 +225,7 @@
                 android:id="@+id/filterButton12"
                 android:text=" "
                 android:layout_marginBottom="0dp"
-                android:background="@drawable/pic"
+                android:background="@drawable/filter_icon_12"
                 android:layout_marginLeft="5dp" />
 
             <Button
@@ -234,7 +234,7 @@
                 android:id="@+id/filterButton13"
                 android:text=" "
                 android:layout_marginBottom="0dp"
-                android:background="@drawable/pic"
+                android:background="@drawable/filter_icon_13"
                 android:layout_marginLeft="5dp" />
 
         </LinearLayout>

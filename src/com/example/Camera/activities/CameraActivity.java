@@ -122,11 +122,6 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
     }*/
 
     @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-    }
-
-    @Override
     public void surfaceCreated(SurfaceHolder holder)
     {
         if(_camera != null)
@@ -138,16 +133,17 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
         Camera.Parameters params = _camera.getParameters();
         params.setFlashMode(_flashTypes[_curFlashType]);
         params.setFocusMode(Camera.Parameters.FOCUS_MODE_AUTO);
-        //params.setSceneMode(Camera.Parameters.SCENE_MODE_BEACH);
         List<Camera.Size> sizes = params.getSupportedPictureSizes();
         params.setPictureSize(sizes.get(0).width,  sizes.get(0).height);
-        params.setAutoExposureLock(false);
+        if(params.isAutoExposureLockSupported())
+        {
+            params.setAutoExposureLock(false);
+        }
         params.setAutoWhiteBalanceLock(false);
-        params.set("iso", "ISO800"); //Tried with 400, 800, 600 (values obtained from flatten())
+        params.set("iso", "auto"); //Tried with 400, 800, 600 (values obtained from flatten())
         params.setColorEffect("none");
         params.set("scene-mode", "auto");
-        params.setExposureCompensation(2);
-
+        params.setExposureCompensation(4);
 
         _camera.setParameters(params);
         setCameraRotation();
@@ -320,6 +316,8 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
     public void onPictureTaken(byte[] paramArrayOfByte, Camera paramCamera)
     {
         try {
+            Camera.Parameters params = _camera.getParameters();
+            String str = params.flatten();
             stopCamera();
             Intent intent = new Intent(this, PreviewActivity.class);
             SaveController.originalPicture = paramArrayOfByte;
