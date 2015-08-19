@@ -2,6 +2,8 @@ package com.example.Camera.editor;
 
 import android.graphics.Color;
 
+import com.example.Camera.editor.filter.Filter;
+
 /**
  * Created by netherwire on 8/16/15.
  */
@@ -63,6 +65,15 @@ public class FilterPrefab
     //Vivid light 50%, 209 196 249
     public static final FilterPrefab Filter9 = new FilterPrefab(BlendFunction.Vivid_Light, Color.rgb(209, 196, 249), .5f);
 
+    //Soft light 20%, 0 255 54 by Netherwire
+    public static final FilterPrefab Filter10 = new FilterPrefab(BlendFunction.Soft_Light, Color.rgb(0, 255, 54), .2f);
+
+    //Soft light 20%, 0 54 255 by Netherwire
+    public static final FilterPrefab Filter11 = new FilterPrefab(BlendFunction.Soft_Light, Color.rgb(0, 54, 255), .2f);
+
+    //Darken, 113 112 105 by Netherwire
+    public static final FilterPrefab Filter12 = new FilterPrefab(BlendFunction.Darken, Color.rgb(113, 112, 105), .5f);
+
     private static final FilterPrefab filterPrefabs[] = new FilterPrefab[] {
             Filter0,
             Filter1,
@@ -73,7 +84,10 @@ public class FilterPrefab
             Filter6,
             Filter7,
             Filter8,
-            Filter9
+            Filter9,
+            Filter10,
+            Filter11,
+            Filter12
     };
 
     public static final FilterPrefab getFilterPrefab(int index)

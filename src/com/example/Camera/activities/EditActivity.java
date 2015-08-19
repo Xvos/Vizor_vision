@@ -207,6 +207,9 @@ public class EditActivity extends Activity implements View.OnClickListener, View
         findViewById(R.id.filterButton8).setOnClickListener(this);
         findViewById(R.id.filterButton9).setOnClickListener(this);
         findViewById(R.id.filterButton10).setOnClickListener(this);
+        findViewById(R.id.filterButton11).setOnClickListener(this);
+        findViewById(R.id.filterButton12).setOnClickListener(this);
+        findViewById(R.id.filterButton13).setOnClickListener(this);
 
         //Map
         imageMap = new SparseArray<Integer>();
@@ -269,6 +272,9 @@ public class EditActivity extends Activity implements View.OnClickListener, View
         filterMap.put(R.id.filterButton8, FilterPrefab.Filter7);
         filterMap.put(R.id.filterButton9, FilterPrefab.Filter8);
         filterMap.put(R.id.filterButton10, FilterPrefab.Filter9);
+        filterMap.put(R.id.filterButton11, FilterPrefab.Filter10);
+        filterMap.put(R.id.filterButton12, FilterPrefab.Filter11);
+        filterMap.put(R.id.filterButton13, FilterPrefab.Filter12);
 
         //вставляем мерж
         setImegeButtonsBacks();
@@ -489,7 +495,10 @@ public class EditActivity extends Activity implements View.OnClickListener, View
             case R.id.filterButton7:
             case R.id.filterButton8:
             case R.id.filterButton9:
-            case R.id.filterButton10: {
+            case R.id.filterButton10:
+            case R.id.filterButton11:
+            case R.id.filterButton12:
+            case R.id.filterButton13: {
                 Bitmap bmp = originalBitmap.copy(SaveController.tempBitmap.getConfig(), true);
 
                 NativeUtils nativeUtils = new NativeUtils();
