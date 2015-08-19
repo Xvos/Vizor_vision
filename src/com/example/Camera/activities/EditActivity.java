@@ -675,27 +675,16 @@ public class EditActivity extends Activity implements View.OnClickListener, View
 
     private static Bitmap mergeBitmaps(Bitmap original, Bitmap overlay) {
 
-        Bitmap result = Bitmap.createBitmap(original.getWidth(), original
-                .getHeight(), original.getConfig());
+        // TODO: Никите - проверить на Ромином HTC и залить версию ниже
+        Bitmap result = original.copy(original.getConfig(), true);
+
         Canvas canvas = new Canvas(result);
         Paint paint = new Paint();
         paint.setAntiAlias(true);
 
-        canvas.drawBitmap(original, 0, 0, paint);
-        canvas.drawBitmap(overlay, 230, 80, paint);
+        canvas.drawBitmap(overlay, original.getWidth() - overlay.getWidth() - 17, original.getHeight() - overlay.getHeight(), paint);
 
         return result;
-
-        // TODO: Никите - проверить на Ромином HTC и залить версию ниже
-//        Bitmap result = original.copy(original.getConfig(), true);
-//
-//        Canvas canvas = new Canvas(result);
-//        Paint paint = new Paint();
-//        paint.setAntiAlias(true);
-//
-//        canvas.drawBitmap(overlay, 230, 80, paint);
-//
-//        return result;
     }
 
     @Override

@@ -52,10 +52,10 @@
                     android:text="   TEXT"
                 android:background="@drawable/bg"
                 android:textColor="@android:color/white"
-                android:textStyle="bold"
                 android:textAlignment="viewStart"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:gravity="center_vertical|left" />
+                android:gravity="center_vertical|left"
+                android:textSize="14dp" />
 
             <Button
                     android:layout_width="101dp"
@@ -66,18 +66,20 @@
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textColor="@android:color/white"
                 android:textAlignment="1"
-                android:gravity="center_vertical|left" />
+                android:gravity="center_vertical|left"
+                android:textSize="14dp" />
 
             <Button
                     android:layout_width="101dp"
                     android:layout_height="55dp"
                     android:id="@+id/FiltersButton"
-                    android:text="FILTERS"
+                    android:text="   FILTERS"
                 android:background="@drawable/bg"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textColor="@android:color/white"
                 android:textAlignment="1"
-                android:gravity="center_vertical|left" />
+                android:gravity="center_vertical|left"
+                android:textSize="14dp" />
 
             <Button
                     android:layout_width="101dp"
@@ -88,7 +90,8 @@
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textColor="@android:color/white"
                 android:textAlignment="1"
-                android:gravity="center_vertical|left" />
+                android:gravity="center_vertical|left"
+                android:textSize="14dp" />
         </LinearLayout>
     </HorizontalScrollView>
 
@@ -123,7 +126,8 @@
                 android:id="@+id/filterButton1"
                 android:text=" "
                 android:layout_marginBottom="0dp"
-                android:background="@drawable/pic" />
+                android:background="@drawable/filter_icon_1"
+                android:layout_marginLeft="5dp" />
 
             <Button
                 android:layout_width="75dp"
@@ -131,7 +135,8 @@
                 android:id="@+id/filterButton2"
                 android:text=" "
                 android:layout_marginBottom="0dp"
-                android:background="@drawable/pic" />
+                android:background="@drawable/filter_icon_2"
+                android:layout_marginLeft="5dp" />
 
             <Button
                 android:layout_width="75dp"
@@ -139,7 +144,8 @@
                 android:id="@+id/filterButton3"
                 android:text=" "
                 android:layout_marginBottom="0dp"
-                android:background="@drawable/pic" />
+                android:background="@drawable/filter_icon_3"
+                android:layout_marginLeft="5dp" />
 
             <Button
                 android:layout_width="75dp"
@@ -147,7 +153,8 @@
                 android:id="@+id/filterButton4"
                 android:text=" "
                 android:layout_marginBottom="0dp"
-                android:background="@drawable/pic" />
+                android:background="@drawable/filter_icon_4"
+                android:layout_marginLeft="5dp" />
 
             <Button
                 android:layout_width="75dp"
@@ -155,7 +162,8 @@
                 android:id="@+id/filterButton5"
                 android:text=" "
                 android:layout_marginBottom="0dp"
-                android:background="@drawable/pic" />
+                android:background="@drawable/filter_icon_5"
+                android:layout_marginLeft="5dp" />
 
             <Button
                 android:layout_width="75dp"
@@ -163,7 +171,8 @@
                 android:id="@+id/filterButton6"
                 android:text=" "
                 android:layout_marginBottom="0dp"
-                android:background="@drawable/pic" />
+                android:background="@drawable/filter_icon_6"
+                android:layout_marginLeft="5dp" />
 
             <Button
                 android:layout_width="75dp"
@@ -171,7 +180,8 @@
                 android:id="@+id/filterButton7"
                 android:text=" "
                 android:layout_marginBottom="0dp"
-                android:background="@drawable/pic" />
+                android:background="@drawable/filter_icon_7"
+                android:layout_marginLeft="5dp" />
 
             <Button
                 android:layout_width="75dp"
@@ -179,7 +189,8 @@
                 android:id="@+id/filterButton8"
                 android:text=" "
                 android:layout_marginBottom="0dp"
-                android:background="@drawable/pic" />
+                android:background="@drawable/filter_icon_8"
+                android:layout_marginLeft="5dp" />
 
             <Button
                 android:layout_width="75dp"
@@ -187,7 +198,8 @@
                 android:id="@+id/filterButton9"
                 android:text=" "
                 android:layout_marginBottom="0dp"
-                android:background="@drawable/pic" />
+                android:background="@drawable/filter_icon_9"
+                android:layout_marginLeft="5dp" />
 
             <Button
                 android:layout_width="75dp"
@@ -195,7 +207,8 @@
                 android:id="@+id/filterButton10"
                 android:text=" "
                 android:layout_marginBottom="0dp"
-                android:background="@drawable/pic" />
+                android:background="@drawable/filter_icon_10"
+                android:layout_marginLeft="5dp" />
 
             <Button
                 android:layout_width="75dp"
@@ -203,7 +216,8 @@
                 android:id="@+id/filterButton11"
                 android:text=" "
                 android:layout_marginBottom="0dp"
-                android:background="@drawable/pic" />
+                android:background="@drawable/pic"
+                android:layout_marginLeft="5dp" />
 
             <Button
                 android:layout_width="75dp"
@@ -211,7 +225,8 @@
                 android:id="@+id/filterButton12"
                 android:text=" "
                 android:layout_marginBottom="0dp"
-                android:background="@drawable/pic" />
+                android:background="@drawable/pic"
+                android:layout_marginLeft="5dp" />
 
             <Button
                 android:layout_width="75dp"
@@ -219,23 +234,8 @@
                 android:id="@+id/filterButton13"
                 android:text=" "
                 android:layout_marginBottom="0dp"
-                android:background="@drawable/pic" />
-
-            <Button
-                android:layout_width="75dp"
-                android:layout_height="75dp"
-                android:id="@+id/filterButton14"
-                android:text=" "
-                android:layout_marginBottom="0dp"
-                android:background="@drawable/pic" />
-
-            <Button
-                android:layout_width="75dp"
-                android:layout_height="75dp"
-                android:id="@+id/filterButton15"
-                android:text=" "
-                android:layout_marginBottom="0dp"
-                android:background="@drawable/pic" />
+                android:background="@drawable/pic"
+                android:layout_marginLeft="5dp" />
 
         </LinearLayout>
     </HorizontalScrollView>
