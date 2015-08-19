@@ -176,6 +176,16 @@ public class EditActivity extends Activity implements View.OnClickListener, View
         findViewById(R.id.image35Button).setOnClickListener(this);
         findViewById(R.id.image36Button).setOnClickListener(this);
         findViewById(R.id.image37Button).setOnClickListener(this);
+        findViewById(R.id.image38Button).setOnClickListener(this);
+        findViewById(R.id.image39Button).setOnClickListener(this);
+        findViewById(R.id.image40Button).setOnClickListener(this);
+        findViewById(R.id.image41Button).setOnClickListener(this);
+        findViewById(R.id.image42Button).setOnClickListener(this);
+        findViewById(R.id.image43Button).setOnClickListener(this);
+        findViewById(R.id.image44Button).setOnClickListener(this);
+        findViewById(R.id.image45Button).setOnClickListener(this);
+        findViewById(R.id.image46Button).setOnClickListener(this);
+        findViewById(R.id.image47Button).setOnClickListener(this);
 
         //Setting button listeners
         saveButton.setOnClickListener(this);
@@ -229,7 +239,7 @@ public class EditActivity extends Activity implements View.OnClickListener, View
         imageMap.put(R.id.image27Button, R.drawable.pers);
         imageMap.put(R.id.image28Button, R.drawable.red_princess);
         imageMap.put(R.id.image29Button, R.drawable.sheep);
-        imageMap.put(R.id.image30Button, R.drawable.sheriff);
+        imageMap.put(R.id.image30Button, R.drawable.sheep_2);
         imageMap.put(R.id.image31Button, R.drawable.vova_1);
         imageMap.put(R.id.image32Button, R.drawable.vova_2);
         imageMap.put(R.id.image33Button, R.drawable.vova_3);
@@ -237,6 +247,16 @@ public class EditActivity extends Activity implements View.OnClickListener, View
         imageMap.put(R.id.image35Button, R.drawable.zombie_1);
         imageMap.put(R.id.image36Button, R.drawable.zombie_2);
         imageMap.put(R.id.image37Button, R.drawable.zombie_girl);
+        imageMap.put(R.id.image38Button, R.drawable.barbarian);
+        imageMap.put(R.id.image39Button, R.drawable.birzd);
+        imageMap.put(R.id.image40Button, R.drawable.chiken_2);
+        imageMap.put(R.id.image41Button, R.drawable.dude);
+        imageMap.put(R.id.image42Button, R.drawable.girl_4);
+        imageMap.put(R.id.image43Button, R.drawable.guy_3);
+        imageMap.put(R.id.image44Button, R.drawable.pig);
+        imageMap.put(R.id.image45Button, R.drawable.princ);
+        imageMap.put(R.id.image46Button, R.drawable.vizor8);
+        imageMap.put(R.id.image47Button, R.drawable.cow);
 
         filterMap = new SparseArray<FilterPrefab>();
         filterMap.put(R.id.filterButton1, FilterPrefab.Filter0);
@@ -331,8 +351,8 @@ public class EditActivity extends Activity implements View.OnClickListener, View
 
                 bmp = originalBitmap.copy(originalBitmap.getConfig(), true);
                 cropFilter.process(originalBitmap, bmp);
-                image.setImageBitmap(null);
-                image.setImageDrawable(null);
+                image.buildDrawingCache();
+                image.setImageResource(android.R.color.transparent);
                 image.destroyDrawingCache();
 
                 image.setImageBitmap(bmp);
@@ -340,7 +360,13 @@ public class EditActivity extends Activity implements View.OnClickListener, View
             }
             break;
             case R.id.AddText: {
-                text.setVisibility(View.VISIBLE);
+                if(text.getVisibility() == View.VISIBLE) {
+                    text.setVisibility(View.INVISIBLE);
+                }
+                else if (text.getVisibility() == View.INVISIBLE)
+                {
+                    text.setVisibility(View.VISIBLE);
+                }
                 text.setText("#Vizor8");
                 text.setOnEditorActionListener(this);
             }
@@ -531,7 +557,18 @@ public class EditActivity extends Activity implements View.OnClickListener, View
             case R.id.image34Button:
             case R.id.image35Button:
             case R.id.image36Button:
-            case R.id.image37Button: {
+            case R.id.image37Button:
+            case R.id.image38Button:
+            case R.id.image39Button:
+            case R.id.image40Button:
+            case R.id.image41Button:
+            case R.id.image42Button:
+            case R.id.image43Button:
+            case R.id.image44Button:
+            case R.id.image45Button:
+            case R.id.image46Button:
+            case R.id.image47Button:
+            {
                 ImageView newImage = new ImageView(this);
                 newImage.setImageResource(imageMap.get(v.getId()));
                 newImage.setLayoutParams(new FrameLayout.LayoutParams(

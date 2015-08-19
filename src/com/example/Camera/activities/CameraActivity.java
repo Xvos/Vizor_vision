@@ -146,7 +146,7 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
         params.set("iso", "ISO800"); //Tried with 400, 800, 600 (values obtained from flatten())
         params.setColorEffect("none");
         params.set("scene-mode", "auto");
-        params.setExposureCompensation(4);
+        params.setExposureCompensation(2);
 
 
         _camera.setParameters(params);

@@ -243,7 +243,7 @@
     <HorizontalScrollView
         android:id="@+id/imageScrollView"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="75dp"
         android:gravity="bottom"
         android:layout_gravity="bottom"
         android:layout_marginBottom="-94dp" >
@@ -258,264 +258,380 @@
             android:measureWithLargestChild="false" >
 
             <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="75dp"
+                android:layout_height="75dp"
                 android:id="@+id/image1Button"
-                android:text="Bandit"
-                android:layout_marginBottom="0dp" />
-
-            <Button
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/image2Button"
-                android:text="Bear"
-                android:layout_marginBottom="0dp" />
-
-            <Button
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/image3Button"
-                android:text="Beard"
-                android:layout_marginBottom="0dp" />
-
-            <Button
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/image4Button"
-                android:text="Black Princess"
-                android:layout_marginBottom="0dp" />
-
-            <Button
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/image5Button"
-                android:text="Blond Princess"
-                android:layout_marginBottom="0dp" />
-
-            <Button
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/image6Button"
-                android:text="Chicken"
-                android:layout_marginBottom="0dp" />
-
-            <Button
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/image7Button"
-                android:text="Cowboy"
-                android:layout_marginBottom="0dp" />
-
-            <Button
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/image8Button"
-                android:text="Vince 1"
-                android:layout_marginBottom="0dp" />
-
-            <Button
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/image9Button"
-                android:text="Vince 2"
-                android:layout_marginBottom="0dp" />
-
-            <Button
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/image10Button"
-                android:text="Vince 3"
-                android:layout_marginBottom="0dp" />
-
-            <Button
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/image11Button"
-                android:text="Vince 4"
-                android:layout_marginBottom="0dp" />
-
-            <Button
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/image12Button"
-                android:text="Glasses"
-                android:layout_marginBottom="0dp" />
-
-            <Button
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/image13Button"
-                android:text="Gnome"
-                android:layout_marginBottom="0dp" />
-
-            <Button
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/image14Button"
-                android:text="Gold Like"
-                android:layout_marginBottom="0dp" />
-
-            <Button
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/image15Button"
-                android:text="Logo Black"
-                android:layout_marginBottom="0dp" />
-
-            <Button
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/image16Button"
-                android:text="Logo White"
-                android:layout_marginBottom="0dp" />
-
-            <Button
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/image17Button"
-                android:text="Logo ZF"
-                android:layout_marginBottom="0dp" />
-
-            <Button
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/image20Button"
-                android:text="Logo Klone"
-                android:layout_marginBottom="0dp" />
-
-            <Button
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/image21Button"
-                android:text="Logo Knights"
-                android:layout_marginBottom="0dp" />
-
-            <Button
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/image18Button"
-                android:text="Mask Black"
-                android:layout_marginBottom="0dp" />
-
-            <Button
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/image19Button"
-                android:text="Mask White"
-                android:layout_marginBottom="0dp" />
-
-            <Button
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/image22Button"
-                android:text="Mustache 1"
-                android:layout_marginBottom="0dp" />
-
-            <Button
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/image23Button"
-                android:text="Mustache 2"
-                android:layout_marginBottom="0dp" />
-
-            <Button
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/image24Button"
-                android:text="Mustache 3"
-                android:layout_marginBottom="0dp" />
-
-            <Button
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/image25Button"
-                android:text="Party Bear"
-                android:layout_marginBottom="0dp" />
-
-            <Button
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/image26Button"
-                android:text="Pavlin"
-                android:layout_marginBottom="0dp" />
-
-            <Button
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/image27Button"
-                android:text="Pers"
-                android:layout_marginBottom="0dp" />
-
-            <Button
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/image28Button"
-                android:text="Red Princess"
-                android:layout_marginBottom="0dp" />
-
-            <Button
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/image29Button"
-                android:text="Sheep"
-                android:layout_marginBottom="0dp" />
-
-            <Button
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/image30Button"
-                android:text="Sheriff"
-                android:layout_marginBottom="0dp" />
-
-            <Button
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/image31Button"
-                android:text="Vova 1"
+                android:text=" "
                 android:layout_marginBottom="0dp"
-                android:gravity="clip_vertical" />
+                android:background="@drawable/b_bandit" />
 
             <Button
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
+                android:layout_width="75dp"
+                android:layout_height="75dp"
+                android:id="@+id/image2Button"
+                android:text=" "
+                android:layout_marginBottom="0dp"
+                android:background="@drawable/b_bear" />
+
+            <Button
+                android:layout_width="75dp"
+                android:layout_height="75dp"
+                android:id="@+id/image3Button"
+                android:text=" "
+                android:layout_marginBottom="0dp"
+                android:background="@drawable/b_beard" />
+
+            <Button
+                android:layout_width="75dp"
+                android:layout_height="75dp"
+                android:id="@+id/image4Button"
+                android:text=" "
+                android:layout_marginBottom="0dp"
+                android:background="@drawable/b_black_princess" />
+
+            <Button
+                android:layout_width="75dp"
+                android:layout_height="75dp"
+                android:id="@+id/image5Button"
+                android:text=" "
+                android:layout_marginBottom="0dp"
+                android:background="@drawable/b_blond_princess" />
+
+            <Button
+                android:layout_width="75dp"
+                android:layout_height="75dp"
+                android:id="@+id/image6Button"
+                android:text=" "
+                android:layout_marginBottom="0dp"
+                android:background="@drawable/b_chiken" />
+
+            <Button
+                android:layout_width="75dp"
+                android:layout_height="75dp"
+                android:id="@+id/image7Button"
+                android:text=" "
+                android:layout_marginBottom="0dp"
+                android:background="@drawable/b_cowboy" />
+
+            <Button
+                android:layout_width="75dp"
+                android:layout_height="75dp"
+                android:id="@+id/image8Button"
+                android:text=" "
+                android:layout_marginBottom="0dp"
+                android:background="@drawable/b_foot_1" />
+
+            <Button
+                android:layout_width="75dp"
+                android:layout_height="75dp"
+                android:id="@+id/image9Button"
+                android:text=" "
+                android:layout_marginBottom="0dp"
+                android:background="@drawable/b_foot_2" />
+
+            <Button
+                android:layout_width="75dp"
+                android:layout_height="75dp"
+                android:id="@+id/image10Button"
+                android:text=" "
+                android:layout_marginBottom="0dp"
+                android:background="@drawable/b_foot_3" />
+
+            <Button
+                android:layout_width="75dp"
+                android:layout_height="75dp"
+                android:id="@+id/image11Button"
+                android:text=" "
+                android:layout_marginBottom="0dp"
+                android:background="@drawable/b_foot_4" />
+
+            <Button
+                android:layout_width="75dp"
+                android:layout_height="75dp"
+                android:id="@+id/image12Button"
+                android:text=" "
+                android:layout_marginBottom="0dp"
+                android:background="@drawable/b_glasses" />
+
+            <Button
+                android:layout_width="75dp"
+                android:layout_height="75dp"
+                android:id="@+id/image13Button"
+                android:text=" "
+                android:layout_marginBottom="0dp"
+                android:background="@drawable/b_gnom" />
+
+            <Button
+                android:layout_width="75dp"
+                android:layout_height="75dp"
+                android:id="@+id/image14Button"
+                android:text=" "
+                android:layout_marginBottom="0dp"
+                android:background="@drawable/b_gold_like" />
+
+            <Button
+                android:layout_width="75dp"
+                android:layout_height="75dp"
+                android:id="@+id/image15Button"
+                android:text=" "
+                android:layout_marginBottom="0dp"
+                android:background="@drawable/b_logo_black" />
+
+            <Button
+                android:layout_width="75dp"
+                android:layout_height="75dp"
+                android:id="@+id/image16Button"
+                android:text=" "
+                android:layout_marginBottom="0dp"
+                android:background="@drawable/b_logo_white" />
+
+            <Button
+                android:layout_width="75dp"
+                android:layout_height="75dp"
+                android:id="@+id/image17Button"
+                android:text=" "
+                android:layout_marginBottom="0dp"
+                android:background="@drawable/b_logo_zf" />
+
+            <Button
+                android:layout_width="75dp"
+                android:layout_height="75dp"
+                android:id="@+id/image20Button"
+                android:text=" "
+                android:layout_marginBottom="0dp"
+                android:background="@drawable/b_logo_klone" />
+
+            <Button
+                android:layout_width="75dp"
+                android:layout_height="75dp"
+                android:id="@+id/image21Button"
+                android:text=" "
+                android:layout_marginBottom="0dp"
+                android:background="@drawable/b_logo_loyalty" />
+
+            <Button
+                android:layout_width="75dp"
+                android:layout_height="75dp"
+                android:id="@+id/image18Button"
+                android:text=" "
+                android:layout_marginBottom="0dp"
+                android:background="@drawable/b_mask_b" />
+
+            <Button
+                android:layout_width="75dp"
+                android:layout_height="75dp"
+                android:id="@+id/image19Button"
+                android:text=" "
+                android:layout_marginBottom="0dp"
+                android:background="@drawable/b_mask_w" />
+
+            <Button
+                android:layout_width="75dp"
+                android:layout_height="75dp"
+                android:id="@+id/image22Button"
+                android:text=" "
+                android:layout_marginBottom="0dp"
+                android:background="@drawable/b_mustache" />
+
+            <Button
+                android:layout_width="75dp"
+                android:layout_height="75dp"
+                android:id="@+id/image23Button"
+                android:text=" "
+                android:layout_marginBottom="0dp"
+                android:background="@drawable/b_mustache_1" />
+
+            <Button
+                android:layout_width="75dp"
+                android:layout_height="75dp"
+                android:id="@+id/image24Button"
+                android:text=" "
+                android:layout_marginBottom="0dp"
+                android:background="@drawable/b_mustache_2" />
+
+            <Button
+                android:layout_width="75dp"
+                android:layout_height="75dp"
+                android:id="@+id/image25Button"
+                android:text=" "
+                android:layout_marginBottom="0dp"
+                android:background="@drawable/b_paty_bear" />
+
+            <Button
+                android:layout_width="75dp"
+                android:layout_height="75dp"
+                android:id="@+id/image26Button"
+                android:text=" "
+                android:layout_marginBottom="0dp"
+                android:background="@drawable/b_pavlin" />
+
+            <Button
+                android:layout_width="75dp"
+                android:layout_height="75dp"
+                android:id="@+id/image27Button"
+                android:text=" "
+                android:layout_marginBottom="0dp"
+                android:background="@drawable/b_pers" />
+
+            <Button
+                android:layout_width="75dp"
+                android:layout_height="75dp"
+                android:id="@+id/image28Button"
+                android:text=" "
+                android:layout_marginBottom="0dp"
+                android:background="@drawable/b_red_princess" />
+
+            <Button
+                android:layout_width="75dp"
+                android:layout_height="75dp"
+                android:id="@+id/image29Button"
+                android:text=" "
+                android:layout_marginBottom="0dp"
+                android:background="@drawable/b_sheep" />
+
+            <Button
+                android:layout_width="75dp"
+                android:layout_height="75dp"
+                android:id="@+id/image30Button"
+                android:text=" "
+                android:layout_marginBottom="0dp"
+                android:background="@drawable/b_sheep_2" />
+
+            <Button
+                android:layout_width="75dp"
+                android:layout_height="75dp"
+                android:id="@+id/image31Button"
+                android:text=" "
+                android:layout_marginBottom="0dp"
+                android:background="@drawable/b_vova_1" />
+
+            <Button
+                android:layout_width="75dp"
+                android:layout_height="75dp"
                 android:id="@+id/image32Button"
-                android:text="Vova 2"
-                android:layout_marginBottom="0dp" />
+                android:text=" "
+                android:layout_marginBottom="0dp"
+                android:background="@drawable/b_vova_2" />
 
             <Button
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
+                android:layout_width="75dp"
+                android:layout_height="75dp"
                 android:id="@+id/image33Button"
-                android:text="Vova 3"
-                android:layout_marginBottom="0dp" />
+                android:text=" "
+                android:layout_marginBottom="0dp"
+                android:background="@drawable/b_vova_3" />
 
             <Button
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
+                android:layout_width="75dp"
+                android:layout_height="75dp"
                 android:id="@+id/image34Button"
-                android:text="Zombie 1"
-                android:layout_marginBottom="0dp" />
+                android:text=" "
+                android:layout_marginBottom="0dp"
+                android:background="@drawable/b_zombie" />
 
             <Button
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
+                android:layout_width="75dp"
+                android:layout_height="75dp"
                 android:id="@+id/image35Button"
-                android:text="Zombie 2"
-                android:layout_marginBottom="0dp" />
+                android:text=" "
+                android:layout_marginBottom="0dp"
+                android:background="@drawable/b_zombie_1" />
 
             <Button
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
+                android:layout_width="75dp"
+                android:layout_height="75dp"
                 android:id="@+id/image36Button"
-                android:text="Zombie 3"
-                android:layout_marginBottom="0dp" />
+                android:text=" "
+                android:layout_marginBottom="0dp"
+                android:background="@drawable/b_zombie_2" />
 
             <Button
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
+                android:layout_width="75dp"
+                android:layout_height="75dp"
                 android:id="@+id/image37Button"
-                android:text="Zombie Girl"
-                android:layout_marginBottom="0dp" />
+                android:text=" "
+                android:layout_marginBottom="0dp"
+                android:background="@drawable/b_zombie_girl" />
+
+            <Button
+                android:layout_width="75dp"
+                android:layout_height="75dp"
+                android:id="@+id/image38Button"
+                android:text=" "
+                android:layout_marginBottom="0dp"
+                android:background="@drawable/b_barbarian" />
+
+            <Button
+                android:layout_width="75dp"
+                android:layout_height="75dp"
+                android:id="@+id/image39Button"
+                android:text=" "
+                android:layout_marginBottom="0dp"
+                android:background="@drawable/b_birzd" />
+
+            <Button
+                android:layout_width="75dp"
+                android:layout_height="75dp"
+                android:id="@+id/image40Button"
+                android:text=" "
+                android:layout_marginBottom="0dp"
+                android:background="@drawable/b_chiken_2" />
+
+            <Button
+                android:layout_width="75dp"
+                android:layout_height="75dp"
+                android:id="@+id/image41Button"
+                android:text=" "
+                android:layout_marginBottom="0dp"
+                android:background="@drawable/b_dude" />
+
+            <Button
+                android:layout_width="75dp"
+                android:layout_height="75dp"
+                android:id="@+id/image42Button"
+                android:text=" "
+                android:layout_marginBottom="0dp"
+                android:background="@drawable/b_girl_4" />
+
+            <Button
+                android:layout_width="75dp"
+                android:layout_height="75dp"
+                android:id="@+id/image43Button"
+                android:text=" "
+                android:layout_marginBottom="0dp"
+                android:background="@drawable/b_guy_3" />
+
+            <Button
+                android:layout_width="75dp"
+                android:layout_height="75dp"
+                android:id="@+id/image44Button"
+                android:text=" "
+                android:layout_marginBottom="0dp"
+                android:background="@drawable/b_pig" />
+
+            <Button
+                android:layout_width="75dp"
+                android:layout_height="75dp"
+                android:id="@+id/image45Button"
+                android:text=" "
+                android:layout_marginBottom="0dp"
+                android:background="@drawable/b_princ" />
+
+            <Button
+                android:layout_width="75dp"
+                android:layout_height="75dp"
+                android:id="@+id/image46Button"
+                android:text=" "
+                android:layout_marginBottom="0dp"
+                android:background="@drawable/b_vizor8" />
+
+            <Button
+                android:layout_width="75dp"
+                android:layout_height="75dp"
+                android:id="@+id/image47Button"
+                android:text=" "
+                android:layout_marginBottom="0dp"
+                android:background="@drawable/b_cow" />
 
         </LinearLayout>
     </HorizontalScrollView>
@@ -529,7 +645,9 @@
         android:background="#8c313131"
         android:gravity="center_horizontal"
         android:focusable="true"
-        android:enabled="true" />
+        android:enabled="true"
+        android:maxLines="1"
+        android:maxLength="40" />
 
 </FrameLayout>
 
