@@ -95,7 +95,8 @@ public class EditActivity extends Activity implements View.OnClickListener, View
 
 
         image = (ImageView) findViewById(R.id.editImage);
-        image.setImageBitmap(originalBitmap);
+        Drawable d = new BitmapDrawable(getResources(), originalBitmap);
+        image.setImageDrawable(d);
 
         //Lists
         buttonScroll = (HorizontalScrollView) findViewById(R.id.funcScroll);
@@ -352,7 +353,9 @@ public class EditActivity extends Activity implements View.OnClickListener, View
             break;*/
             case R.id.CropButton:
             {
-                CropFilter cropFilter = new CropFilter(0, (originalBitmap.getHeight() - originalBitmap.getWidth()) / 2, originalBitmap.getWidth(), originalBitmap.getWidth());
+                CropFilter cropFilter = new CropFilter(0,
+                        (originalBitmap.getHeight() - originalBitmap.getWidth()) / 2,
+                        originalBitmap.getWidth(), originalBitmap.getWidth());
                 Bitmap bmp;
 
                 bmp = originalBitmap.copy(originalBitmap.getConfig(), true);
@@ -361,8 +364,10 @@ public class EditActivity extends Activity implements View.OnClickListener, View
                 image.setImageResource(android.R.color.transparent);
                 image.destroyDrawingCache();
 
-                image.setImageBitmap(bmp);
-                originalBitmap = bmp;
+                Drawable d = new BitmapDrawable(getResources(), bmp);
+
+                image.setImageDrawable(d);
+                //originalBitmap = bmp;
             }
             break;
             case R.id.AddText: {
@@ -679,27 +684,16 @@ public class EditActivity extends Activity implements View.OnClickListener, View
 
     private static Bitmap mergeBitmaps(Bitmap original, Bitmap overlay) {
 
-        Bitmap result = Bitmap.createBitmap(original.getWidth(), original
-                .getHeight(), original.getConfig());
+        // TODO: Никите - проверить на Ромином HTC и залить версию ниже
+        Bitmap result = original.copy(original.getConfig(), true);
+
         Canvas canvas = new Canvas(result);
         Paint paint = new Paint();
         paint.setAntiAlias(true);
 
-        canvas.drawBitmap(original, 0, 0, paint);
-        canvas.drawBitmap(overlay, 230, 80, paint);
+        canvas.drawBitmap(overlay, original.getWidth() - overlay.getWidth() - 17, original.getHeight() - overlay.getHeight(), paint);
 
         return result;
-
-        // TODO: Никите - проверить на Ромином HTC и залить версию ниже
-//        Bitmap result = original.copy(original.getConfig(), true);
-//
-//        Canvas canvas = new Canvas(result);
-//        Paint paint = new Paint();
-//        paint.setAntiAlias(true);
-//
-//        canvas.drawBitmap(overlay, 230, 80, paint);
-//
-//        return result;
     }
 
     @Override

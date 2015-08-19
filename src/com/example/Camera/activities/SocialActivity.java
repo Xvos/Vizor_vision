@@ -123,5 +123,6 @@ public class SocialActivity extends Activity implements View.OnClickListener{
         if (checkBoxViber.isChecked()) {
             SocialController.postOnViber(this);
         }
+        finish();
     }
 }
