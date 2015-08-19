@@ -462,7 +462,7 @@ public class EditActivity extends Activity implements View.OnClickListener, View
                 {
                     images.get(i).buildDrawingCache();
                     Bitmap curBitmap = ((BitmapDrawable)imageOrigContents.get(i)).getBitmap();
-                    Bitmap grayBitmap = curBitmap.copy(curBitmap.getConfig(), true);
+                    Bitmap grayBitmap = curBitmap.copy(Bitmap.Config.ARGB_8888, true);
                     curBitmap = null;
                     nativeUtils.blend(grayBitmap, filterMap.get(v.getId()));
                     images.get(i).setImageResource(android.R.color.transparent);
