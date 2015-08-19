@@ -3,8 +3,6 @@ package com.example.Camera.activities;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Matrix;
 import android.os.Bundle;
 import android.view.SurfaceView;
 import android.view.View;
@@ -39,7 +37,7 @@ public class PreviewActivity extends Activity implements View.OnClickListener
         Intent intent = getIntent();
 
         bitmap = BitmapFactoryHelper.decodeInScreenResolution(this, SaveController.originalPicture);
-        SaveController.bitmapToSave = bitmap;
+        SaveController.tempBitmap = bitmap;
 
         // Do other stuff
 
@@ -62,7 +60,7 @@ public class PreviewActivity extends Activity implements View.OnClickListener
     {
         if(v == cancelButton)
         {
-            SaveController.bitmapToSave = null;
+            SaveController.tempBitmap = null;
             SaveController.originalPicture = null;
 
             Intent intent = new Intent(this, CameraActivity.class);

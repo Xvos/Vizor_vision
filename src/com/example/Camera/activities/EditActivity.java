@@ -9,10 +9,8 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.PointF;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.media.FaceDetector;
 import android.os.Bundle;
 import android.util.FloatMath;
 import android.util.Log;
@@ -27,10 +25,10 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import com.example.Camera.BitmapFactoryHelper;
 import com.example.Camera.NativeUtils;
 import com.example.Camera.R;
 import com.example.Camera.control.SaveController;
@@ -78,6 +76,8 @@ public class EditActivity extends Activity implements View.OnClickListener, View
     private Map<Integer, Integer> imageMap;
     private Map<Integer, FilterPrefab> filterMap;
 
+    private FilterPrefab _activeFilterPrefab = null;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -90,11 +90,7 @@ public class EditActivity extends Activity implements View.OnClickListener, View
 
         ////////////////////////////////////////////////////////////////////////////////
 
-
-        float scaleFactor = (float)windowwidth / (float)SaveController.bitmapToSave.getWidth();
-
-        originalBitmap = Bitmap.createScaledBitmap(SaveController.bitmapToSave, windowwidth, (int)(SaveController.bitmapToSave.getHeight() *
-                scaleFactor), false);
+        originalBitmap = SaveController.tempBitmap;
 
 
         image = (ImageView) findViewById(R.id.editImage);
@@ -436,7 +432,11 @@ public class EditActivity extends Activity implements View.OnClickListener, View
             // Filters
             ///////////////////////////
             case R.id.noFilterButton: {
-                Bitmap bmp = SaveController.bitmapToSave.copy(SaveController.bitmapToSave.getConfig(), true);
+                Bitmap bmp = SaveController.tempBitmap.copy(SaveController.tempBitmap.getConfig(), true);
+
+                // Drop active filter prefab
+                _activeFilterPrefab = null;
+
                 image.setImageBitmap(bmp);
                 originalBitmap = bmp;
                 for(int i = 0; i < images.size(); i++)
@@ -454,11 +454,14 @@ public class EditActivity extends Activity implements View.OnClickListener, View
             case R.id.filterButton5:
             case R.id.filterButton6:
             case R.id.filterButton7: {
-                Bitmap bmp = originalBitmap.copy(SaveController.bitmapToSave.getConfig(), true);
+                Bitmap bmp = originalBitmap.copy(SaveController.tempBitmap.getConfig(), true);
 
                 NativeUtils nativeUtils = new NativeUtils();
                 long stamp = System.nanoTime();
-                nativeUtils.blend(bmp, filterMap.get(v.getId()));
+
+                _activeFilterPrefab = filterMap.get(v.getId());
+
+                nativeUtils.blend(bmp, _activeFilterPrefab);
                 Log.d("VISION", "Time: " + (System.nanoTime() - stamp));
 
 
@@ -468,9 +471,9 @@ public class EditActivity extends Activity implements View.OnClickListener, View
                 {
                     images.get(i).buildDrawingCache();
                     Bitmap curBitmap = ((BitmapDrawable)imageOrigContents.get(i)).getBitmap();
-                    Bitmap grayBitmap = curBitmap.copy(curBitmap.getConfig(), true);
+                    Bitmap grayBitmap = curBitmap.copy(Bitmap.Config.ARGB_8888, true);
                     curBitmap = null;
-                    nativeUtils.blend(grayBitmap, filterMap.get(v.getId()));
+                    nativeUtils.blend(grayBitmap, _activeFilterPrefab);
                     images.get(i).setImageResource(android.R.color.transparent);
                     images.get(i).destroyDrawingCache();
                     images.get(i).setImageBitmap(grayBitmap);
@@ -658,7 +661,15 @@ public class EditActivity extends Activity implements View.OnClickListener, View
 
     private void parseBitmapAndSave()
     {
-        Bitmap drawableBitmap = SaveController.bitmapToSave;
+        // Delete bitmaptosave
+        SaveController.tempBitmap.recycle();
+        SaveController.tempBitmap = null;
+        System.gc();
+
+        SaveController.tempBitmap = BitmapFactoryHelper.decodeInFullResolution(SaveController.originalPicture);
+        SaveController.originalPicture = null;
+
+        Bitmap drawableBitmap = SaveController.tempBitmap;
         Canvas canvas = new Canvas(drawableBitmap);
 
         int bitmapW = drawableBitmap.getWidth();
@@ -690,8 +701,12 @@ public class EditActivity extends Activity implements View.OnClickListener, View
                     (curImage.getY() - image.getY()) * scaleFactorY + yOffset, null);
         }
 
-        // TODO: process image here!
-
+        // Processing image if has filter
+        if(_activeFilterPrefab != null)
+        {
+            NativeUtils nativeUtils = new NativeUtils();
+            nativeUtils.blend(drawableBitmap, _activeFilterPrefab);
+        }
 
         //Adding Text
         if (text.getVisibility() == View.VISIBLE)

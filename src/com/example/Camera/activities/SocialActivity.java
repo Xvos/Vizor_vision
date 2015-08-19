@@ -2,8 +2,6 @@ package com.example.Camera.activities;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -41,7 +39,7 @@ public class SocialActivity extends Activity implements View.OnClickListener{
         String text = intent.getExtras().getString("TEXT");
 
         image = (ImageView) findViewById(R.id.PostImageView);
-        image.setImageBitmap(SaveController.bitmapToSave);
+        image.setImageBitmap(SaveController.tempBitmap);
         editText = (EditText) findViewById(R.id.postTextField);
         editText.setText(text);
 
