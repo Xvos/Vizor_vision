@@ -29,7 +29,7 @@
 #define ChannelBlend_SoftLight(B,L)  (((L < 128)?(B*(L + 128)/255):(255-(255-B)*(255-(L-128))/255)))
 #define ChannelBlend_HardLight(B,L)  (ChannelBlend_Overlay(L,B))
 #define ChannelBlend_ColorDodge(B,L) (((L == 255) ? L:qMin(255, ((B << 8 ) / (255 - L)))))
-#define ChannelBlend_ColorBurn(B,L)  (((L == 0) ? L:qMax(0, (255 - ((255 - B) << 8 ) / L))))
+#define ChannelBlend_ColorBurn(B,L)  (((L == 0) ? L:qMax(0, (255 - (((255 - B) << 8) / L)))))
 #define ChannelBlend_LinearDodge(B,L)(ChannelBlend_Add(B,L))
 
 #define ChannelBlend_LinearBurn(B,L) ((qMax(0, (B + L - 255))))
