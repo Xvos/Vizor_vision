@@ -3,6 +3,9 @@ package com.example.Camera;
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
+
+import com.example.Camera.control.SaveController;
 
 import java.io.FileDescriptor;
 
@@ -34,7 +37,18 @@ public class BitmapFactoryHelper
         Bitmap bitmap = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length, opt);
         float scaleFactor = (float)windowwidth / (float)bitmap.getWidth();
 
-        return Bitmap.createScaledBitmap(bitmap, windowwidth, (int)(bitmap.getHeight() * scaleFactor), false);
+        Matrix matrix = new Matrix();
+        matrix.postRotate(SaveController.Rotation);
+        matrix.postScale(scaleFactor, scaleFactor);
+
+        Bitmap bmpToReturn = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, false);
+
+        // Destroy old bitmap
+        bitmap.recycle();
+        bitmap = null;
+        System.gc();
+
+        return bmpToReturn;
     }
 
     public static Bitmap decodeInFullResolution(byte[] byteArray)
@@ -43,7 +57,19 @@ public class BitmapFactoryHelper
         opt.inPreferredConfig = Bitmap.Config.ARGB_8888;
         opt.inMutable = true;
 
-        return BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length, opt);
+        Bitmap bitmap = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length, opt);
+
+        Matrix matrix = new Matrix();
+        matrix.postRotate(SaveController.Rotation);
+
+        Bitmap bmpToReturn = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, false);
+
+        // Destroy old bitmap
+        bitmap.recycle();
+        bitmap = null;
+        System.gc();
+
+        return bmpToReturn;
     }
 
     public static int log2( int bits )

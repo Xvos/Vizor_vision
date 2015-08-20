@@ -45,7 +45,10 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
     private Button _shotBtn, _switchButton, _uploadButton, _flashLightButton;
     private Boolean _frontCameraSelected = false;
     private String[] _flashTypes = {
-    Camera.Parameters.FLASH_MODE_AUTO, Camera.Parameters.FLASH_MODE_OFF, Camera.Parameters.FLASH_MODE_ON};
+            Camera.Parameters.FLASH_MODE_AUTO,
+            Camera.Parameters.FLASH_MODE_OFF,
+            Camera.Parameters.FLASH_MODE_ON
+    };
 
     //В дальнейшем перейдем на иконки, ну а пока будут теста
     private int[] _flashButtonRes = {R.drawable.flash_auto_button, R.drawable.flash_dis_button, R.drawable.flash_button};
@@ -131,15 +134,32 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
 
         _camera = Camera.open();
         Camera.Parameters params = _camera.getParameters();
-        params.setFlashMode(_flashTypes[_curFlashType]);
-        params.setFocusMode(Camera.Parameters.FOCUS_MODE_AUTO);
+
+
+        // Set flash mode
+        final List<String> supportedFlashModes = params.getSupportedFlashModes();
+        if(supportedFlashModes != null && supportedFlashModes.contains(_flashTypes[_curFlashType])) {
+            params.setFlashMode(_flashTypes[_curFlashType]);
+        }
+
+        // Set autofocus mode
+        final List<String> focusModes = params.getSupportedFocusModes();
+        if(focusModes != null && focusModes.contains(Camera.Parameters.FOCUS_MODE_AUTO)) {
+            params.setFocusMode(Camera.Parameters.FOCUS_MODE_AUTO);
+        }
+
+        // Set size
         List<Camera.Size> sizes = params.getSupportedPictureSizes();
-        params.setPictureSize(sizes.get(0).width,  sizes.get(0).height);
-        if(params.isAutoExposureLockSupported())
-        {
+        params.setPictureSize(sizes.get(0).width, sizes.get(0).height);
+
+        if(params.isAutoExposureLockSupported()) {
             params.setAutoExposureLock(false);
         }
-        params.setAutoWhiteBalanceLock(false);
+
+        if(params.isAutoWhiteBalanceLockSupported()) {
+            params.setAutoWhiteBalanceLock(false);
+        }
+
         params.set("iso", "auto"); //Tried with 400, 800, 600 (values obtained from flatten())
         params.setColorEffect("none");
         params.set("scene-mode", "auto");
@@ -175,7 +195,7 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
         }
         int rotate = (info.orientation - degrees + 360) % 360;
 
-        params.setRotation(rotate);
+        SaveController.Rotation = rotate;
 
         _camera.setParameters(params);
     }
@@ -217,7 +237,12 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
                 _curFlashType = 0;
             }
 
-            params.setFlashMode(_flashTypes[_curFlashType]);
+            // Set flash mode
+            final List<String> supportedFlashModes = params.getSupportedFlashModes();
+            if(supportedFlashModes != null && supportedFlashModes.contains(_flashTypes[_curFlashType])) {
+                params.setFlashMode(_flashTypes[_curFlashType]);
+            }
+
             _camera.setParameters(params);
             _flashLightButton.setBackgroundResource(_flashButtonRes[_curFlashType]);
         }
@@ -237,9 +262,19 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
                 }
 
                 Camera.Parameters params = _camera.getParameters();
-                params.setFocusMode(Camera.Parameters.FOCUS_MODE_AUTO);
+
+                // Set autofocus mode
+                List<String> focusModes = params.getSupportedFocusModes();
+                if(focusModes != null && focusModes.contains(Camera.Parameters.FOCUS_MODE_AUTO))
+                {
+                    params.setFocusMode(Camera.Parameters.FOCUS_MODE_AUTO);
+                }
+
+                // Set size
                 List<Camera.Size> sizes = params.getSupportedPictureSizes();
                 params.setPictureSize(sizes.get(0).width,  sizes.get(0).height);
+
+
                 _camera.setParameters(params);
                 _frontCameraSelected = !_frontCameraSelected;
                 setCameraRotation();
