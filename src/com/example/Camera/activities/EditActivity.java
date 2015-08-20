@@ -752,8 +752,11 @@ public class EditActivity extends Activity implements View.OnClickListener, View
         SaveController.tempBitmap = BitmapFactoryHelper.decodeInFullResolution(SaveController.originalPicture);
         SaveController.originalPicture = null;
 
+        int cropOffset = 0;
+
         if(_isCropped)
         {
+            cropOffset = Math.max(0, (SaveController.tempBitmap.getHeight() - SaveController.tempBitmap.getWidth()) / 2);
             Bitmap croppedBitmap = CropFilter.centerCrop(SaveController.tempBitmap);
 
             // Delete bitmaptosave
@@ -793,8 +796,8 @@ public class EditActivity extends Activity implements View.OnClickListener, View
             int xOffset = (int)((resizedBitmap.getWidth() / scale) - resizedBitmap.getWidth())/2;
             int yOffset = (int)((resizedBitmap.getHeight() / scale) - resizedBitmap.getHeight())/2;
 
-            canvas.drawBitmap(resizedBitmap,curImage.getX() * scaleFactorX + xOffset,
-                    (curImage.getY() - image.getY()) * scaleFactorY + yOffset, null);
+            canvas.drawBitmap(resizedBitmap,curImage.getX() * scaleFactorX + xOffset ,
+                    (curImage.getY() - image.getY()) * scaleFactorY + yOffset - cropOffset * scaleFactorY, null);
         }
 
         // Processing image if has filter
