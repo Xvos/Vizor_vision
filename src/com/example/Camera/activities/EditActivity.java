@@ -64,6 +64,8 @@ public class EditActivity extends Activity implements View.OnClickListener, View
     private ScaleGestureDetector mScaleDetector;
     private int dragX, dragY;
 
+    private boolean _isCropped = false;
+
     /**
      * Поправка на высоту UI
      */
@@ -353,20 +355,49 @@ public class EditActivity extends Activity implements View.OnClickListener, View
             break;*/
             case R.id.CropButton:
             {
-                CropFilter cropFilter = new CropFilter(0,
-                        (originalBitmap.getHeight() - originalBitmap.getWidth()) / 2,
-                        originalBitmap.getWidth(), originalBitmap.getWidth());
-                Bitmap bmp;
+                _isCropped = !_isCropped;
 
-                bmp = originalBitmap.copy(originalBitmap.getConfig(), true);
-                cropFilter.process(originalBitmap, bmp);
-                image.buildDrawingCache();
-                image.setImageResource(android.R.color.transparent);
-                image.destroyDrawingCache();
+                if(_activeFilterPrefab == null)
+                {
+                    image.buildDrawingCache();
+                    image.setImageResource(android.R.color.transparent);
+                    image.destroyDrawingCache();
 
-                Drawable d = new BitmapDrawable(getResources(), bmp);
 
-                image.setImageDrawable(d);
+                    if (_isCropped)
+                    {
+                        originalBitmap = CropFilter.centerCrop(originalBitmap);
+                    }
+                    else
+                    {
+                        originalBitmap = SaveController.tempBitmap;
+                    }
+
+
+                    // apply filters if possible
+                    if (_activeFilterPrefab != null)
+                    {
+                        applyFilterToView(v, _activeFilterPrefab);
+                    }
+
+                    Drawable d = new BitmapDrawable(getResources(), originalBitmap);
+                    image.setImageDrawable(d);
+                }
+                else
+                {
+                    if (_isCropped)
+                    {
+                        originalBitmap = CropFilter.centerCrop(originalBitmap);
+                    }
+                    else
+                    {
+                        originalBitmap = SaveController.tempBitmap;
+                    }
+
+
+                    applyFilterToView(v, _activeFilterPrefab);
+                }
+
                 //originalBitmap = bmp;
             }
             break;
@@ -504,31 +535,8 @@ public class EditActivity extends Activity implements View.OnClickListener, View
             case R.id.filterButton11:
             case R.id.filterButton12:
             case R.id.filterButton13: {
-                Bitmap bmp = originalBitmap.copy(SaveController.tempBitmap.getConfig(), true);
-
-                NativeUtils nativeUtils = new NativeUtils();
-                long stamp = System.nanoTime();
-
                 _activeFilterPrefab = filterMap.get(v.getId());
-
-                nativeUtils.blend(bmp, _activeFilterPrefab);
-                Log.d("VISION", "Time: " + (System.nanoTime() - stamp));
-
-
-                image.setImageBitmap(bmp);
-
-                for(int i = 0; i < images.size(); i++)
-                {
-                    images.get(i).buildDrawingCache();
-                    Bitmap curBitmap = ((BitmapDrawable)imageOrigContents.get(i)).getBitmap();
-                    Bitmap grayBitmap = curBitmap.copy(Bitmap.Config.ARGB_8888, true);
-                    curBitmap = null;
-                    nativeUtils.blend(grayBitmap, _activeFilterPrefab);
-                    images.get(i).setImageResource(android.R.color.transparent);
-                    images.get(i).destroyDrawingCache();
-                    images.get(i).setImageBitmap(grayBitmap);
-
-                }
+                applyFilterToView(v, _activeFilterPrefab);
             }
             break;
 
@@ -604,6 +612,31 @@ public class EditActivity extends Activity implements View.OnClickListener, View
 
             }
             break;
+        }
+    }
+
+    private void applyFilterToView(View v, FilterPrefab filterPrefab) {
+        Bitmap bmp = originalBitmap.copy(SaveController.tempBitmap.getConfig(), true);
+
+        NativeUtils nativeUtils = new NativeUtils();
+        long stamp = System.nanoTime();
+
+        nativeUtils.blend(bmp, filterPrefab);
+        Log.d("VISION", "Time: " + (System.nanoTime() - stamp));
+
+
+        image.setImageBitmap(bmp);
+
+        for(int i = 0; i < images.size(); i++)
+        {
+            images.get(i).buildDrawingCache();
+            Bitmap curBitmap = ((BitmapDrawable)imageOrigContents.get(i)).getBitmap();
+            Bitmap grayBitmap = curBitmap.copy(Bitmap.Config.ARGB_8888, true);
+            curBitmap = null;
+            nativeUtils.blend(grayBitmap, filterPrefab);
+            images.get(i).setImageResource(android.R.color.transparent);
+            images.get(i).destroyDrawingCache();
+            images.get(i).setImageBitmap(grayBitmap);
         }
     }
 
@@ -718,6 +751,19 @@ public class EditActivity extends Activity implements View.OnClickListener, View
 
         SaveController.tempBitmap = BitmapFactoryHelper.decodeInFullResolution(SaveController.originalPicture);
         SaveController.originalPicture = null;
+
+        if(_isCropped)
+        {
+            Bitmap croppedBitmap = CropFilter.centerCrop(SaveController.tempBitmap);
+
+            // Delete bitmaptosave
+            SaveController.tempBitmap.recycle();
+            SaveController.tempBitmap = null;
+            System.gc();
+
+            // Set new bitmap
+            SaveController.tempBitmap = croppedBitmap;
+        }
 
         Bitmap drawableBitmap = SaveController.tempBitmap;
         Canvas canvas = new Canvas(drawableBitmap);

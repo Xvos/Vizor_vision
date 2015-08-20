@@ -19,7 +19,6 @@ public class SaveController
 
     public static Uri pictureUri;
 
-
     public static void savePicture(Bitmap picture)
     {
         // сохраняем полученные jpg в папке /sdcard/CameraExample/
