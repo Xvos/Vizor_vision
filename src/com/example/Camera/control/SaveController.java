@@ -19,6 +19,9 @@ public class SaveController
 
     public static Uri pictureUri;
 
+    // Rotation of the pic from CameraActivity // TODO: УБРАТЬ!
+    public static int Rotation = 0;
+
     public static void savePicture(Bitmap picture)
     {
         // сохраняем полученные jpg в папке /sdcard/CameraExample/
