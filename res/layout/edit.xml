@@ -49,7 +49,7 @@
                     android:layout_width="100dp"
                     android:layout_height="55dp"
                     android:id="@+id/AddText"
-                    android:text="   TEXT"
+                    android:text="      TEXT"
                 android:background="@drawable/bg"
                 android:textColor="@android:color/white"
                 android:textAlignment="viewStart"
@@ -107,7 +107,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
-            android:background="#00a0a0a0"
+            android:background="#ffadadad"
             android:gravity="bottom"
             android:orientation="horizontal"
             android:measureWithLargestChild="false">
