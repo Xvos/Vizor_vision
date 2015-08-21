@@ -66,6 +66,12 @@ public class SocialActivity extends Activity implements View.OnClickListener{
         postButton = (Button) findViewById(R.id.postButton);
         postButton.setBackgroundResource(R.drawable.post_button);
         postButton.setOnClickListener(this);
+
+        findViewById(R.id.textFace).setOnClickListener(this);
+        findViewById(R.id.textINSTA).setOnClickListener(this);
+        findViewById(R.id.textTELE).setOnClickListener(this);
+        findViewById(R.id.textVIBER).setOnClickListener(this);
+        findViewById(R.id.textVK).setOnClickListener(this);
     }
 
     @Override
@@ -91,6 +97,31 @@ public class SocialActivity extends Activity implements View.OnClickListener{
             case R.id.postButton:
                 post();
                 break;
+            case R.id.textFace:
+            {
+                checkBoxFaceBook.setChecked(!checkBoxFaceBook.isChecked());
+            }
+            break;
+            case R.id.textINSTA:
+            {
+                checkBoxInstagram.setChecked(!checkBoxInstagram.isChecked());
+            }
+            break;
+            case R.id.textTELE:
+            {
+                checkBoxTelegram.setChecked(!checkBoxTelegram.isChecked());
+            }
+            break;
+            case R.id.textVIBER:
+            {
+                checkBoxViber.setChecked(!checkBoxViber.isChecked());
+            }
+            break;
+            case R.id.textVK:
+            {
+                checkBoxVK.setChecked(!checkBoxVK.isChecked());
+            }
+            break;
         }
     }
 
@@ -123,6 +154,12 @@ public class SocialActivity extends Activity implements View.OnClickListener{
         if (checkBoxViber.isChecked()) {
             SocialController.postOnViber(this);
         }
-        finish();
+
+        if(!checkBoxTelegram.isChecked() && !checkBoxViber.isChecked() && !checkBoxVK.isChecked()
+                && !checkBoxInstagram.isChecked() && !checkBoxFaceBook.isChecked())
+        {
+            onBackPressed();
+        }
+
     }
 }
