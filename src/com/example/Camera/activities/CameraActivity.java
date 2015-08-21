@@ -10,6 +10,7 @@ import android.hardware.Camera;
 import android.net.Uri;
 import android.os.Bundle;
 
+import android.util.Log;
 import android.view.*;
 import android.widget.Button;
 import android.view.ViewGroup.LayoutParams;
@@ -152,18 +153,41 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
         List<Camera.Size> sizes = params.getSupportedPictureSizes();
         params.setPictureSize(sizes.get(0).width, sizes.get(0).height);
 
+        // Exposure compensation
         if(params.isAutoExposureLockSupported()) {
             params.setAutoExposureLock(false);
         }
 
+        // White balance
         if(params.isAutoWhiteBalanceLockSupported()) {
             params.setAutoWhiteBalanceLock(false);
         }
 
-        params.set("iso", "auto"); //Tried with 400, 800, 600 (values obtained from flatten())
-        params.setColorEffect("none");
-        params.set("scene-mode", "auto");
-        params.setExposureCompensation(4);
+        // Set ISO
+        String supportedIsoValues = params.get("iso-values");
+        if (supportedIsoValues != null) {
+            params.set("iso", "auto"); //Tried with 400, 800, 600 (values obtained from flatten())
+        }
+
+        // Set color effect
+        final List<String> supportedColorEffects = params.getSupportedColorEffects();
+        if(supportedColorEffects.contains("none")) {
+            params.setColorEffect("none");
+        }
+
+        // Scene modes
+        final List<String> supportedSceneModes = params.getSupportedSceneModes();
+        if(supportedSceneModes.contains("auto")) {
+            params.set("scene-mode", "auto");
+        }
+
+        // exposure compensation
+        final int exposureCompensation = 4;
+        if(exposureCompensation >= params.getMinExposureCompensation() &&
+            exposureCompensation < params.getMaxExposureCompensation())
+        {
+            params.setExposureCompensation(exposureCompensation);
+        }
 
         _camera.setParameters(params);
         setCameraRotation();
@@ -196,6 +220,15 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
         int rotate = (info.orientation - degrees + 360) % 360;
 
         SaveController.Rotation = rotate;
+
+        if(info.orientation == Configuration.ORIENTATION_LANDSCAPE)
+        {
+            Log.d("VISION", "LANDSCAPE");
+        }
+        else
+        {
+            Log.d("VISION", "PORTRAIT");
+        }
 
         _camera.setParameters(params);
     }
@@ -274,7 +307,6 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
                 List<Camera.Size> sizes = params.getSupportedPictureSizes();
                 params.setPictureSize(sizes.get(0).width,  sizes.get(0).height);
 
-
                 _camera.setParameters(params);
                 _frontCameraSelected = !_frontCameraSelected;
                 setCameraRotation();
@@ -295,7 +327,8 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK) {
-            if (requestCode == SELECT_PICTURE) {
+            if (requestCode == SELECT_PICTURE)
+            {
                 Uri imageUri = data.getData();
 
                 try
@@ -311,6 +344,9 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
                 {
                     e.printStackTrace();
                 }
+
+                // Если выбрали из галереи, не поворачиваем картинку. TODO: убрать это говно!
+                SaveController.Rotation = 0;
 
                 Intent intent = new Intent(this, PreviewActivity.class);
                 startActivity(intent);
@@ -351,8 +387,8 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
     public void onPictureTaken(byte[] paramArrayOfByte, Camera paramCamera)
     {
         try {
-            Camera.Parameters params = _camera.getParameters();
-            String str = params.flatten();
+            //Camera.Parameters params = _camera.getParameters();
+            //String str = params.flatten();
             stopCamera();
             Intent intent = new Intent(this, PreviewActivity.class);
             SaveController.originalPicture = paramArrayOfByte;

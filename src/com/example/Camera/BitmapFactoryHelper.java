@@ -59,15 +59,25 @@ public class BitmapFactoryHelper
 
         Bitmap bitmap = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length, opt);
 
-        Matrix matrix = new Matrix();
-        matrix.postRotate(SaveController.Rotation);
+        Bitmap bmpToReturn = null;
 
-        Bitmap bmpToReturn = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, false);
+        // Если не надо поворачивать - нет смысла гнать через матрицу
+        if(SaveController.Rotation != 0)
+        {
+            Matrix matrix = new Matrix();
+            matrix.postRotate(SaveController.Rotation);
 
-        // Destroy old bitmap
-        bitmap.recycle();
-        bitmap = null;
-        System.gc();
+            bmpToReturn = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, false);
+
+            // Destroy old bitmap
+            bitmap.recycle();
+            bitmap = null;
+            System.gc();
+        }
+        else
+        {
+            bmpToReturn = bitmap;
+        }
 
         return bmpToReturn;
     }
