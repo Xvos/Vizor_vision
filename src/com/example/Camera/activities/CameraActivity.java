@@ -165,19 +165,19 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
 
         // Set ISO
         String supportedIsoValues = params.get("iso-values");
-        if (supportedIsoValues != null) {
+        if (supportedIsoValues != null && supportedIsoValues != null) {
             params.set("iso", "auto"); //Tried with 400, 800, 600 (values obtained from flatten())
         }
 
         // Set color effect
         final List<String> supportedColorEffects = params.getSupportedColorEffects();
-        if(supportedColorEffects.contains("none")) {
+        if(supportedColorEffects != null && supportedColorEffects.contains("none")) {
             params.setColorEffect("none");
         }
 
         // Scene modes
         final List<String> supportedSceneModes = params.getSupportedSceneModes();
-        if(supportedSceneModes.contains("auto")) {
+        if(supportedSceneModes != null && supportedSceneModes.contains("auto")) {
             params.set("scene-mode", "auto");
         }
 
