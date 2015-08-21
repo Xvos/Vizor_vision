@@ -508,7 +508,7 @@ public class EditActivity extends Activity implements View.OnClickListener, View
             ///////////////////////////
             case R.id.noFilterButton: {
                 Bitmap bmp = SaveController.tempBitmap.copy(SaveController.tempBitmap.getConfig(), true);
-
+                _isCropped = false;
                 // Drop active filter prefab
                 _activeFilterPrefab = null;
 
