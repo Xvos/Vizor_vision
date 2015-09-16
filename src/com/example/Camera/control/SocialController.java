@@ -87,4 +87,21 @@ public class SocialController {
                     Toast.LENGTH_SHORT).show();
         }
     }
+
+    public static void postOnWhatsApp(Activity activity)
+    {
+        Intent share = new Intent(android.content.Intent.ACTION_SEND);
+        share.setType("image/jpeg");
+        share.setPackage("com.whatsapp");
+        if (share != null)
+        {
+            share.putExtra(Intent.EXTRA_STREAM, SaveController.pictureUri);
+            activity.startActivity(share.createChooser(share, "Share With"));
+        }
+        else
+        {
+            Toast.makeText(activity.getApplicationContext(), "WhatsApp application is not installed",
+                    Toast.LENGTH_SHORT).show();
+        }
+    }
 }

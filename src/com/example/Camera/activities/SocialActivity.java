@@ -23,7 +23,8 @@ public class SocialActivity extends Activity implements View.OnClickListener{
 
     private ImageView image;
     private EditText editText;
-    private CheckBox checkBoxFaceBook, checkBoxVK, checkBoxInstagram, checkBoxTelegram, checkBoxViber;
+    private CheckBox checkBoxFaceBook, checkBoxVK, checkBoxInstagram, checkBoxTelegram,
+            checkBoxViber, checkBoxWhatsApp;
     private Button postButton;
 
     @Override
@@ -58,10 +59,15 @@ public class SocialActivity extends Activity implements View.OnClickListener{
         checkBoxViber = (CheckBox) findViewById(R.id.socialButton5);
         checkBoxViber.setBackgroundResource(R.drawable.chekbox_res);
 
+        checkBoxWhatsApp = (CheckBox) findViewById(R.id.socialButton6);
+        checkBoxWhatsApp.setBackgroundResource(R.drawable.chekbox_res);
+
         checkBoxFaceBook.setOnClickListener(this);
         checkBoxVK.setOnClickListener(this);
         checkBoxTelegram.setOnClickListener(this);
         checkBoxInstagram.setOnClickListener(this);
+        checkBoxViber.setOnClickListener(this);
+        checkBoxWhatsApp.setOnClickListener(this);
 
         postButton = (Button) findViewById(R.id.postButton);
         postButton.setBackgroundResource(R.drawable.post_button);
@@ -72,6 +78,7 @@ public class SocialActivity extends Activity implements View.OnClickListener{
         findViewById(R.id.textTELE).setOnClickListener(this);
         findViewById(R.id.textVIBER).setOnClickListener(this);
         findViewById(R.id.textVK).setOnClickListener(this);
+        findViewById(R.id.textWSAPP).setOnClickListener(this);
     }
 
     @Override
@@ -94,9 +101,13 @@ public class SocialActivity extends Activity implements View.OnClickListener{
             case R.id.socialButton5:
                 Log.d("TAG", "SocialNet 5");
                 break;
+            case R.id.socialButton6:
+                Log.d("TAG", "SocialNet 6");
+                break;
             case R.id.postButton:
                 post();
                 break;
+
             case R.id.textFace:
             {
                 checkBoxFaceBook.setChecked(!checkBoxFaceBook.isChecked());
@@ -120,6 +131,11 @@ public class SocialActivity extends Activity implements View.OnClickListener{
             case R.id.textVK:
             {
                 checkBoxVK.setChecked(!checkBoxVK.isChecked());
+            }
+            break;
+            case R.id.textWSAPP:
+            {
+                checkBoxWhatsApp.setChecked(!checkBoxWhatsApp.isChecked());
             }
             break;
         }
@@ -155,8 +171,13 @@ public class SocialActivity extends Activity implements View.OnClickListener{
             SocialController.postOnViber(this);
         }
 
+        if (checkBoxWhatsApp.isChecked()) {
+            SocialController.postOnWhatsApp(this);
+        }
+
         if(!checkBoxTelegram.isChecked() && !checkBoxViber.isChecked() && !checkBoxVK.isChecked()
-                && !checkBoxInstagram.isChecked() && !checkBoxFaceBook.isChecked())
+                && !checkBoxInstagram.isChecked() && !checkBoxFaceBook.isChecked()
+                && !checkBoxWhatsApp.isChecked())
         {
             onBackPressed();
         }

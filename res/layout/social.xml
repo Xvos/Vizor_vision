@@ -5,8 +5,8 @@
     android:background="@drawable/post_bg">
 
     <ImageView
-        android:layout_width="244dp"
-        android:layout_height="244dp"
+        android:layout_width="220dp"
+        android:layout_height="220dp"
         android:id="@+id/PostImageView"
         android:layout_gravity="center_horizontal|top" />
 
@@ -15,7 +15,7 @@
         android:layout_height="91dp"
         android:id="@+id/socialButton2"
         android:layout_gravity="left|bottom"
-        android:layout_marginBottom="73dp"
+        android:layout_marginBottom="93dp"
         android:button="@android:color/transparent"
         android:background="@drawable/chekbox" />
 
@@ -27,7 +27,7 @@
         android:layout_gravity="left|bottom"
         android:singleLine="false"
         android:checked="false"
-        android:layout_marginBottom="116dp"
+        android:layout_marginBottom="136dp"
         android:background="@drawable/chekbox" />
 
     <CheckBox
@@ -35,19 +35,19 @@
         android:layout_height="91dp"
         android:id="@+id/socialButton3"
         android:layout_gravity="center_horizontal|bottom"
-        android:layout_marginBottom="116dp"
+        android:layout_marginBottom="136dp"
         android:button="@android:color/transparent"
 
-        android:background="@drawable/chekbox" />
+        android:background="@drawable/chekbox"
+        android:checked="false" />
 
     <CheckBox
         android:layout_width="69dp"
         android:layout_height="91dp"
         android:id="@+id/socialButton4"
         android:layout_gravity="center_horizontal|bottom"
-        android:layout_marginBottom="73dp"
+        android:layout_marginBottom="93dp"
         android:button="@android:color/transparent"
-
         android:background="@drawable/chekbox" />
 
     <CheckBox
@@ -55,17 +55,9 @@
         android:layout_height="91dp"
         android:id="@+id/socialButton5"
         android:layout_gravity="left|bottom"
-        android:layout_marginBottom="30dp"
+        android:layout_marginBottom="50dp"
         android:button="@android:color/transparent"
         android:background="@drawable/chekbox" />
-
-    <Button
-        android:layout_width="95dp"
-        android:layout_height="95dp"
-        android:id="@+id/postButton"
-        android:layout_gravity="center_horizontal|bottom"
-        android:background="@drawable/post"
-        android:layout_marginBottom="15dp" />
 
     <EditText
         android:layout_width="290dp"
@@ -73,7 +65,7 @@
         android:id="@+id/postTextField"
         android:layout_gravity="center"
         android:background="@drawable/text_bg_cencer"
-        android:layout_marginTop="10dp" />
+        android:layout_marginBottom="10dp" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -85,7 +77,7 @@
         android:textColor="#000000"
         android:textStyle="bold"
         android:layout_marginRight="56dp"
-        android:layout_marginBottom="140dp" />
+        android:layout_marginBottom="160dp" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -97,7 +89,7 @@
         android:textColor="#000000"
         android:textStyle="bold"
         android:layout_marginRight="61dp"
-        android:layout_marginBottom="184dp" />
+        android:layout_marginBottom="204dp" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -109,7 +101,7 @@
         android:textColor="#000000"
         android:textStyle="bold"
         android:layout_marginRight="51dp"
-        android:layout_marginBottom="184dp" />
+        android:layout_marginBottom="204dp" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -121,7 +113,7 @@
         android:textColor="#000000"
         android:textStyle="bold"
         android:layout_marginRight="39dp"
-        android:layout_marginBottom="140dp" />
+        android:layout_marginBottom="160dp" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -133,7 +125,36 @@
         android:textColor="#000000"
         android:textStyle="bold"
         android:layout_marginRight="82dp"
-        android:layout_marginBottom="98dp" />
+        android:layout_marginBottom="118dp" />
+
+    <CheckBox
+        android:layout_width="69dp"
+        android:layout_height="91dp"
+        android:id="@+id/socialButton6"
+        android:layout_gravity="center_horizontal|bottom"
+        android:layout_marginBottom="50dp"
+        android:button="@android:color/transparent"
+        android:background="@drawable/chekbox" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="WHATSAPP"
+        android:id="@+id/textWSAPP"
+        android:layout_gravity="bottom|right"
+        android:textColor="#000000"
+        android:textStyle="bold"
+        android:layout_marginRight="45dp"
+        android:layout_marginBottom="118dp" />
+
+    <Button
+        android:layout_width="95dp"
+        android:layout_height="95dp"
+        android:id="@+id/postButton"
+        android:layout_gravity="center_horizontal|bottom"
+        android:background="@drawable/post"
+        android:layout_marginBottom="15dp" />
 
 
 </FrameLayout>
