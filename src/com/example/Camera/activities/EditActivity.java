@@ -74,12 +74,15 @@ public class EditActivity extends Activity implements View.OnClickListener, View
     private ArrayList<Drawable> imageOrigContents = new ArrayList<Drawable>();
 
     int mode = NONE;
+
     float oldDist = 1f;
 
     private SparseArray<Integer> imageMap;
     private SparseArray<FilterPrefab> filterMap;
 
     private FilterPrefab _activeFilterPrefab = null;
+
+
 
 
     @Override
@@ -307,6 +310,7 @@ public class EditActivity extends Activity implements View.OnClickListener, View
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.SaveButton: {
+                v.setEnabled(false);
                 parseBitmapAndSave();
                 String message = String.valueOf(text.getText());
                 Intent intent = new Intent(this, SocialActivity.class);
@@ -883,9 +887,9 @@ public class EditActivity extends Activity implements View.OnClickListener, View
                             }
 
                             float currentScale = v.getScaleX();
-                            if ((currentScale < 2 && currentScale > 0.25)
+                            if ((currentScale < 2 && currentScale > 0.1)
                                     || (currentScale >= 2 && scale < 1)
-                                    || (currentScale <= 0.25 && scale > 1)) {
+                                    || (currentScale <= 0.1 && scale > 1)) {
                                 v.setScaleX(scale * v.getScaleX());
                                 v.setScaleY(scale * v.getScaleY());//.setTextSize(TypedValue.COMPLEX_UNIT_PX, currentSize);
                             }
