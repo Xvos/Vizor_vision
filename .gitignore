@@ -1,10 +1,6 @@
-.idea/gradle.xml
-.idea/misc.xml
-.idea/vcs.xml
-.idea/workspace.xml
+.idea/*
+.gradle/*
 project.properties
-.gradle/2.2/taskArtifacts/cache.properties.lock
-git.iml
 out/production/git/com/example/Camera/R$anim.class
 out/production/git/com/example/Camera/R$attr.class
 out/production/git/com/example/Camera/R$drawable.class
