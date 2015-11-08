@@ -10,14 +10,13 @@ apply plugin: 'android'
 
 dependencies {
     compile fileTree(include: '*.jar', dir: 'libs')
-    compile project(':vksdk_library')
+    compile project(':vk-sdk')
     //compile 'com.facebook.android:facebook-android-sdk:4.4.1'
 }
 
 android {
     compileSdkVersion 22
-    buildToolsVersion '23.0.2'
-
+    buildToolsVersion '22.0.1'
     sourceSets {
         main {
             manifest.srcFile 'AndroidManifest.xml'
@@ -41,5 +40,10 @@ android {
         // by a similar customization.
         debug.setRoot('build-types/debug')
         release.setRoot('build-types/release')
+    }
+    buildTypes {
+        debug {
+            jniDebuggable true
+        }
     }
 }
