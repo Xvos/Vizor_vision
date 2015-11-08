@@ -1,4 +1,5 @@
-.idea/*
+**/.idea/workspace.xml 
+**/.idea/tasks.xml
 .gradle/*
 project.properties
 out/production/git/com/example/Camera/R$anim.class
@@ -17,3 +18,4 @@ out/production/git/com/example/Camera/activities/UploadActivity.class
 out/production/git/git.apk
 out/production/git/layout/edit.xml
 /build/*
+local.properties
