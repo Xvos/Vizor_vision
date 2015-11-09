@@ -1,4 +1,4 @@
-package com.example.Camera.control;
+package com.vizor.vision.control;
 
 import android.graphics.Bitmap;
 import android.graphics.Matrix;

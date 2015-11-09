@@ -1,11 +1,10 @@
-package com.example.Camera.activities;
+package com.vizor.vision.activities;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.content.res.AssetFileDescriptor;
 import android.content.res.Configuration;
 
-import android.graphics.Bitmap;
 import android.hardware.Camera;
 import android.net.Uri;
 import android.os.Bundle;
@@ -16,14 +15,12 @@ import android.widget.Button;
 import android.view.ViewGroup.LayoutParams;
 
 
-import com.example.Camera.BitmapFactoryHelper;
-import com.example.Camera.R;
-import com.example.Camera.control.SaveController;
+import com.vizor.vision.R;
+import com.vizor.vision.control.SaveController;
 
 import java.io.ByteArrayOutputStream;
 import java.io.FileDescriptor;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
@@ -101,11 +98,11 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
     protected void onResume()
     {
         super.onResume();
-        _camera = Camera.open();
-        Camera.Parameters params = _camera.getParameters();
+        _camera = vision.open();
+        vision.Parameters params = _camera.getParameters();
         params.setFlashMode(_flashTypes[_curFlashType]);
-        params.setFocusMode(Camera.Parameters.FOCUS_MODE_AUTO);
-        List<Camera.Size> sizes = params.getSupportedPictureSizes();
+        params.setFocusMode(vision.Parameters.FOCUS_MODE_AUTO);
+        List<vision.Size> sizes = params.getSupportedPictureSizes();
         params.setPictureSize(sizes.get(0).width,  sizes.get(0).height);
 
         _camera.setParameters(params);
@@ -387,7 +384,7 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
     public void onPictureTaken(byte[] paramArrayOfByte, Camera paramCamera)
     {
         try {
-            //Camera.Parameters params = _camera.getParameters();
+            //vision.Parameters params = _camera.getParameters();
             //String str = params.flatten();
             stopCamera();
             Intent intent = new Intent(this, PreviewActivity.class);
@@ -434,7 +431,7 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback, 
 
 
     /////////////////////////////
-    // Camera utility stuff
+    // vision utility stuff
     /////////////////////////////
 
     private void setCameraHolder(SurfaceHolder holder)

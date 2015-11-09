@@ -1,4 +1,4 @@
-package com.example.Camera.control;
+package com.vizor.vision.control;
 
 import android.app.Activity;
 import android.content.Intent;

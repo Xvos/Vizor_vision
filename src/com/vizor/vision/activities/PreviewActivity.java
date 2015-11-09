@@ -1,4 +1,4 @@
-package com.example.Camera.activities;
+package com.vizor.vision.activities;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -10,9 +10,9 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
 
-import com.example.Camera.BitmapFactoryHelper;
-import com.example.Camera.R;
-import com.example.Camera.control.SaveController;
+import com.vizor.vision.BitmapFactoryHelper;
+import com.vizor.vision.R;
+import com.vizor.vision.control.SaveController;
 
 
 /**

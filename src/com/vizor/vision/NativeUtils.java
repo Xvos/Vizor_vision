@@ -1,7 +1,7 @@
-package com.example.Camera;
+package com.vizor.vision;
 
 import android.graphics.Bitmap;
-import com.example.Camera.editor.FilterPrefab;
+import com.vizor.vision.editor.FilterPrefab;
 
 /**
  * Created by netherwire on 8/9/15.

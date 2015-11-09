@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.example.Camera"
+          package="com.vizor.vision"
           android:versionCode="1"
           android:versionName="1.0">
     <uses-sdk android:minSdkVersion="15"/>
@@ -13,7 +13,7 @@
     <uses-feature android:name="android.hardware.camera.front.autofocus" android:required="false" />
     <application android:label="@string/app_name" android:icon="@drawable/icon"
         android:largeHeap="true">
-        <activity android:name=".activities.CameraActivity"
+        <activity android:name="com.vizor.vision.activities.CameraActivity"
                   android:label="@string/app_name"
                   android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen"
                   android:screenOrientation="portrait"
@@ -24,7 +24,7 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".activities.PreviewActivity"
+        <activity android:name="com.vizor.vision.activities.PreviewActivity"
                   android:noHistory="true"
                   android:screenOrientation="portrait"
                   android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen">
@@ -33,7 +33,7 @@
                 <category android:name="android.intent.category.ALTERNATIVE"/>
             </intent-filter>
         </activity>
-        <activity android:name=".activities.UploadActivity"
+        <activity android:name="com.vizor.vision.activities.UploadActivity"
                   android:noHistory="true"
                   android:screenOrientation="portrait"
                   android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen">
@@ -42,7 +42,7 @@
                 <category android:name="android.intent.category.ALTERNATIVE"/>
             </intent-filter>
         </activity>
-        <activity android:name=".activities.EditActivity"
+        <activity android:name="com.vizor.vision.activities.EditActivity"
                   android:noHistory="true"
                   android:screenOrientation="portrait"
                   android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen">
@@ -51,7 +51,7 @@
                 <category android:name="android.intent.category.ALTERNATIVE"/>
             </intent-filter>
         </activity>
-        <activity android:name=".activities.SocialActivity"
+        <activity android:name="com.vizor.vision.activities.SocialActivity"
                 android:noHistory="true"
                 android:screenOrientation="portrait"
                 android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen">

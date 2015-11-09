@@ -1,8 +1,6 @@
-package com.example.Camera.editor;
+package com.vizor.vision.editor;
 
 import android.graphics.Color;
-
-import com.example.Camera.editor.filter.Filter;
 
 /**
  * Created by netherwire on 8/16/15.

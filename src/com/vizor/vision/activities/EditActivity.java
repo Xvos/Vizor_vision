@@ -1,4 +1,4 @@
-package com.example.Camera.activities;
+package com.vizor.vision.activities;
 
 import android.animation.ObjectAnimator;
 import android.app.Activity;
@@ -29,16 +29,14 @@ import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
-import com.example.Camera.BitmapFactoryHelper;
-import com.example.Camera.NativeUtils;
-import com.example.Camera.R;
-import com.example.Camera.control.SaveController;
-import com.example.Camera.editor.FilterPrefab;
-import com.example.Camera.editor.filter.CropFilter;
+import com.vizor.vision.BitmapFactoryHelper;
+import com.vizor.vision.NativeUtils;
+import com.vizor.vision.R;
+import com.vizor.vision.control.SaveController;
+import com.vizor.vision.editor.FilterPrefab;
+import com.vizor.vision.editor.filter.CropFilter;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Created by user on 28.06.2015.

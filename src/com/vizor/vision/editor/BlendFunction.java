@@ -1,4 +1,4 @@
-package com.example.Camera.editor;
+package com.vizor.vision.editor;
 
 /**
  * Created by netherwire on 8/15/15.

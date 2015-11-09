@@ -1,13 +1,11 @@
-package com.example.Camera;
+package com.vizor.vision;
 
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 
-import com.example.Camera.control.SaveController;
-
-import java.io.FileDescriptor;
+import com.vizor.vision.control.SaveController;
 
 /**
  * Created by netherwire on 8/18/15.

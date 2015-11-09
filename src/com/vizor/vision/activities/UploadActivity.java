@@ -1,4 +1,4 @@
-package com.example.Camera.activities;
+package com.vizor.vision.activities;
 
 import android.app.Activity;
 import android.content.Context;
@@ -6,25 +6,19 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.*;
 
-import com.example.Camera.R;
-import com.example.Camera.control.GalleryAdapter;
-import com.example.Camera.control.Params;
-import com.example.Camera.control.SaveController;
+import com.vizor.vision.R;
+import com.vizor.vision.control.GalleryAdapter;
+import com.vizor.vision.control.SaveController;
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.net.URI;
 
 /**
  * Created by user on 22.06.2015.

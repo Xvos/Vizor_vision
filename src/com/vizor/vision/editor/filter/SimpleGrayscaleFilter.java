@@ -1,4 +1,4 @@
-package com.example.Camera.editor.filter;
+package com.vizor.vision.editor.filter;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;

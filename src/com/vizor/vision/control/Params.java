@@ -1,4 +1,4 @@
-package com.example.Camera.control;
+package com.vizor.vision.control;
 
 /**
  * Created by user on 25.06.2015.

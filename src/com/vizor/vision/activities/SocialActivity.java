@@ -1,4 +1,4 @@
-package com.example.Camera.activities;
+package com.vizor.vision.activities;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -11,9 +11,9 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 
-import com.example.Camera.R;
-import com.example.Camera.control.SaveController;
-import com.example.Camera.control.SocialController;
+import com.vizor.vision.R;
+import com.vizor.vision.control.SaveController;
+import com.vizor.vision.control.SocialController;
 import com.vk.sdk.VKSdk;
 
 /**

@@ -21,6 +21,7 @@ out/production/git/git.apk
 out/production/git/layout/edit.xml
 obj/
 build/
+libs/
 local.properties
 .classpath
 .project
